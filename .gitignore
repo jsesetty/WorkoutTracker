@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Production / Build
+dist/
+dist-ssr/
+build/
+
+# Playwright & Testing
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+coverage/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS & Editor files
+.DS_Store
+Thumbs.db

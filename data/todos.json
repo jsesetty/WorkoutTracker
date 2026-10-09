@@ -1,0 +1,30 @@
+[
+  {
+    "id": "task-1791562183324-yzzuw",
+    "title": "Master Instant Transmission on Yardrat",
+    "completed": false,
+    "priority": "medium",
+    "createdAt": "2026-10-09T16:09:43.324Z"
+  },
+  {
+    "priority": "medium",
+    "title": "Explore your new FocusFlow task manager ✨",
+    "completed": false,
+    "id": "task-1",
+    "createdAt": "2026-10-09T10:44:16.0082795-05:00"
+  },
+  {
+    "priority": "high",
+    "title": "Type a task above and press Enter ⏎",
+    "completed": false,
+    "id": "task-2",
+    "createdAt": "2026-10-09T10:44:16.0092789-05:00"
+  },
+  {
+    "priority": "low",
+    "title": "Check off tasks to see the live progress bar fill up 🎯",
+    "completed": false,
+    "id": "task-3",
+    "createdAt": "2026-10-09T10:44:16.0092789-05:00"
+  }
+]

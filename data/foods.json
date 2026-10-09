@@ -1,0 +1,246 @@
+[
+  {
+    "id": "food-chicken-breast",
+    "name": "Organic Free-Range Chicken Breast",
+    "brand": "Local Organics",
+    "calories": 165,
+    "protein": 31,
+    "carbs": 0,
+    "fat": 3.6,
+    "servingSize": "150g",
+    "yukaScore": 98,
+    "yukaRating": "Excellent",
+    "additives": [],
+    "novaGroup": 1,
+    "isOrganic": true
+  },
+  {
+    "id": "food-greek-yogurt",
+    "name": "Plain Non-Fat Greek Yogurt",
+    "brand": "Pure Alpine",
+    "calories": 100,
+    "protein": 18,
+    "carbs": 6,
+    "fat": 0.5,
+    "servingSize": "170g",
+    "yukaScore": 94,
+    "yukaRating": "Excellent",
+    "additives": [],
+    "novaGroup": 1,
+    "isOrganic": true
+  },
+  {
+    "id": "food-wild-salmon",
+    "name": "Wild Alaskan Sockeye Salmon",
+    "brand": "Ocean Catch",
+    "calories": 206,
+    "protein": 28,
+    "carbs": 0,
+    "fat": 9.5,
+    "servingSize": "150g",
+    "yukaScore": 96,
+    "yukaRating": "Excellent",
+    "additives": [],
+    "novaGroup": 1,
+    "isOrganic": false
+  },
+  {
+    "id": "food-rolled-oats",
+    "name": "100% Whole Grain Rolled Oats",
+    "brand": "Harvest Mills",
+    "calories": 150,
+    "protein": 5,
+    "carbs": 27,
+    "fat": 2.5,
+    "servingSize": "40g",
+    "yukaScore": 92,
+    "yukaRating": "Excellent",
+    "additives": [],
+    "novaGroup": 1,
+    "isOrganic": true
+  },
+  {
+    "id": "food-whey-isolate",
+    "name": "Grass-Fed Clean Whey Isolate",
+    "brand": "Apex Performance",
+    "calories": 120,
+    "protein": 26,
+    "carbs": 1.5,
+    "fat": 0.5,
+    "servingSize": "30g scoop",
+    "yukaScore": 88,
+    "yukaRating": "Excellent",
+    "additives": [
+      {
+        "code": "E960",
+        "name": "Steviol glycosides",
+        "risk": "None",
+        "description": "Natural plant extract sweetener"
+      }
+    ],
+    "novaGroup": 2,
+    "isOrganic": true
+  },
+  {
+    "id": "food-almonds",
+    "name": "Raw Unsalted Almonds",
+    "brand": "NutriClean",
+    "calories": 164,
+    "protein": 6,
+    "carbs": 6,
+    "fat": 14,
+    "servingSize": "28g",
+    "yukaScore": 90,
+    "yukaRating": "Excellent",
+    "additives": [],
+    "novaGroup": 1,
+    "isOrganic": true
+  },
+  {
+    "id": "food-sweet-potato",
+    "name": "Roasted Japanese Sweet Potato",
+    "brand": "Fresh Harvest",
+    "calories": 130,
+    "protein": 2.5,
+    "carbs": 30,
+    "fat": 0.2,
+    "servingSize": "150g",
+    "yukaScore": 95,
+    "yukaRating": "Excellent",
+    "additives": [],
+    "novaGroup": 1,
+    "isOrganic": true
+  },
+  {
+    "id": "food-energy-bar",
+    "name": "MegaChoc Ultra Crunch Protein Bar",
+    "brand": "Titan Nutrition",
+    "calories": 270,
+    "protein": 20,
+    "carbs": 32,
+    "fat": 11,
+    "servingSize": "60g bar",
+    "yukaScore": 36,
+    "yukaRating": "Mediocre",
+    "additives": [
+      {
+        "code": "E955",
+        "name": "Sucralose",
+        "risk": "Moderate",
+        "description": "Artificial sweetener"
+      },
+      {
+        "code": "E471",
+        "name": "Mono- and diglycerides",
+        "risk": "Low",
+        "description": "Synthetic emulsifier"
+      },
+      {
+        "code": "E150d",
+        "name": "Ammonia caramel",
+        "risk": "Moderate",
+        "description": "Colorant with 4-MEI residue"
+      }
+    ],
+    "novaGroup": 4,
+    "isOrganic": false,
+    "cleanAlternativeId": "food-whey-isolate",
+    "cleanAlternativeName": "Grass-Fed Clean Whey Isolate + Raw Almonds"
+  },
+  {
+    "id": "food-soda",
+    "name": "Neon Surge Carbonated Energy Soda",
+    "brand": "X-Fuel",
+    "calories": 160,
+    "protein": 0,
+    "carbs": 42,
+    "fat": 0,
+    "servingSize": "355ml can",
+    "yukaScore": 14,
+    "yukaRating": "Bad",
+    "additives": [
+      {
+        "code": "E129",
+        "name": "Allura Red AC (Red 40)",
+        "risk": "Hazardous",
+        "description": "Azo dye linked to hypersensitivity"
+      },
+      {
+        "code": "E211",
+        "name": "Sodium Benzoate",
+        "risk": "Hazardous",
+        "description": "Preservative with benzene risk"
+      },
+      {
+        "code": "E338",
+        "name": "Phosphoric Acid",
+        "risk": "Moderate",
+        "description": "Acidifier depleting bone calcium"
+      }
+    ],
+    "novaGroup": 4,
+    "isOrganic": false,
+    "cleanAlternativeId": "food-coconut-water",
+    "cleanAlternativeName": "100% Raw Pure Coconut Water"
+  },
+  {
+    "id": "food-coconut-water",
+    "name": "100% Raw Pure Coconut Water",
+    "brand": "CocoPure",
+    "calories": 45,
+    "protein": 0.5,
+    "carbs": 11,
+    "fat": 0,
+    "servingSize": "240ml",
+    "yukaScore": 94,
+    "yukaRating": "Excellent",
+    "additives": [],
+    "novaGroup": 1,
+    "isOrganic": true
+  },
+  {
+    "id": "food-potato-chips",
+    "name": "Crispy BBQ Flavored Kettle Chips",
+    "brand": "SnackCo",
+    "calories": 230,
+    "protein": 3,
+    "carbs": 24,
+    "fat": 14,
+    "servingSize": "45g bag",
+    "yukaScore": 22,
+    "yukaRating": "Bad",
+    "additives": [
+      {
+        "code": "E621",
+        "name": "Monosodium Glutamate",
+        "risk": "Moderate",
+        "description": "Synthetic flavor enhancer"
+      },
+      {
+        "code": "E150c",
+        "name": "Ammonia caramel",
+        "risk": "Moderate",
+        "description": "Colorant"
+      }
+    ],
+    "novaGroup": 4,
+    "isOrganic": false,
+    "cleanAlternativeId": "food-almonds",
+    "cleanAlternativeName": "Raw Unsalted Almonds"
+  },
+  {
+    "id": "food-avocado",
+    "name": "Fresh Hass Avocado",
+    "brand": "Organic Orchard",
+    "calories": 160,
+    "protein": 2,
+    "carbs": 8.5,
+    "fat": 14.7,
+    "servingSize": "100g",
+    "yukaScore": 98,
+    "yukaRating": "Excellent",
+    "additives": [],
+    "novaGroup": 1,
+    "isOrganic": true
+  }
+]
