@@ -11,7 +11,9 @@ module.exports = {
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
-    '/tests/e2e/'
+    '/tests/e2e/',
+    '/e2e/',
+    '/mobile/'
   ],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': '<rootDir>/src/__mocks__/styleMock.js',
