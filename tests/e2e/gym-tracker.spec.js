@@ -205,4 +205,31 @@ test.describe('IronPulse Gym Training Session Tracker E2E Tests', () => {
     await expect(page.locator('text=98/100')).toBeVisible();
     await expect(page.locator('text=Clean Formulation')).toBeVisible();
   });
+
+  test('opens AI Quick Log modal, parses natural language transcript, and logs movements to active session', async ({ page }) => {
+    // Open AI Quick Log modal
+    const openAIBtn = page.locator('#open-ai-modal-btn');
+    await expect(openAIBtn).toBeVisible();
+    await openAIBtn.click();
+
+    // Verify modal elements
+    await expect(page.locator('text=AI NATURAL LANGUAGE WORKOUT PARSER')).toBeVisible();
+    const parseBtn = page.locator('#ai-parse-btn');
+    await expect(parseBtn).toBeVisible();
+
+    // Parse transcript
+    await parseBtn.click();
+
+    // Verify parsed movements and confidence chip
+    await expect(page.locator('text=PARSED EXTRACTED MOVEMENTS')).toBeVisible();
+    const commitBtn = page.locator('#ai-commit-btn');
+    await expect(commitBtn).toBeVisible();
+
+    // Commit to active session
+    await commitBtn.click();
+
+    // Verify modal closes and active workout count increases
+    await expect(page.locator('text=AI NATURAL LANGUAGE WORKOUT PARSER')).not.toBeVisible();
+    await expect(page.locator('text=Concept2 Rowing Ergometer')).toBeVisible();
+  });
 });

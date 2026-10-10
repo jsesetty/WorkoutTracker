@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Tabs, Tab, Button, Chip } from '@mui/material';
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { ToolbarCard } from './styled';
 import { FilterType, WorkoutFilterCounts } from '../types/workout';
 
@@ -9,6 +10,7 @@ interface WorkoutToolbarProps {
   readonly onFilterChange: (filter: FilterType) => void;
   readonly counts: WorkoutFilterCounts;
   readonly onClearCompleted: () => void;
+  readonly onOpenAIModal?: () => void;
 }
 
 export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
@@ -16,6 +18,7 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
   onFilterChange,
   counts,
   onClearCompleted,
+  onOpenAIModal,
 }) => {
   const handleChange = (_event: React.SyntheticEvent, newValue: FilterType) => {
     onFilterChange(newValue);
@@ -81,30 +84,50 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
         />
       </Tabs>
 
-      {/* Clear Finished Exercises Button */}
-      <Button
-        id="clear-completed-btn"
-        variant="outlined"
-        color="inherit"
-        size="small"
-        startIcon={<DeleteSweepOutlinedIcon />}
-        disabled={counts.completed === 0}
-        onClick={onClearCompleted}
-        sx={{
-          alignSelf: { xs: 'flex-end', sm: 'center' },
-          fontSize: '0.75rem',
-          borderRadius: '8px',
-          fontFamily: "'Space Grotesk', sans-serif",
-          borderColor: 'divider',
-          color: 'text.secondary',
-          '&:hover': {
-            borderColor: 'error.main',
-            color: 'error.main',
-          },
-        }}
-      >
-        CLEAR FINISHED ({counts.completed})
-      </Button>
+      {/* Actions Group */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, alignSelf: { xs: 'flex-end', sm: 'center' } }}>
+        {onOpenAIModal && (
+          <Button
+            id="open-ai-modal-btn"
+            variant="contained"
+            color="primary"
+            size="small"
+            startIcon={<AutoAwesomeIcon />}
+            onClick={onOpenAIModal}
+            sx={{
+              fontSize: '0.75rem',
+              borderRadius: '8px',
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 700,
+            }}
+          >
+            ⚡ AI QUICK LOG
+          </Button>
+        )}
+
+        <Button
+          id="clear-completed-btn"
+          variant="outlined"
+          color="inherit"
+          size="small"
+          startIcon={<DeleteSweepOutlinedIcon />}
+          disabled={counts.completed === 0}
+          onClick={onClearCompleted}
+          sx={{
+            fontSize: '0.75rem',
+            borderRadius: '8px',
+            fontFamily: "'Space Grotesk', sans-serif",
+            borderColor: 'divider',
+            color: 'text.secondary',
+            '&:hover': {
+              borderColor: 'error.main',
+              color: 'error.main',
+            },
+          }}
+        >
+          CLEAR FINISHED ({counts.completed})
+        </Button>
+      </Box>
     </ToolbarCard>
   );
 };

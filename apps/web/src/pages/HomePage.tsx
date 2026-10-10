@@ -5,6 +5,7 @@ import { WorkoutInput } from '../components/WorkoutInput';
 import { WorkoutToolbar } from '../components/WorkoutToolbar';
 import { WorkoutList } from '../components/WorkoutList';
 import { SessionConfetti } from '../components/SessionConfetti';
+import { WorkoutAIModal } from '../components/WorkoutAIModal';
 import { ContentWrapper } from '../components/styled';
 import { WorkoutItem, WorkoutSet, MuscleGroup, IntensityLevel, FilterType, WorkoutFilterCounts } from '../types/workout';
 
@@ -30,6 +31,8 @@ interface HomePageProps {
   readonly onUpdateSet?: (workoutId: string, setId: string, updates: Partial<WorkoutSet>) => void;
   readonly onDeleteSet?: (workoutId: string, setId: string) => void;
   readonly workoutBurnedCalories?: number;
+  readonly onCommitAIWorkouts?: (workouts: WorkoutItem[]) => void;
+  readonly onShowNotification?: (msg: string, severity?: 'success' | 'info' | 'warning' | 'error') => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
@@ -47,7 +50,10 @@ export const HomePage: React.FC<HomePageProps> = ({
   onUpdateSet,
   onDeleteSet,
   workoutBurnedCalories,
+  onCommitAIWorkouts,
+  onShowNotification,
 }) => {
+  const [aiModalOpen, setAiModalOpen] = React.useState(false);
   const filteredWorkouts = React.useMemo(() => {
     if (filter === 'active') return workouts.filter((w) => !w.completed);
     if (filter === 'completed') return workouts.filter((w) => w.completed);
@@ -74,6 +80,23 @@ export const HomePage: React.FC<HomePageProps> = ({
         onFilterChange={onFilterChange}
         counts={counts}
         onClearCompleted={onClearCompleted}
+        onOpenAIModal={() => setAiModalOpen(true)}
+      />
+
+      {/* AI Workout Natural Language Parsing Modal */}
+      <WorkoutAIModal
+        open={aiModalOpen}
+        onClose={() => setAiModalOpen(false)}
+        onCommitExercises={(newWorkouts) => {
+          if (onCommitAIWorkouts) {
+            onCommitAIWorkouts(newWorkouts);
+          } else {
+            for (const w of newWorkouts) {
+              onAddWorkout(w.title, w.muscleGroup, w.intensity, w.sets || 3, w.reps, w.weight);
+            }
+          }
+        }}
+        onShowNotification={onShowNotification || (() => {})}
       />
 
       {/* Workout Session List */}

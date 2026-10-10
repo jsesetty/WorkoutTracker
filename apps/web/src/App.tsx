@@ -431,6 +431,14 @@ export const App: React.FC = () => {
     return burn;
   }, [workouts]);
 
+  // AI Workout Commit Handler
+  const handleCommitAIWorkouts = (newWorkouts: WorkoutItem[]) => {
+    setWorkouts((prev) => [...newWorkouts, ...prev]);
+    for (const w of newWorkouts) {
+      enqueueMutation('exercise', w.id, 'UPSERT', w);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -459,6 +467,8 @@ export const App: React.FC = () => {
                 onUpdateSet={handleUpdateSet}
                 onDeleteSet={handleDeleteSet}
                 workoutBurnedCalories={workoutBurnedCalories}
+                onCommitAIWorkouts={handleCommitAIWorkouts}
+                onShowNotification={showNotification}
               />
             }
           />
