@@ -27,13 +27,16 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: TypeScript Type Checking
-        run: npx tsc --noEmit
+      - name: Generate Prisma Client
+        run: npx prisma generate --schema=packages/db/prisma/schema.prisma
 
-      - name: Run Jest Unit Tests
+      - name: TypeScript Type Checking (Turbo)
+        run: npm run typecheck
+
+      - name: Run Jest Unit Tests (Turbo)
         run: npm test
 
-      - name: Validate Vite Production Build
+      - name: Validate Vite Production Build (Turbo)
         run: npm run build
 
   e2e-tests:

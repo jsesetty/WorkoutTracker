@@ -1,0 +1,192 @@
+// IronPulse Database Schema
+// Optimized for PostgreSQL with pgvector extension and specialized JSONB telemetry metrics
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+enum Role {
+  ATHLETE
+  COACH
+  ADMIN
+}
+
+enum MuscleGroup {
+  CHEST
+  BACK
+  LEGS
+  SHOULDERS
+  ARMS
+  CORE
+  CARDIO
+  FULL_BODY
+}
+
+enum ExerciseType {
+  WEIGHT_REPS
+  BODYWEIGHT_REPS
+  DISTANCE_TIME
+  TIME_ONLY
+}
+
+enum IntensityLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model User {
+  id            String            @id @default(uuid())
+  email         String            @unique
+  role          Role              @default(ATHLETE)
+  createdAt     DateTime          @default(now())
+  profile       Profile?
+  sessions      WorkoutSession[]
+  customCatalog ExerciseCatalog[]
+  records       PersonalRecord[]
+  meals         LoggedMeal[]
+  goals         NutritionGoal?
+
+  @@map("users")
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName String
+  weightKg    Float?
+  heightCm    Float?
+  avatarUrl   String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+model ExerciseCatalog {
+  id          String            @id @default(uuid())
+  name        String
+  muscleGroup MuscleGroup
+  type        ExerciseType      @default(WEIGHT_REPS)
+  equipment   String?
+  isCustom    Boolean           @default(false)
+  userId      String?
+  user        User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercises   WorkoutExercise[]
+  records     PersonalRecord[]
+  embedding   Unsupported("vector(1536)")?
+
+  @@index([muscleGroup])
+  @@index([userId])
+  @@map("exercise_catalog")
+}
+
+model WorkoutSession {
+  id           String            @id // Client-generated UUID (crypto.randomUUID) for offline idempotency
+  userId       String
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  startedAt    DateTime          @default(now())
+  endedAt      DateTime?
+  rpeRating    Int?              // Rating of Perceived Exertion (1 - 10)
+  overallNotes String?
+  intensity    IntensityLevel    @default(MEDIUM)
+  completed    Boolean           @default(false)
+  exercises    WorkoutExercise[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([userId, startedAt(sort: Desc)])
+  @@map("workout_sessions")
+}
+
+model WorkoutExercise {
+  id                String          @id // Client-generated UUID
+  workoutSessionId  String
+  session           WorkoutSession  @relation(fields: [workoutSessionId], references: [id], onDelete: Cascade)
+  exerciseCatalogId String
+  catalogItem       ExerciseCatalog @relation(fields: [exerciseCatalogId], references: [id])
+  orderIndex        Int
+  notes             String?
+  sets              ExerciseSet[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([workoutSessionId, orderIndex])
+  @@map("workout_exercises")
+}
+
+model ExerciseSet {
+  id                String          @id // Client-generated UUID
+  workoutExerciseId String
+  exercise          WorkoutExercise @relation(fields: [workoutExerciseId], references: [id], onDelete: Cascade)
+  setIndex          Int
+  reps              Int?
+  weightKg          Float?
+  distanceMeters    Float?
+  durationSeconds   Int?
+  rpe               Float?
+  completed         Boolean         @default(false)
+
+  // Critical Hardening Point: Non-standard equipment & telemetry metrics
+  // Stores damper setting, 500m split pace, HR zones, calories, rest-pause splits
+  metrics           Json?
+
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([workoutExerciseId, setIndex])
+  @@map("exercise_sets")
+}
+
+model PersonalRecord {
+  id                 String          @id @default(uuid())
+  userId             String
+  user               User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseCatalogId  String
+  exercise           ExerciseCatalog @relation(fields: [exerciseCatalogId], references: [id])
+  estimatedOneRepMax Float
+  actualWeightKg     Float
+  reps               Int
+  achievedAt         DateTime        @default(now())
+
+  @@unique([userId, exerciseCatalogId])
+  @@index([userId, estimatedOneRepMax(sort: Desc)])
+  @@map("personal_records")
+}
+
+model LoggedMeal {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  category     String   // Breakfast, Lunch, Dinner, Snack
+  calories     Int
+  proteinGrams Float
+  carbsGrams   Float
+  fatGrams     Float
+  loggedAt     DateTime @default(now())
+
+  @@index([userId, loggedAt(sort: Desc)])
+  @@map("logged_meals")
+}
+
+model NutritionGoal {
+  id            String @id @default(uuid())
+  userId        String @unique
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dailyCalories Int    @default(2200)
+  dailyProtein  Float  @default(165)
+  dailyCarbs    Float  @default(220)
+  dailyFat      Float  @default(60)
+
+  @@map("nutrition_goals")
+}

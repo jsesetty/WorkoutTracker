@@ -7,6 +7,9 @@ mobile/.expo/
 dist/
 dist-ssr/
 build/
+.turbo/
+apps/**/dist/
+apps/**/.turbo/
 
 # Playwright & Testing
 /test-results/

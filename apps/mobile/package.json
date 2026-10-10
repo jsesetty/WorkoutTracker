@@ -1,5 +1,5 @@
 {
-  "name": "ironpulse-mobile",
+  "name": "@ironpulse/mobile",
   "version": "1.0.0",
   "description": "IronPulse Mobile — React Native companion app for IronPulse Gym & Nutrition Tracker",
   "main": "index.ts",

@@ -18,9 +18,24 @@ const DATA_FILE_GOALS = path.join(__dirname, 'data', 'nutrition_goals.json');
 // Middleware
 app.use(express.json());
 
+// Enable CORS for cross-origin client access (e.g. GitHub Pages & Mobile)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Serve dist (built React app) if available, otherwise serve public
-const distPath = path.join(__dirname, 'dist');
-const publicPath = path.join(__dirname, 'public');
+const distPath = fsSync.existsSync(path.join(__dirname, 'apps', 'web', 'dist'))
+  ? path.join(__dirname, 'apps', 'web', 'dist')
+  : path.join(__dirname, 'dist');
+const publicPath = fsSync.existsSync(path.join(__dirname, 'apps', 'web', 'public'))
+  ? path.join(__dirname, 'apps', 'web', 'public')
+  : path.join(__dirname, 'public');
 const staticPath = fsSync.existsSync(distPath) ? distPath : publicPath;
 app.use(express.static(staticPath));
 
