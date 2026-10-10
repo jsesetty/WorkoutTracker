@@ -23,13 +23,15 @@ export const HeaderBar = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: theme.spacing(1.5, 2),
+  padding: theme.spacing(1.25, 2),
   borderRadius: '4px',
   backgroundColor: theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
   border: `1px solid ${theme.palette.divider}`,
   boxShadow: 'none',
-  flexWrap: 'wrap',
-  gap: theme.spacing(1.5),
+  gap: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(1, 1.25),
+  },
 }));
 
 export const BrandGroup = styled(Box)({
@@ -61,33 +63,48 @@ export const NavLinksGroup = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(0.75),
-  flexWrap: 'wrap',
+  overflowX: 'auto',
+  flexWrap: 'nowrap',
+  whiteSpace: 'nowrap',
+  width: '100%',
+  paddingBottom: '2px',
+  msOverflowStyle: 'none',
+  scrollbarWidth: 'none',
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
 }));
 
 export const NavButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<{ active?: boolean }>(({ theme, active }) => ({
-  fontSize: '0.8rem',
-  fontWeight: 600,
+  fontSize: '0.78rem',
+  fontWeight: 700,
   fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
   letterSpacing: '0.03em',
-  padding: '6px 14px',
+  padding: '6px 12px',
   borderRadius: '4px',
   textTransform: 'uppercase',
+  flexShrink: 0,
   color: active ? '#FF5500' : theme.palette.text.secondary,
   backgroundColor: active
     ? theme.palette.mode === 'dark'
       ? 'rgba(255, 85, 0, 0.12)'
       : 'rgba(255, 85, 0, 0.08)'
     : 'transparent',
-  border: `1px solid ${active ? 'rgba(255, 85, 0, 0.35)' : 'transparent'}`,
+  border: `1px solid ${active ? 'rgba(255, 85, 0, 0.35)' : theme.palette.divider}`,
   transition: 'all 0.1s ease-out',
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'
         ? 'rgba(255, 255, 255, 0.04)'
         : 'rgba(0, 0, 0, 0.04)',
-    color: theme.palette.text.primary,
+    color: '#FF5500',
+    borderColor: '#FF5500',
+  },
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '0.72rem',
+    padding: '5px 10px',
   },
 }));
 
@@ -121,6 +138,9 @@ export const InputCard = styled(Paper)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   backgroundColor: theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
   boxShadow: 'none',
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(1.5, 1.25),
+  },
 }));
 
 export const ToolbarCard = styled(Box)(({ theme }) => ({
@@ -161,6 +181,9 @@ export const WorkoutCard = styled(Paper, {
     borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.22)' : '#94A3B8',
     borderLeftColor: borderColor,
   },
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(1.25, 1.25),
+  },
 }));
 
 export const ExerciseTitleText = styled(Typography, {
@@ -193,17 +216,20 @@ export const SetsTableContainer = styled(Box)(({ theme }) => ({
 
 export const SetsTableHeader = styled(Box)(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: '50px 1fr 140px 50px',
+  gridTemplateColumns: '46px 1fr 1fr 40px',
   alignItems: 'center',
-  padding: '4px 8px',
+  padding: '6px 8px',
   color: theme.palette.text.secondary,
   fontSize: '0.68rem',
   fontWeight: 700,
   fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
   letterSpacing: '0.05em',
   borderBottom: `1px solid ${theme.palette.divider}`,
+  gap: '6px',
   [theme.breakpoints.down('sm')]: {
-    gridTemplateColumns: '40px 1fr 115px 42px',
+    gridTemplateColumns: '32px 1fr 1fr 36px',
+    padding: '4px 4px',
+    gap: '4px',
   },
 }));
 
@@ -211,9 +237,10 @@ export const SetLogRow = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'completed',
 })<{ completed?: boolean }>(({ theme, completed }) => ({
   display: 'grid',
-  gridTemplateColumns: '50px 1fr 140px 50px',
+  gridTemplateColumns: '46px 1fr 1fr 40px',
   alignItems: 'center',
   padding: '6px 8px',
+  gap: '6px',
   borderRadius: '2px',
   backgroundColor: completed
     ? theme.palette.mode === 'dark'
@@ -229,7 +256,9 @@ export const SetLogRow = styled(Box, {
         : 'rgba(0, 0, 0, 0.03)',
   },
   [theme.breakpoints.down('sm')]: {
-    gridTemplateColumns: '40px 1fr 115px 42px',
+    gridTemplateColumns: '32px 1fr 1fr 36px',
+    padding: '5px 4px',
+    gap: '4px',
   },
 }));
 
@@ -239,35 +268,16 @@ export const SetIndexTag = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   color: theme.palette.text.secondary,
   fontVariantNumeric: 'tabular-nums',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '0.7rem',
+  },
 }));
 
 export const RepStepperBox = styled(Box)(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
-  gap: '4px',
-  padding: '2px 6px',
-  borderRadius: '2px',
-  border: `1px solid ${theme.palette.divider}`,
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, 0.03)'
-      : '#FFFFFF',
-}));
-
-export const RepCountNumber = styled(Typography)(({ theme }) => ({
-  fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
-  fontSize: '0.8rem',
-  fontWeight: 700,
-  minWidth: '55px',
-  textAlign: 'center',
-  color: theme.palette.text.primary,
-  fontVariantNumeric: 'tabular-nums',
-}));
-
-export const WeightControlBox = styled(Box)(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '3px',
+  justifyContent: 'center',
+  gap: '2px',
   padding: '2px 4px',
   borderRadius: '2px',
   border: `1px solid ${theme.palette.divider}`,
@@ -275,22 +285,53 @@ export const WeightControlBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? 'rgba(255, 255, 255, 0.03)'
       : '#FFFFFF',
-  maxWidth: '160px',
+  width: '100%',
+  minWidth: 0,
+}));
+
+export const RepCountNumber = styled(Typography)(({ theme }) => ({
+  fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
+  fontSize: '0.78rem',
+  fontWeight: 700,
+  minWidth: '40px',
+  textAlign: 'center',
+  color: theme.palette.text.primary,
+  fontVariantNumeric: 'tabular-nums',
+  whiteSpace: 'nowrap',
   [theme.breakpoints.down('sm')]: {
-    maxWidth: '125px',
+    fontSize: '0.72rem',
+    minWidth: '30px',
   },
+}));
+
+export const WeightControlBox = styled(Box)(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '2px',
+  padding: '2px 4px',
+  borderRadius: '2px',
+  border: `1px solid ${theme.palette.divider}`,
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? 'rgba(255, 255, 255, 0.03)'
+      : '#FFFFFF',
+  width: '100%',
+  minWidth: 0,
 }));
 
 export const WeightTextInput = styled('input')(({ theme }) => ({
   fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
-  fontSize: '0.8rem',
+  fontSize: '0.78rem',
   fontWeight: 700,
   color: theme.palette.text.primary,
   backgroundColor: 'transparent',
   border: 'none',
   outline: 'none',
   textAlign: 'center',
-  width: '65px',
+  width: '100%',
+  minWidth: 0,
+  maxWidth: '52px',
   padding: '2px 0',
   fontVariantNumeric: 'tabular-nums',
   '&::placeholder': {
@@ -298,7 +339,7 @@ export const WeightTextInput = styled('input')(({ theme }) => ({
     opacity: 0.6,
   },
   [theme.breakpoints.down('sm')]: {
-    width: '50px',
+    width: '44px',
     fontSize: '0.72rem',
   },
 }));
@@ -306,13 +347,17 @@ export const WeightTextInput = styled('input')(({ theme }) => ({
 export const SetLogCheckBtn = styled('button', {
   shouldForwardProp: (prop) => prop !== 'completed',
 })<{ completed?: boolean }>(({ theme, completed }) => ({
-  width: '28px',
-  height: '28px',
+  width: '32px',
+  height: '32px',
   borderRadius: '4px',
   border: completed
     ? '1px solid #059669'
     : `1px solid ${theme.palette.divider}`,
-  backgroundColor: completed ? '#059669' : 'transparent',
+  backgroundColor: completed
+    ? '#059669'
+    : theme.palette.mode === 'dark'
+      ? 'rgba(255, 255, 255, 0.03)'
+      : 'rgba(0, 0, 0, 0.02)',
   color: completed ? '#FFFFFF' : theme.palette.text.secondary,
   display: 'inline-flex',
   alignItems: 'center',
@@ -323,6 +368,10 @@ export const SetLogCheckBtn = styled('button', {
     borderColor: completed ? '#059669' : '#FF5500',
     backgroundColor: completed ? '#047857' : 'rgba(255, 85, 0, 0.12)',
     color: completed ? '#FFFFFF' : '#FF5500',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '28px',
+    height: '28px',
   },
 }));
 
@@ -403,8 +452,9 @@ export const IntensityToggleBtn = styled('button', {
 }));
 
 export const SetStepperBtn = styled('button')(({ theme }) => ({
-  width: '26px',
-  height: '26px',
+  width: '24px',
+  height: '24px',
+  flexShrink: 0,
   borderRadius: '2px',
   border: 'none',
   backgroundColor: 'transparent',
@@ -420,6 +470,11 @@ export const SetStepperBtn = styled('button')(({ theme }) => ({
   '&:hover': {
     borderColor: '#FF5500',
     color: '#FF5500',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '20px',
+    height: '20px',
+    fontSize: '0.8rem',
   },
 }));
 

@@ -480,11 +480,13 @@ export const WorkoutItem: React.FC<WorkoutItemProps> = ({
                   onClick={() => handleToggleSet(set.id)}
                   aria-label={`Log set ${set.setNumber}`}
                 >
-                  {set.completed ? (
-                    <CheckIcon sx={{ fontSize: '1rem' }} />
-                  ) : (
-                    set.setNumber
-                  )}
+                  <CheckIcon
+                    sx={{
+                      fontSize: '1rem',
+                      color: set.completed ? '#FFFFFF' : 'text.secondary',
+                      opacity: set.completed ? 1 : 0.4,
+                    }}
+                  />
                 </SetLogCheckBtn>
               </Tooltip>
             </Box>

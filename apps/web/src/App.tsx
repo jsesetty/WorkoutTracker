@@ -453,7 +453,7 @@ export const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <AppShell maxWidth={false} sx={{ maxWidth: '1560px', px: { xs: 2, sm: 2.5, md: 3, lg: 3.5 } }}>
+      <AppShell maxWidth={false} sx={{ maxWidth: '1560px', px: { xs: 1.25, sm: 2.5, md: 3, lg: 3.5 } }}>
         {/* Navigation Header */}
         <Header
           mode={mode}

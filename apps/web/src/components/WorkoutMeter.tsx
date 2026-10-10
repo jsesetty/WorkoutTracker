@@ -67,15 +67,27 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: hasBurn ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)' },
-          gap: 1.25,
-          mb: 1.75,
+          gridTemplateColumns: {
+            xs: hasBurn ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+            sm: hasBurn ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)',
+          },
+          gap: { xs: 0.75, sm: 1.25 },
+          mb: 1.5,
         }}
       >
         {/* Metric 1: Completion */}
-        <HudMetricPod>
-          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.7rem' }}>
-            COMPLETION RATE
+        <HudMetricPod sx={{ p: { xs: 1, sm: 1.25 } }}>
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+              fontWeight: 700,
+              fontSize: { xs: '0.62rem', sm: '0.7rem' },
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+            }}
+          >
+            COMPLETION
           </Typography>
           <Typography
             variant="h4"
@@ -85,6 +97,7 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
               fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
               fontVariantNumeric: 'tabular-nums',
               letterSpacing: '-0.02em',
+              fontSize: { xs: '1.3rem', sm: '1.75rem' },
               mt: 0.25,
             }}
           >
@@ -93,9 +106,18 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
         </HudMetricPod>
 
         {/* Metric 2: Completed / Total */}
-        <HudMetricPod>
-          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.7rem' }}>
-            MOVEMENTS CONQUERED
+        <HudMetricPod sx={{ p: { xs: 1, sm: 1.25 } }}>
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+              fontWeight: 700,
+              fontSize: { xs: '0.62rem', sm: '0.7rem' },
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+            }}
+          >
+            CONQUERED
           </Typography>
           <Typography
             variant="h4"
@@ -105,25 +127,47 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
               fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
               fontVariantNumeric: 'tabular-nums',
               letterSpacing: '-0.02em',
+              fontSize: { xs: '1.3rem', sm: '1.75rem' },
               mt: 0.25,
             }}
           >
-            {completed} <Typography component="span" sx={{ fontSize: '1rem', color: 'text.secondary' }}>/ {total}</Typography>
+            {completed} <Typography component="span" sx={{ fontSize: { xs: '0.8rem', sm: '1rem' }, color: 'text.secondary' }}>/ {total}</Typography>
           </Typography>
         </HudMetricPod>
 
         {/* Metric 3: Output Phase */}
-        <HudMetricPod>
-          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.7rem' }}>
-            ENERGY TARGET
+        <HudMetricPod sx={{ p: { xs: 1, sm: 1.25 } }}>
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+              fontWeight: 700,
+              fontSize: { xs: '0.62rem', sm: '0.7rem' },
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+            }}
+          >
+            OUTPUT GAUGE
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.5 }}>
             {isMax ? (
-              <LocalFireDepartmentIcon sx={{ fontSize: '1.2rem', color: '#059669' }} />
+              <LocalFireDepartmentIcon sx={{ fontSize: { xs: '1rem', sm: '1.2rem' }, color: '#059669' }} />
             ) : (
-              <FitnessCenterIcon sx={{ fontSize: '1.15rem', color: 'text.secondary' }} />
+              <FitnessCenterIcon sx={{ fontSize: { xs: '0.95rem', sm: '1.15rem' }, color: 'text.secondary' }} />
             )}
-            <Typography variant="body2" sx={{ fontWeight: 700, fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)", color: rank.color }}>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 700,
+                fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
+                color: rank.color,
+                fontSize: { xs: '0.68rem', sm: '0.82rem' },
+                lineHeight: 1.2,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {rank.bp}
             </Typography>
           </Box>
