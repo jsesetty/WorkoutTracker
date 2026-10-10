@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Box, Typography, Chip, Button, Tabs, Tab } from '@mui/material';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import AddIcon from '@mui/icons-material/Add';
+import { useQuery } from '@tanstack/react-query';
+import { ExerciseCatalogItem } from '@ironpulse/contracts';
 import { ContentWrapper, SpecListItem } from '../components/styled';
 import { MuscleGroup, IntensityLevel } from '../types/workout';
 
@@ -11,6 +13,19 @@ interface LibraryExercise {
   readonly intensity: IntensityLevel;
   readonly defaultSets: number;
   readonly targetReps: string;
+}
+
+function mapCatalogMuscle(m: string): MuscleGroup {
+  const normalized = m.toUpperCase();
+  if (normalized === 'CARDIO') return 'Cardio';
+  if (normalized === 'FULL_BODY') return 'Full Body';
+  if (normalized === 'CHEST') return 'Chest';
+  if (normalized === 'BACK') return 'Back';
+  if (normalized === 'LEGS') return 'Legs';
+  if (normalized === 'SHOULDERS') return 'Shoulders';
+  if (normalized === 'ARMS') return 'Arms';
+  if (normalized === 'CORE') return 'Core';
+  return 'Chest';
 }
 
 const EXERCISE_DIRECTORY: LibraryExercise[] = [
@@ -53,17 +68,40 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
 }) => {
   const [selectedMuscle, setSelectedMuscle] = useState<string>('ALL');
 
+  const { data: catalogData } = useQuery<ExerciseCatalogItem[]>({
+    queryKey: ['exercise-catalog'],
+    queryFn: async () => {
+      const res = await fetch('/api/v1/catalog');
+      if (!res.ok) return [];
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 15,
+  });
+
+  const allExercises = useMemo(() => {
+    if (!catalogData || catalogData.length === 0) return EXERCISE_DIRECTORY;
+    const catalogList: LibraryExercise[] = catalogData.map((item) => ({
+      name: item.name,
+      muscle: mapCatalogMuscle(item.muscleGroup),
+      intensity: (item.muscleGroup === 'CARDIO' || item.muscleGroup === 'FULL_BODY' ? 'high' : 'medium') as IntensityLevel,
+      defaultSets: 4,
+      targetReps: item.type === 'DISTANCE_TIME' ? '2000m' : '10-12',
+    }));
+    const names = new Set(catalogList.map((e) => e.name));
+    return [...catalogList, ...EXERCISE_DIRECTORY.filter((e) => !names.has(e.name))];
+  }, [catalogData]);
+
   const filteredExercises =
     selectedMuscle === 'ALL'
-      ? EXERCISE_DIRECTORY
-      : EXERCISE_DIRECTORY.filter((ex) => ex.muscle === selectedMuscle);
+      ? allExercises
+      : allExercises.filter((ex) => ex.muscle === selectedMuscle);
 
   const handleAddFromLibrary = (ex: LibraryExercise) => {
     onAddWorkout(`${ex.name} ${ex.defaultSets}x${ex.targetReps}`, ex.muscle, ex.intensity, ex.defaultSets);
     onShowNotification(`Added "${ex.name}" to today's workout! 💪`, 'success');
   };
 
-  const categories = ['ALL', 'Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'];
+  const categories = ['ALL', 'Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Cardio', 'Full Body'];
 
   return (
     <ContentWrapper>

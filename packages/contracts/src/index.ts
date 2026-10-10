@@ -49,6 +49,18 @@ export type ExerciseType = z.infer<typeof ExerciseTypeEnum>;
 export const IntensityLevelEnum = z.enum(['LOW', 'MEDIUM', 'HIGH']);
 export type IntensityLevel = z.infer<typeof IntensityLevelEnum>;
 
+// Canonical Exercise Catalog Model
+export const ExerciseCatalogItemSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(1),
+  muscleGroup: MuscleGroupEnum,
+  type: ExerciseTypeEnum.default('WEIGHT_REPS'),
+  equipment: z.string().optional(),
+  defaultMetrics: SetTelemetryMetricsSchema.optional(),
+});
+
+export type ExerciseCatalogItem = z.infer<typeof ExerciseCatalogItemSchema>;
+
 // Exercise Set Model (Enforces Client-Generated UUID)
 export const ExerciseSetSchema = z.object({
   id: z.string().uuid({ message: 'Set ID must be a client-generated UUID' }),

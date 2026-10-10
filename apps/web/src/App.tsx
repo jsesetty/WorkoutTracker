@@ -25,8 +25,11 @@ import {
   NotificationState,
 } from './types/workout';
 import { storage } from './services/storageFallback';
+import { generateClientUUID } from './lib/offlineDb';
+import { useWorkoutsSync } from './hooks/useWorkoutsSync';
 
 export const App: React.FC = () => {
+  const { enqueueMutation } = useWorkoutsSync();
   // Theme State
   const [mode, setMode] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('ironpulse-theme') || localStorage.getItem('dbz-tracker-theme');
@@ -94,10 +97,10 @@ export const App: React.FC = () => {
     reps: number | string = 10,
     weight: string = ''
   ) => {
-    const tempId = 'temp-' + Date.now();
+    const tempId = generateClientUUID();
     const parsedReps = typeof reps === 'number' ? reps : parseInt(String(reps), 10) || 10;
     const initialSets: WorkoutSet[] = Array.from({ length: sets }, (_, idx) => ({
-      id: `${tempId}-s-${idx + 1}`,
+      id: generateClientUUID(),
       setNumber: idx + 1,
       reps: parsedReps,
       weight: weight || '',
@@ -118,6 +121,7 @@ export const App: React.FC = () => {
     };
 
     setWorkouts((prev) => [optimisticWorkout, ...prev]);
+    enqueueMutation('exercise', tempId, 'UPSERT', optimisticWorkout);
 
     try {
       const res = await fetch('/api/workouts', {
@@ -162,14 +166,17 @@ export const App: React.FC = () => {
         .map((w) => (w.id === id ? { ...w, completed: nextCompleted } : w))
         .every((w) => w.completed);
 
+    const updatedWorkout: WorkoutItem = {
+      ...workout,
+      completed: nextCompleted,
+      setDetails: nextSets.length > 0 ? nextSets : workout.setDetails,
+    };
+    enqueueMutation('exercise', id, 'UPSERT', updatedWorkout);
+
     setWorkouts((prev) =>
       prev.map((w) =>
         w.id === id
-          ? {
-              ...w,
-              completed: nextCompleted,
-              setDetails: nextSets.length > 0 ? nextSets : w.setDetails,
-            }
+          ? updatedWorkout
           : w
       )
     );
@@ -200,7 +207,7 @@ export const App: React.FC = () => {
     if (!workout) return;
 
     const currentSets = workout.setDetails || Array.from({ length: workout.sets || 3 }, (_, idx) => ({
-      id: `${workout.id}-s-${idx + 1}`,
+      id: generateClientUUID(),
       setNumber: idx + 1,
       reps: typeof workout.reps === 'number' ? workout.reps : parseInt(String(workout.reps || 10), 10) || 10,
       completed: Boolean(workout.completed),
@@ -209,23 +216,25 @@ export const App: React.FC = () => {
     const nextSetNumber = currentSets.length + 1;
     const defaultReps = currentSets.length > 0 ? currentSets[currentSets.length - 1].reps : 10;
     const newSet: WorkoutSet = {
-      id: `${workout.id}-s-${Date.now()}-${nextSetNumber}`,
+      id: generateClientUUID(),
       setNumber: nextSetNumber,
       reps: defaultReps,
       completed: false,
     };
 
     const updatedSetDetails = [...currentSets, newSet];
+    const updatedWorkout: WorkoutItem = {
+      ...workout,
+      sets: updatedSetDetails.length,
+      setDetails: updatedSetDetails,
+      completed: false,
+    };
+    enqueueMutation('exercise', workoutId, 'UPSERT', updatedWorkout);
 
     setWorkouts((prev) =>
       prev.map((w) =>
         w.id === workoutId
-          ? {
-              ...w,
-              sets: updatedSetDetails.length,
-              setDetails: updatedSetDetails,
-              completed: false,
-            }
+          ? updatedWorkout
           : w
       )
     );
@@ -366,6 +375,7 @@ export const App: React.FC = () => {
 
   // Delete Workout Handler
   const handleDeleteWorkout = async (id: string) => {
+    enqueueMutation('exercise', id, 'DELETE', { id });
     setWorkouts((prev) => prev.filter((w) => w.id !== id));
 
     try {

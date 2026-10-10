@@ -14,6 +14,8 @@ const LEGACY_DATA_FILE = path.join(__dirname, 'data', 'todos.json');
 const DATA_FILE_MEALS = path.join(__dirname, 'data', 'meals.json');
 const DATA_FILE_FOODS = path.join(__dirname, 'data', 'foods.json');
 const DATA_FILE_GOALS = path.join(__dirname, 'data', 'nutrition_goals.json');
+const DATA_FILE_CATALOG = path.join(__dirname, 'data', 'catalog.json');
+const DATA_FILE_SESSIONS = path.join(__dirname, 'data', 'sessions.json');
 
 // Middleware
 app.use(express.json());
@@ -525,6 +527,71 @@ app.put('/api/nutrition-goals', async (req, res) => {
     res.json(updated);
   } catch {
     res.status(500).json({ error: 'Failed to update nutrition goals' });
+  }
+});
+
+// 9. Canonical Exercise Catalog API
+async function getCatalog() {
+  try {
+    const raw = await fs.readFile(DATA_FILE_CATALOG, 'utf-8');
+    return JSON.parse(raw.replace(/^\uFEFF/, ''));
+  } catch {
+    return [];
+  }
+}
+
+app.get('/api/v1/catalog', async (req, res) => {
+  try {
+    const catalog = await getCatalog();
+    res.json(catalog);
+  } catch {
+    res.status(500).json({ error: 'Failed to retrieve exercise catalog' });
+  }
+});
+
+// 10. Idempotent Offline Sync Endpoint
+async function getSessions() {
+  try {
+    const raw = await fs.readFile(DATA_FILE_SESSIONS, 'utf-8');
+    return JSON.parse(raw.replace(/^\uFEFF/, ''));
+  } catch {
+    return [];
+  }
+}
+
+async function saveSessions(sessions) {
+  const dataDir = path.dirname(DATA_FILE_SESSIONS);
+  await fs.mkdir(dataDir, { recursive: true });
+  await fs.writeFile(DATA_FILE_SESSIONS, JSON.stringify(sessions, null, 2), 'utf-8');
+}
+
+app.post('/api/v1/sync', async (req, res) => {
+  try {
+    const { sessions = [], exercises = [], sets = [] } = req.body || {};
+    const existingSessions = await getSessions();
+    const sessionMap = new Map(existingSessions.map(s => [s.id, s]));
+
+    for (const incomingSession of sessions) {
+      if (!incomingSession.id) continue;
+      const existing = sessionMap.get(incomingSession.id);
+      if (!existing || new Date(incomingSession.updatedAt || 0) >= new Date(existing.updatedAt || 0)) {
+        sessionMap.set(incomingSession.id, incomingSession);
+      }
+    }
+
+    const merged = Array.from(sessionMap.values());
+    await saveSessions(merged);
+
+    res.json({
+      success: true,
+      syncedSessionCount: sessions.length,
+      syncedExerciseCount: exercises.length,
+      syncedSetCount: sets.length,
+      serverTimestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    console.error('Sync batch processing error:', err);
+    res.status(500).json({ error: 'Failed to process sync batch' });
   }
 });
 

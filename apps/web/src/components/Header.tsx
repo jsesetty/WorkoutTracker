@@ -12,6 +12,7 @@ import {
   NavLinksGroup,
   NavButton,
 } from './styled';
+import { SyncStatusBadge } from './SyncStatusBadge';
 
 // Minimalist Geometric Dumbbell Logo
 export const DumbbellLogo: React.FC<{ size?: number }> = ({ size = 32 }) => (
@@ -87,6 +88,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme }) => {
 
         {/* Date Badge & Theme Toggle */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <SyncStatusBadge />
           <Chip
             icon={<CalendarTodayIcon sx={{ fontSize: '0.85rem !important' }} />}
             label={today}
