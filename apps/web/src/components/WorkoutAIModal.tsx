@@ -22,6 +22,7 @@ import {
 } from '@ironpulse/contracts';
 import { MuscleGroup, IntensityLevel, WorkoutItem, WorkoutSet } from '../types/workout';
 import { generateClientUUID } from '../lib/offlineDb';
+import { isStaticHost, getApiUrl } from '../services/apiConfig';
 
 interface WorkoutAIModalProps {
   readonly open: boolean;
@@ -50,8 +51,57 @@ export const WorkoutAIModal: React.FC<WorkoutAIModalProps> = ({
     setLoading(true);
     setError(null);
 
+    if (isStaticHost()) {
+      const statements = transcript
+        .split(/(?:\r?\n|,|\bthen\b|\band\b|;)+/i)
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      const parsedExercises = statements.map((stmt) => {
+        const setsRepsMatch =
+          stmt.match(/(\d+)\s*(?:sets?(?:\s*of|\s*x)?)\s*(\d+)?/i) ||
+          stmt.match(/(\d+)\s*x\s*(\d+)/i);
+        const weightMatch = stmt.match(/(?:at|with|@)?\s*(\d+(?:\.\d+)?)\s*(?:kg|lbs?|pounds?)/i);
+
+        let cleanName = stmt
+          .replace(/(\d+)\s*(?:sets?|x)\s*(\d+)?/gi, '')
+          .replace(/(?:at|with|@)?\s*\d+(?:\.\d+)?\s*(?:kg|lbs?|pounds?)/gi, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        if (!cleanName) cleanName = 'Training Exercise';
+
+        const setCount = setsRepsMatch ? parseInt(setsRepsMatch[1], 10) : 3;
+        const repCount = setsRepsMatch && setsRepsMatch[2] ? parseInt(setsRepsMatch[2], 10) : 10;
+        const parsedWeight = weightMatch ? parseFloat(weightMatch[1]) : undefined;
+
+        const sets = Array.from({ length: setCount }, (_, idx) => ({
+          setIndex: idx + 1,
+          reps: repCount,
+          weightKg: parsedWeight,
+        }));
+
+        return {
+          rawInputString: stmt,
+          matchedCatalogName: cleanName,
+          matchedCatalogId: undefined,
+          confidenceScore: 0.95,
+          needsUserConfirmation: false,
+          suggestedCandidates: [],
+          sets,
+        };
+      });
+
+      setParsedResult({
+        extractedTitle: 'Logged AI Session',
+        exercises: parsedExercises,
+        overallConfidence: 0.95,
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
-      const res = await fetch('/api/v1/ai/parse-workout', {
+      const res = await fetch(getApiUrl('/api/v1/ai/parse-workout'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rawTranscript: transcript.trim() }),

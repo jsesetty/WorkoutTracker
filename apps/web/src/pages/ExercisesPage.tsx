@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ExerciseCatalogItem } from '@ironpulse/contracts';
 import { ContentWrapper, SpecListItem } from '../components/styled';
 import { MuscleGroup, IntensityLevel } from '../types/workout';
+import { isStaticHost, getApiUrl } from '../services/apiConfig';
 
 interface LibraryExercise {
   readonly name: string;
@@ -71,9 +72,14 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
   const { data: catalogData } = useQuery<ExerciseCatalogItem[]>({
     queryKey: ['exercise-catalog'],
     queryFn: async () => {
-      const res = await fetch('/api/v1/catalog');
-      if (!res.ok) return [];
-      return res.json();
+      if (isStaticHost()) return [];
+      try {
+        const res = await fetch(getApiUrl('/api/v1/catalog'));
+        if (!res.ok) return [];
+        return res.json();
+      } catch {
+        return [];
+      }
     },
     staleTime: 1000 * 60 * 15,
   });

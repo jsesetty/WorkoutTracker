@@ -32,6 +32,7 @@ import { YukaScoreBadge } from '../components/YukaScoreBadge';
 import { BarcodeScannerModal } from '../components/BarcodeScannerModal';
 import { FoodItem, MealCategory, AdditiveInfo } from '../types/nutrition';
 import { storage } from '../services/storageFallback';
+import { isStaticHost, getApiUrl } from '../services/apiConfig';
 
 type FilterTab = 'ALL' | 'EXCELLENT' | 'WARNINGS' | 'ORGANIC';
 
@@ -68,9 +69,14 @@ export const FoodScannerPage: React.FC = () => {
 
   // Fetch foods
   const fetchFoods = useCallback(async () => {
+    if (isStaticHost()) {
+      setFoods(storage.getFoods());
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
-      const res = await fetch('/api/foods');
+      const res = await fetch(getApiUrl('/api/foods'));
       if (res.ok) {
         const data: FoodItem[] = await res.json();
         setFoods(data);
@@ -137,8 +143,33 @@ export const FoodScannerPage: React.FC = () => {
       yukaRating: selectedFoodForLog.yukaRating,
     };
 
+    if (isStaticHost()) {
+      const existingMeals = storage.getMeals();
+      const offlineMeal = {
+        id: `meal-local-${Date.now()}`,
+        name: payload.name,
+        category: payload.category,
+        calories: payload.calories,
+        protein: payload.protein,
+        carbs: payload.carbs,
+        fat: payload.fat,
+        servingSize: payload.servingSize,
+        createdAt: new Date().toISOString(),
+        foodId: payload.foodId,
+        yukaScore: payload.yukaScore,
+        yukaRating: payload.yukaRating,
+      };
+      storage.saveMeals([offlineMeal, ...existingMeals]);
+      setSnackbar({
+        open: true,
+        message: `Added ${selectedFoodForLog.name} to ${category}!`,
+        severity: 'success',
+      });
+      return;
+    }
+
     try {
-      const res = await fetch('/api/meals', {
+      const res = await fetch(getApiUrl('/api/meals'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -184,8 +215,36 @@ export const FoodScannerPage: React.FC = () => {
       additives: [],
     };
 
+    if (isStaticHost()) {
+      const savedFood: FoodItem = {
+        id: `food-local-${Date.now()}`,
+        name: payload.name,
+        brand: payload.brand,
+        calories: payload.calories,
+        protein: payload.protein,
+        carbs: payload.carbs,
+        fat: payload.fat,
+        servingSize: payload.servingSize,
+        isOrganic: payload.isOrganic,
+        novaGroup: (payload.novaGroup as 1 | 2 | 3 | 4) || 2,
+        additives: payload.additives,
+        yukaScore: payload.isOrganic ? 90 : 75,
+        yukaRating: 'Good',
+      };
+      const existing = storage.getFoods();
+      storage.saveFoods([savedFood, ...existing]);
+      setFoods((prev) => [savedFood, ...prev]);
+      setNewFoodDialogOpen(false);
+      setSnackbar({
+        open: true,
+        message: `Added ${savedFood.name} with Yuka score ${savedFood.yukaScore}/100!`,
+        severity: 'success',
+      });
+      return;
+    }
+
     try {
-      const res = await fetch('/api/foods', {
+      const res = await fetch(getApiUrl('/api/foods'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

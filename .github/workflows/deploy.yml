@@ -39,6 +39,7 @@ jobs:
           GITHUB_PAGES: 'true'
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://hupiglidqxrskopeqvyi.supabase.co' }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'sb_publishable_I8gXBSqYgHGmpgILbaYLLQ_FejEciGV' }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL || '' }}
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5

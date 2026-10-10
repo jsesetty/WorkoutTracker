@@ -35,6 +35,7 @@ import {
 import { storage } from './services/storageFallback';
 import { generateClientUUID } from './lib/offlineDb';
 import { useWorkoutsSync } from './hooks/useWorkoutsSync';
+import { isStaticHost, getApiUrl } from './services/apiConfig';
 
 export const App: React.FC = () => {
   const { enqueueMutation } = useWorkoutsSync();
@@ -76,8 +77,13 @@ export const App: React.FC = () => {
   // Initial Data Fetch
   useEffect(() => {
     const fetchWorkouts = async () => {
+      if (isStaticHost()) {
+        const fallback = storage.getWorkouts();
+        setWorkouts(fallback);
+        return;
+      }
       try {
-        const res = await fetch('/api/workouts');
+        const res = await fetch(getApiUrl('/api/workouts'));
         if (!res.ok) throw new Error('API fetch failed');
         const data = await res.json();
         setWorkouts(data);
@@ -133,8 +139,13 @@ export const App: React.FC = () => {
     setWorkouts((prev) => [optimisticWorkout, ...prev]);
     enqueueMutation('exercise', tempId, 'UPSERT', optimisticWorkout);
 
+    if (isStaticHost()) {
+      showNotification('New exercise logged to active session! 💪', 'success');
+      return;
+    }
+
     try {
-      const res = await fetch('/api/workouts', {
+      const res = await fetch(getApiUrl('/api/workouts'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -196,8 +207,12 @@ export const App: React.FC = () => {
       showNotification('ALL EXERCISES CONQUERED! PHENOMENAL SESSION! 🔥', 'success');
     }
 
+    if (isStaticHost()) {
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/workouts/${id}`, {
+      const res = await fetch(getApiUrl(`/api/workouts/${id}`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -249,8 +264,13 @@ export const App: React.FC = () => {
       )
     );
 
+    if (isStaticHost()) {
+      showNotification(`Added Set ${nextSetNumber} to ${workout.title}`, 'info');
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/workouts/${workoutId}`, {
+      const res = await fetch(getApiUrl(`/api/workouts/${workoutId}`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -292,10 +312,10 @@ export const App: React.FC = () => {
       prev.map((w) =>
         w.id === workoutId
           ? {
-              ...w,
-              completed: allSetsDone,
-              setDetails: updatedSetDetails,
-            }
+            ...w,
+            completed: allSetsDone,
+            setDetails: updatedSetDetails,
+          }
           : w
       )
     );
@@ -305,8 +325,12 @@ export const App: React.FC = () => {
       showNotification(`${workout.title} ALL SETS COMPLETED! 🔥`, 'success');
     }
 
+    if (isStaticHost()) {
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/workouts/${workoutId}`, {
+      const res = await fetch(getApiUrl(`/api/workouts/${workoutId}`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -335,17 +359,22 @@ export const App: React.FC = () => {
       prev.map((w) =>
         w.id === workoutId
           ? {
-              ...w,
-              sets: updatedSetDetails.length,
-              completed: allSetsDone,
-              setDetails: updatedSetDetails,
-            }
+            ...w,
+            sets: updatedSetDetails.length,
+            completed: allSetsDone,
+            setDetails: updatedSetDetails,
+          }
           : w
       )
     );
 
+    if (isStaticHost()) {
+      showNotification('Removed set from exercise', 'info');
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/workouts/${workoutId}`, {
+      const res = await fetch(getApiUrl(`/api/workouts/${workoutId}`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -370,8 +399,13 @@ export const App: React.FC = () => {
       prev.map((w) => (w.id === id ? { ...w, title: newTitle } : w))
     );
 
+    if (isStaticHost()) {
+      showNotification('Exercise details updated', 'info');
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/workouts/${id}`, {
+      const res = await fetch(getApiUrl(`/api/workouts/${id}`), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: newTitle }),
@@ -388,8 +422,13 @@ export const App: React.FC = () => {
     enqueueMutation('exercise', id, 'DELETE', { id });
     setWorkouts((prev) => prev.filter((w) => w.id !== id));
 
+    if (isStaticHost()) {
+      showNotification('Exercise removed from session', 'info');
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/workouts/${id}`, { method: 'DELETE' });
+      const res = await fetch(getApiUrl(`/api/workouts/${id}`), { method: 'DELETE' });
       if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
       console.warn('API unavailable, deletion saved locally:', err);
@@ -404,8 +443,16 @@ export const App: React.FC = () => {
 
     setWorkouts((prev) => prev.filter((w) => !w.completed));
 
+    if (isStaticHost()) {
+      showNotification(
+        `Cleared ${completedCount} finished exercise${completedCount > 1 ? 's' : ''}`,
+        'info'
+      );
+      return;
+    }
+
     try {
-      const res = await fetch('/api/workouts-completed', { method: 'DELETE' });
+      const res = await fetch(getApiUrl('/api/workouts-completed'), { method: 'DELETE' });
       if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
       console.warn('API unavailable, clear saved locally:', err);

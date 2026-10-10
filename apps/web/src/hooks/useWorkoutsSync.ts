@@ -5,6 +5,7 @@ import {
   enqueueOutboxItem,
 } from '../lib/offlineDb';
 import { queryClient } from '../lib/queryClient';
+import { isStaticHost, getApiUrl } from '../services/apiConfig';
 
 export interface SyncState {
   readonly isOnline: boolean;
@@ -30,6 +31,14 @@ export function useWorkoutsSync(): SyncState {
 
   const refreshPendingCount = useCallback(async () => {
     try {
+      if (isStaticHost()) {
+        const pending = await getPendingOutboxItems();
+        if (pending.length > 0) {
+          await removeOutboxItems(pending.map((item) => item.id));
+        }
+        setPendingCount(0);
+        return;
+      }
       const pending = await getPendingOutboxItems();
       setPendingCount(pending.length);
     } catch {
@@ -38,6 +47,19 @@ export function useWorkoutsSync(): SyncState {
   }, []);
 
   const flushSyncQueue = useCallback(async () => {
+    if (isStaticHost()) {
+      try {
+        const pending = await getPendingOutboxItems();
+        if (pending.length > 0) {
+          await removeOutboxItems(pending.map((item) => item.id));
+        }
+        setPendingCount(0);
+      } catch {
+        // no-op on static hosting
+      }
+      return;
+    }
+
     if (!navigator.onLine || isSyncing) return;
 
     try {
@@ -67,7 +89,7 @@ export function useWorkoutsSync(): SyncState {
         sets,
       };
 
-      const response = await fetch('/api/v1/sync', {
+      const response = await fetch(getApiUrl('/api/v1/sync'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -79,7 +101,7 @@ export function useWorkoutsSync(): SyncState {
         setLastSyncTimestamp(new Date().toISOString());
         queryClient.invalidateQueries();
       }
-    } catch (err) {
+    } catch {
       // Retained in outbox for subsequent retry on next network transition
     } finally {
       setIsSyncing(false);
@@ -94,6 +116,10 @@ export function useWorkoutsSync(): SyncState {
       action: 'UPSERT' | 'DELETE',
       payload: unknown
     ) => {
+      if (isStaticHost()) {
+        setPendingCount(0);
+        return;
+      }
       await enqueueOutboxItem(entityType, entityId, action, payload);
       await refreshPendingCount();
 

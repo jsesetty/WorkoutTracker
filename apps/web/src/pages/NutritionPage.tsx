@@ -38,6 +38,7 @@ import {
   YukaRating,
 } from '../types/nutrition';
 import { storage } from '../services/storageFallback';
+import { isStaticHost, getApiUrl } from '../services/apiConfig';
 
 interface NutritionPageProps {
   readonly workoutBurnedCalories?: number;
@@ -86,12 +87,19 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
 
   // Fetch initial data
   const fetchData = useCallback(async () => {
+    if (isStaticHost()) {
+      setMeals(storage.getMeals());
+      setGoals(storage.getGoals());
+      setFoods(storage.getFoods());
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       const [mealsRes, goalsRes, foodsRes] = await Promise.all([
-        fetch('/api/meals'),
-        fetch('/api/nutrition-goals'),
-        fetch('/api/foods'),
+        fetch(getApiUrl('/api/meals')),
+        fetch(getApiUrl('/api/nutrition-goals')),
+        fetch(getApiUrl('/api/foods')),
       ]);
 
       if (mealsRes.ok) {
@@ -218,8 +226,33 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
       yukaRating,
     };
 
+    if (isStaticHost()) {
+      const offlineMeal: LoggedMeal = {
+        id: `meal-local-${Date.now()}`,
+        name: payload.name,
+        category: payload.category,
+        calories: payload.calories,
+        protein: payload.protein,
+        carbs: payload.carbs,
+        fat: payload.fat,
+        servingSize: payload.servingSize,
+        createdAt: new Date().toISOString(),
+        foodId: payload.foodId,
+        yukaScore: payload.yukaScore ?? 85,
+        yukaRating: (payload.yukaRating as YukaRating) || 'Good',
+      };
+      setMeals((prev) => [offlineMeal, ...prev]);
+      setDialogOpen(false);
+      setSnackbar({
+        open: true,
+        message: `Logged ${offlineMeal.name} to ${offlineMeal.category}!`,
+        severity: 'success',
+      });
+      return;
+    }
+
     try {
-      const res = await fetch('/api/meals', {
+      const res = await fetch(getApiUrl('/api/meals'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -265,8 +298,17 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
   const handleDeleteMeal = async (id: string) => {
     setMeals((prev) => prev.filter((m) => m.id !== id));
 
+    if (isStaticHost()) {
+      setSnackbar({
+        open: true,
+        message: 'Meal removed from daily diary',
+        severity: 'info',
+      });
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/meals/${id}`, { method: 'DELETE' });
+      const res = await fetch(getApiUrl(`/api/meals/${id}`), { method: 'DELETE' });
       if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
       console.warn('API unavailable, deletion saved locally:', err);

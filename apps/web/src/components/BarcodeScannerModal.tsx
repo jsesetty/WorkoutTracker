@@ -31,6 +31,7 @@ import {
 import { YukaScoreBadge } from './YukaScoreBadge';
 import { FoodItem } from '../types/nutrition';
 import { storage } from '../services/storageFallback';
+import { isStaticHost, getApiUrl } from '../services/apiConfig';
 
 export interface BarcodeScannerModalProps {
   readonly open: boolean;
@@ -108,19 +109,21 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
       isLookingUpRef.current = true;
 
       try {
-        // First check server endpoint (which queries local cache and Open Food Facts API)
-        const res = await fetch(`/api/v1/foods/barcode/${encodeURIComponent(cleanCode)}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.found && data.product) {
-            setDetectedFood(data.product);
-            setDetectionSource(data.source || 'open_food_facts');
-            onShowNotification?.(`Food detected: ${data.product.name}`, 'success');
-            return;
+        if (!isStaticHost()) {
+          // Check server endpoint when connected to backend API
+          const res = await fetch(getApiUrl(`/api/v1/foods/barcode/${encodeURIComponent(cleanCode)}`));
+          if (res.ok) {
+            const data = await res.json();
+            if (data.found && data.product) {
+              setDetectedFood(data.product);
+              setDetectionSource(data.source || 'open_food_facts');
+              onShowNotification?.(`Food detected: ${data.product.name}`, 'success');
+              return;
+            }
           }
         }
 
-        // Fallback to client-side local cache if server lookup was unavailable (e.g. offline)
+        // Fallback to client-side local cache
         const localFoods = storage.getFoods();
         const matched = localFoods.find((f) => f.barcode === cleanCode);
         if (matched) {
@@ -130,10 +133,43 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
           return;
         }
 
+        // Direct Open Food Facts browser API query on static host
+        try {
+          const offRes = await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(cleanCode)}.json`);
+          if (offRes.ok) {
+            const offData = await offRes.json();
+            if (offData.status === 1 && offData.product) {
+              const p = offData.product;
+              const productFood: FoodItem = {
+                id: `off-${cleanCode}`,
+                name: p.product_name || p.product_name_en || 'Scanned Food Product',
+                brand: p.brands,
+                barcode: cleanCode,
+                calories: Math.round(Number(p.nutriments?.['energy-kcal_100g'] || 0)),
+                protein: Math.round(Number(p.nutriments?.proteins_100g || 0)),
+                carbs: Math.round(Number(p.nutriments?.carbohydrates_100g || 0)),
+                fat: Math.round(Number(p.nutriments?.fat_100g || 0)),
+                servingSize: p.serving_size || '100g',
+                yukaScore: typeof p.nutriscore_score === 'number' ? Math.max(0, Math.min(100, 100 - p.nutriscore_score * 2)) : 75,
+                yukaRating: 'Good',
+                novaGroup: p.nova_group || 2,
+                isOrganic: Boolean(p.labels_tags?.some((t: string) => t.includes('organic'))),
+                additives: p.additives_tags || [],
+              };
+              setDetectedFood(productFood);
+              setDetectionSource('open_food_facts');
+              onShowNotification?.(`Food detected via Open Food Facts: ${productFood.name}`, 'success');
+              return;
+            }
+          }
+        } catch {
+          // direct lookup failed
+        }
+
         setLookupError(
           `No food item found for barcode ${cleanCode}. You can log this food as a custom item.`
         );
-      } catch (err) {
+      } catch {
         // Offline resilience fallback
         const localFoods = storage.getFoods();
         const matched = localFoods.find((f) => f.barcode === cleanCode);
