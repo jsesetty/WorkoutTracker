@@ -36,9 +36,13 @@ import { storage } from './services/storageFallback';
 import { generateClientUUID } from './lib/offlineDb';
 import { useWorkoutsSync } from './hooks/useWorkoutsSync';
 import { isStaticHost, getApiUrl } from './services/apiConfig';
+import { useSettings, convertWeight } from './context/SettingsContext';
+import { WeightUnit } from './types/settings';
 
 export const App: React.FC = () => {
   const { enqueueMutation } = useWorkoutsSync();
+  const { unit } = useSettings();
+  const prevUnitRef = React.useRef<WeightUnit>(unit);
   // Theme State
   const [mode, setMode] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('ironpulse-theme') || localStorage.getItem('dbz-tracker-theme');
@@ -77,25 +81,51 @@ export const App: React.FC = () => {
   // Initial Data Fetch
   useEffect(() => {
     const fetchWorkouts = async () => {
+      let data: WorkoutItem[] = [];
       if (isStaticHost()) {
-        const fallback = storage.getWorkouts();
-        setWorkouts(fallback);
-        return;
+        data = storage.getWorkouts();
+      } else {
+        try {
+          const res = await fetch(getApiUrl('/api/workouts'));
+          if (!res.ok) throw new Error('API fetch failed');
+          data = await res.json();
+        } catch (err) {
+          console.warn('Backend API unavailable, using offline storage:', err);
+          data = storage.getWorkouts();
+        }
       }
-      try {
-        const res = await fetch(getApiUrl('/api/workouts'));
-        if (!res.ok) throw new Error('API fetch failed');
-        const data = await res.json();
-        setWorkouts(data);
-        storage.saveWorkouts(data);
-      } catch (err) {
-        console.warn('Backend API unavailable, using offline storage:', err);
-        const fallback = storage.getWorkouts();
-        setWorkouts(fallback);
+      if (unit === 'lbs') {
+        data = data.map((w) => ({
+          ...w,
+          weight: w.weight ? convertWeight(w.weight, 'lbs') : w.weight,
+          setDetails: w.setDetails?.map((s) => ({
+            ...s,
+            weight: s.weight ? convertWeight(s.weight, 'lbs') : s.weight,
+          })),
+        }));
       }
+      setWorkouts(data);
+      storage.saveWorkouts(data);
     };
     fetchWorkouts();
   }, []);
+
+  // Convert active workouts when unit preference changes in Settings
+  useEffect(() => {
+    if (prevUnitRef.current !== unit) {
+      setWorkouts((prevWorkouts) =>
+        prevWorkouts.map((w) => ({
+          ...w,
+          weight: w.weight ? convertWeight(w.weight, unit) : w.weight,
+          setDetails: w.setDetails?.map((s) => ({
+            ...s,
+            weight: s.weight ? convertWeight(s.weight, unit) : s.weight,
+          })),
+        }))
+      );
+      prevUnitRef.current = unit;
+    }
+  }, [unit]);
 
   // Sync to local storage on changes
   useEffect(() => {
@@ -563,7 +593,13 @@ export const App: React.FC = () => {
               <Route path="/analytics" element={<AnalyticsPage workouts={workouts} />} />
               <Route
                 path="/settings"
-                element={<SettingsPage mode={mode} onToggleTheme={handleToggleTheme} />}
+                element={
+                  <SettingsPage
+                    mode={mode}
+                    onToggleTheme={handleToggleTheme}
+                    onShowNotification={showNotification}
+                  />
+                }
               />
             </Routes>
           </ConsoleCenterStage>

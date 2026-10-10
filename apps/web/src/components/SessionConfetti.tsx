@@ -1,14 +1,16 @@
 import React, { useEffect, useRef } from 'react';
+import { useSettings } from '../context/SettingsContext';
 
 interface SessionConfettiProps {
   readonly trigger: number;
 }
 
 export const SessionConfetti: React.FC<SessionConfettiProps> = ({ trigger }) => {
+  const { soundEnabled } = useSettings();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    if (!trigger) return;
+    if (!trigger || !soundEnabled) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;

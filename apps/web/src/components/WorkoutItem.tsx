@@ -35,6 +35,7 @@ import {
   WorkoutSet,
   IntensityLevel,
 } from '../types/workout';
+import { useSettings } from '../context/SettingsContext';
 
 const getIntensityDetails = (intensity?: IntensityLevel) => {
   switch (intensity) {
@@ -84,6 +85,7 @@ export const WorkoutItem: React.FC<WorkoutItemProps> = ({
   const item = workout || todo;
   if (!item) return null;
 
+  const { unit: currentUnit } = useSettings();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(item.title);
 
@@ -194,9 +196,10 @@ export const WorkoutItem: React.FC<WorkoutItemProps> = ({
     const currentWeightStr = targetSet.weight || item.weight || '0';
     const num = parseFloat(currentWeightStr.replace(/[^0-9.]/g, '')) || 0;
     const unitMatch = currentWeightStr.match(/[a-zA-Z]+/);
-    const unit = unitMatch ? unitMatch[0] : 'kg';
-    const nextVal = Math.max(0, Math.round((num + delta) * 10) / 10);
-    const formatted = `${nextVal} ${unit}`;
+    const activeUnit = unitMatch ? unitMatch[0] : currentUnit;
+    const effectiveDelta = activeUnit === 'lbs' && Math.abs(delta) === 2.5 ? (delta > 0 ? 5 : -5) : delta;
+    const nextVal = Math.max(0, Math.round((num + effectiveDelta) * 10) / 10);
+    const formatted = `${nextVal} ${activeUnit}`;
 
     if (onUpdateSet) {
       onUpdateSet(item.id, setId, { weight: formatted });
@@ -432,20 +435,20 @@ export const WorkoutItem: React.FC<WorkoutItemProps> = ({
             <WeightControlBox>
               <SetStepperBtn
                 type="button"
-                onClick={() => handleAdjustWeight(set.id, -2.5)}
+                onClick={() => handleAdjustWeight(set.id, currentUnit === 'lbs' ? -5 : -2.5)}
                 aria-label={`Decrease weight for set ${set.setNumber}`}
               >
                 -
               </SetStepperBtn>
               <WeightTextInput
                 value={set.weight || ''}
-                placeholder="0 kg"
+                placeholder={`0 ${currentUnit}`}
                 onChange={(e) => handleUpdateWeight(set.id, e.target.value)}
                 aria-label={`Weight for set ${set.setNumber}`}
               />
               <SetStepperBtn
                 type="button"
-                onClick={() => handleAdjustWeight(set.id, 2.5)}
+                onClick={() => handleAdjustWeight(set.id, currentUnit === 'lbs' ? 5 : 2.5)}
                 aria-label={`Increase weight for set ${set.setNumber}`}
               >
                 +

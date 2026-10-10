@@ -19,6 +19,7 @@ import {
   StepperContainer,
 } from './styled';
 import { MuscleGroup, IntensityLevel } from '../types/workout';
+import { useSettings } from '../context/SettingsContext';
 
 interface WorkoutInputProps {
   readonly onAddWorkout: (
@@ -55,6 +56,7 @@ const MUSCLE_PRESETS: Record<MuscleGroup, readonly string[]> = {
 };
 
 export const WorkoutInput: React.FC<WorkoutInputProps> = ({ onAddWorkout, onAddTask }) => {
+  const { unit } = useSettings();
   const [title, setTitle] = useState('');
   const [muscleGroup, setMuscleGroup] = useState<MuscleGroup>('Chest');
   const [intensity, setIntensity] = useState<IntensityLevel>('medium');
@@ -66,8 +68,13 @@ export const WorkoutInput: React.FC<WorkoutInputProps> = ({ onAddWorkout, onAddT
     e.preventDefault();
     if (!title.trim()) return;
 
+    let trimmedWeight = weight.trim();
+    if (trimmedWeight && !/[a-zA-Z]/.test(trimmedWeight)) {
+      trimmedWeight = `${trimmedWeight} ${unit}`;
+    }
+
     if (onAddWorkout) {
-      onAddWorkout(title.trim(), muscleGroup, intensity, sets, reps, weight.trim());
+      onAddWorkout(title.trim(), muscleGroup, intensity, sets, reps, trimmedWeight);
     } else if (onAddTask) {
       onAddTask(title.trim(), intensity);
     }
@@ -337,7 +344,7 @@ export const WorkoutInput: React.FC<WorkoutInputProps> = ({ onAddWorkout, onAddT
               size="small"
               id="task-weight-input"
               label="WEIGHT"
-              placeholder="e.g. 80 kg"
+              placeholder={unit === 'lbs' ? 'e.g. 185 lbs' : 'e.g. 80 kg'}
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
               sx={{

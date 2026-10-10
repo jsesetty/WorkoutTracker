@@ -24,6 +24,7 @@ import {
 import { MacroProgressBar } from './MacroProgressBar';
 import { WorkoutItem } from '../types/workout';
 import { storage } from '../services/storageFallback';
+import { useSettings } from '../context/SettingsContext';
 
 interface DesktopTelemetryRailProps {
   readonly workouts: WorkoutItem[];
@@ -35,14 +36,22 @@ export const DesktopTelemetryRail: React.FC<DesktopTelemetryRailProps> = ({
   workoutBurnedCalories,
 }) => {
   const navigate = useNavigate();
+  const { unit, restTimer } = useSettings();
 
   // ---------------------------------------------------------
   // 1. Mechanical Rest Chronometer
   // ---------------------------------------------------------
-  const [selectedDuration, setSelectedDuration] = useState<number>(90);
-  const [timeLeft, setTimeLeft] = useState<number>(90);
+  const [selectedDuration, setSelectedDuration] = useState<number>(restTimer);
+  const [timeLeft, setTimeLeft] = useState<number>(restTimer);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isFinished, setIsFinished] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isRunning) {
+      setSelectedDuration(restTimer);
+      setTimeLeft(restTimer);
+    }
+  }, [restTimer, isRunning]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -113,18 +122,23 @@ export const DesktopTelemetryRail: React.FC<DesktopTelemetryRailProps> = ({
           completedSetsCount += 1;
           const weightNum = parseFloat(String(s.weight || '0').replace(/[^0-9.]/g, '')) || 0;
           const repsNum = typeof s.reps === 'number' ? s.reps : parseInt(String(s.reps || '0'), 10) || 0;
-          totalKg += weightNum * repsNum;
+          const isLbs = String(s.weight || '').toLowerCase().includes('lb');
+          const weightKg = isLbs ? weightNum * 0.453592 : weightNum;
+          totalKg += weightKg * repsNum;
         }
       }
     }
 
+    const displayTonnage = unit === 'lbs' ? Math.round(totalKg * 2.20462) : Math.round(totalKg);
+
     return {
       tonnageKg: Math.round(totalKg),
+      displayTonnage,
       completedSetsCount,
       totalSetsCount,
       completionPercent: totalSetsCount > 0 ? Math.round((completedSetsCount / totalSetsCount) * 100) : 0,
     };
-  }, [workouts]);
+  }, [workouts, unit]);
 
   // ---------------------------------------------------------
   // 3. Daily Fuel & Nutritional Goals
@@ -315,7 +329,7 @@ export const DesktopTelemetryRail: React.FC<DesktopTelemetryRailProps> = ({
                 mt: 0.25,
               }}
             >
-              {tonnageStats.tonnageKg.toLocaleString()} <span style={{ fontSize: '0.7rem', color: '#8893A4' }}>KG</span>
+              {tonnageStats.displayTonnage.toLocaleString()} <span style={{ fontSize: '0.7rem', color: '#8893A4' }}>{unit.toUpperCase()}</span>
             </Typography>
           </Box>
 

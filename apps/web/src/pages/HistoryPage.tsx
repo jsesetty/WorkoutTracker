@@ -81,7 +81,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ workouts }) => {
                       fontFamily: "'Space Grotesk', sans-serif",
                     }}
                   >
-                    {w.muscleGroup} • {w.sets || 3} SETS • {w.intensity.toUpperCase()}
+                    {w.muscleGroup} • {w.sets || 3} SETS • {w.intensity.toUpperCase()}{w.weight ? ` • ${w.weight}` : ''}
                   </Typography>
                 </Box>
               </Box>

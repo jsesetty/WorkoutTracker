@@ -306,6 +306,42 @@ test.describe('IronPulse Gym Training Session Tracker E2E Tests', () => {
     await expect(page.locator('[data-testid="header-signin-btn"]')).toBeVisible();
     await expect(userBtn).not.toBeVisible();
   });
+
+  test('navigates to Settings page, switches unit to Pounds (lbs), and verifies reflection across tracker', async ({ page }) => {
+    // Navigate to Settings page
+    const settingsNavBtn = page.locator('#nav-settings-btn');
+    await expect(settingsNavBtn).toBeVisible();
+    await settingsNavBtn.click();
+
+    await expect(page.getByText('TRACKER PREFERENCES & SETTINGS')).toBeVisible();
+    await expect(page.getByText('Weight Measurement Units')).toBeVisible();
+
+    // Select Pounds (lbs) in dropdown
+    const unitSelect = page.locator('#weight-unit-select');
+    await expect(unitSelect).toBeVisible();
+    await unitSelect.click();
+
+    // Click Pounds (lbs) in MUI popover menu
+    const lbsOption = page.locator('li[data-value="lbs"]');
+    await expect(lbsOption).toBeVisible();
+    await lbsOption.click();
+
+    // Verify snackbar notification appears
+    await expect(page.getByText(/Weight unit updated to Pounds \(lbs\)/i)).toBeVisible();
+
+    // Navigate back to Tracker (Home)
+    await page.locator('#nav-tracker-btn').click();
+    await expect(page.locator('#task-title-input')).toBeVisible();
+
+    // Verify weight input placeholder reflects lbs
+    const weightInput = page.locator('#task-weight-input');
+    await expect(weightInput).toHaveAttribute('placeholder', 'e.g. 185 lbs');
+
+    // Switch back to kg to maintain test isolation
+    await settingsNavBtn.click();
+    await page.locator('#weight-unit-select').click();
+    await page.locator('li[data-value="kg"]').click();
+  });
 });
 
 

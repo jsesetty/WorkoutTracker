@@ -20,18 +20,19 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { ContentWrapper } from '../components/styled';
 import { useAuth } from '../auth/AuthProvider';
 import { AuthModal } from '../components/AuthModal';
+import { useSettings } from '../context/SettingsContext';
+import { WeightUnit } from '../types/settings';
 
 interface SettingsPageProps {
   readonly mode: 'dark' | 'light';
   readonly onToggleTheme: () => void;
+  readonly onShowNotification?: (msg: string, severity?: 'success' | 'info' | 'warning' | 'error') => void;
 }
 
-export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme }) => {
+export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme, onShowNotification }) => {
   const { user, signOut } = useAuth();
+  const { unit, setUnit, restTimer, setRestTimer, soundEnabled, setSoundEnabled } = useSettings();
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [unit, setUnit] = useState<'kg' | 'lbs'>('kg');
-  const [restTimer, setRestTimer] = useState<number>(90);
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
 
   return (
     <ContentWrapper>
@@ -93,9 +94,17 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
             <InputLabel id="weight-unit-label">Unit</InputLabel>
             <Select
               labelId="weight-unit-label"
+              id="weight-unit-select"
               value={unit}
               label="Unit"
-              onChange={(e) => setUnit(e.target.value as 'kg' | 'lbs')}
+              onChange={(e) => {
+                const newUnit = e.target.value as WeightUnit;
+                setUnit(newUnit);
+                if (onShowNotification) {
+                  onShowNotification(`Weight unit updated to ${newUnit === 'lbs' ? 'Pounds (lbs)' : 'Kilograms (kg)'}`, 'success');
+                }
+              }}
+              data-testid="settings-unit-select"
             >
               <MenuItem value="kg">Kilograms (kg)</MenuItem>
               <MenuItem value="lbs">Pounds (lbs)</MenuItem>
