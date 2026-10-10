@@ -77,7 +77,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <Text style={styles.statTitle}>SETS LOGGED</Text>
         </View>
         <View style={styles.statCard}>
-          <Text style={[styles.statNumber, { color: theme.colors.secondary }]}>
+          <Text style={[styles.statNumber, { color: theme.colors.protein }]}>
             {consumedProtein}g
           </Text>
           <Text style={styles.statTitle}>PROTEIN</Text>
@@ -110,7 +110,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               styles.fill,
               {
                 width: `${caloriePct}%`,
-                backgroundColor: theme.colors.secondary,
+                backgroundColor: theme.colors.primary,
               },
             ]}
           />
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   heroCard: {
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.lg,
+    borderRadius: theme.borderRadius.sm,
     padding: theme.spacing.lg,
     borderWidth: 1,
     borderColor: theme.colors.border,
@@ -204,13 +204,13 @@ const styles = StyleSheet.create({
   track: {
     height: 8,
     backgroundColor: theme.colors.surfaceElevated,
-    borderRadius: 4,
+    borderRadius: theme.borderRadius.xs,
     overflow: 'hidden',
   },
   fill: {
     height: '100%',
     backgroundColor: theme.colors.primary,
-    borderRadius: 4,
+    borderRadius: theme.borderRadius.xs,
   },
   statsRow: {
     flexDirection: 'row',
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.surface,
     padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.sm,
     borderWidth: 1,
     borderColor: theme.colors.border,
     alignItems: 'center',
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   },
   sectionCard: {
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.sm,
     padding: theme.spacing.md,
     borderWidth: 1,
     borderColor: theme.colors.border,
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   actionText: {
-    color: theme.colors.secondary,
+    color: theme.colors.primary,
     fontSize: 12,
     fontWeight: '700',
   },
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   launchButton: {
     flex: 1,
     paddingVertical: 14,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.sm,
     alignItems: 'center',
     justifyContent: 'center',
   },

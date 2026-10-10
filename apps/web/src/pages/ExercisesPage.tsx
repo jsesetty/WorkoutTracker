@@ -144,7 +144,7 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
         scrollButtons="auto"
         sx={{
           backgroundColor: 'background.paper',
-          borderRadius: '8px',
+          borderRadius: '4px',
           p: 0.25,
           border: '1px solid',
           borderColor: 'divider',
@@ -160,7 +160,7 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
         {filteredExercises.map((ex) => (
           <SpecListItem key={ex.name}>
             <Box>
-              <Typography variant="body1" sx={{ fontWeight: 700, fontSize: '1.05rem' }}>
+              <Typography variant="body1" sx={{ fontWeight: 700, fontSize: '1.05rem', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
                 {ex.name}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.75 }}>
@@ -171,9 +171,10 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
                     height: 20,
                     fontSize: '0.65rem',
                     fontWeight: 700,
-                    backgroundColor: 'rgba(0, 229, 255, 0.1)',
-                    color: '#00E5FF',
-                    border: '1px solid rgba(0, 229, 255, 0.35)',
+                    borderRadius: '2px',
+                    backgroundColor: 'rgba(0, 216, 246, 0.12)',
+                    color: '#00D8F6',
+                    border: '1px solid rgba(0, 216, 246, 0.35)',
                   }}
                 />
                 <Chip
@@ -183,7 +184,9 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
                     height: 20,
                     fontSize: '0.65rem',
                     fontWeight: 700,
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    borderRadius: '2px',
+                    fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
+                    fontVariantNumeric: 'tabular-nums',
                     backgroundColor: 'rgba(255, 255, 255, 0.05)',
                   }}
                 />
@@ -197,8 +200,8 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
               startIcon={<AddIcon />}
               onClick={() => handleAddFromLibrary(ex)}
               sx={{
-                borderRadius: '999px',
-                fontFamily: "'Space Grotesk', sans-serif",
+                borderRadius: '4px',
+                fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
                 fontWeight: 700,
               }}
             >

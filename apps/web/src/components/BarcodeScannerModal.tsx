@@ -267,8 +267,11 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: '16px',
+          borderRadius: '4px',
           backgroundImage: 'none',
+          backgroundColor: '#12151B',
+          border: '1px solid rgba(255, 255, 255, 0.16)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)',
         },
       }}
       data-testid="barcode-scanner-modal"
@@ -399,10 +402,10 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
           <Card
             variant="outlined"
             sx={{
-              borderRadius: '12px',
+              borderRadius: '4px',
               borderColor: 'primary.main',
               backgroundColor: (theme) =>
-                theme.palette.mode === 'dark' ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.03)',
+                theme.palette.mode === 'dark' ? '#181D26' : '#FFFFFF',
             }}
             data-testid="detected-food-card"
           >

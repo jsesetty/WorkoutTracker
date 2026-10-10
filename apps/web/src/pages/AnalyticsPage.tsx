@@ -60,51 +60,51 @@ export const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ workouts }) => {
       {/* KPI Cards */}
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
-          <StatCard accentColor="#00F59B">
+          <StatCard accentColor="#059669">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
-              <CheckCircleOutlineIcon sx={{ color: '#00F59B', fontSize: '1.3rem' }} />
-              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "'Space Grotesk', sans-serif" }}>
+              <CheckCircleOutlineIcon sx={{ color: '#059669', fontSize: '1.3rem' }} />
+              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
                 COMPLETION RATE
               </Typography>
             </Box>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
               {completionRate}%
             </Typography>
-            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "'Space Grotesk', sans-serif" }}>
+            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
               {completed} of {total} movements conquered
             </Typography>
           </StatCard>
         </Grid>
 
         <Grid item xs={12} sm={4}>
-          <StatCard accentColor="#0284C7">
+          <StatCard accentColor="#FF5500">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
-              <FitnessCenterIcon sx={{ color: '#0284C7', fontSize: '1.2rem' }} />
-              <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', fontFamily: "'Space Grotesk', sans-serif" }}>
+              <FitnessCenterIcon sx={{ color: '#FF5500', fontSize: '1.2rem' }} />
+              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
                 TOTAL VOLUME
               </Typography>
             </Box>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
               {workouts.reduce((acc, w) => acc + (w.sets || 3), 0)}
             </Typography>
-            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "'Space Grotesk', sans-serif" }}>
+            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
               Total working sets logged
             </Typography>
           </StatCard>
         </Grid>
 
         <Grid item xs={12} sm={4}>
-          <StatCard accentColor="#EF4444">
+          <StatCard accentColor="#00D8F6">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
-              <WhatshotIcon sx={{ color: '#EF4444', fontSize: '1.2rem' }} />
-              <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', fontFamily: "'Space Grotesk', sans-serif" }}>
+              <WhatshotIcon sx={{ color: '#00D8F6', fontSize: '1.2rem' }} />
+              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
                 HIGH EFFORT
               </Typography>
             </Box>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
               {workouts.filter((w) => w.intensity === 'high').length}
             </Typography>
-            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "'Space Grotesk', sans-serif" }}>
+            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
               Max effort working movements
             </Typography>
           </StatCard>
@@ -112,8 +112,8 @@ export const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ workouts }) => {
       </Grid>
 
       {/* Muscle Group Split Distribution */}
-      <Paper sx={{ p: 2.5, borderRadius: '12px', mt: 1 }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <Paper sx={{ p: 2.5, borderRadius: '4px', mt: 1 }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)", letterSpacing: '-0.02em' }}>
           MUSCLE GROUP VOLUME DISTRIBUTION
         </Typography>
 
@@ -121,14 +121,14 @@ export const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ workouts }) => {
           {muscleCounts.map(({ group, count, percentage }) => (
             <Box key={group}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
-                <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
                   {group}
                 </Typography>
-                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 700, fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
                   {count} exercises ({percentage}%)
                 </Typography>
               </Box>
-              <LinearProgress variant="determinate" value={percentage} sx={{ height: 10, borderRadius: 5 }} />
+              <LinearProgress variant="determinate" value={percentage} sx={{ height: 6, borderRadius: 2 }} />
             </Box>
           ))}
         </Box>

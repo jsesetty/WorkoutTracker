@@ -259,7 +259,7 @@ export const FoodScannerPage: React.FC = () => {
             sx={{
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
-              borderRadius: '8px',
+              borderRadius: '4px',
             }}
           >
             SCAN BARCODE
@@ -272,7 +272,7 @@ export const FoodScannerPage: React.FC = () => {
             sx={{
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
-              borderRadius: '8px',
+              borderRadius: '4px',
             }}
           >
             Add Food Item
@@ -420,7 +420,7 @@ export const FoodScannerPage: React.FC = () => {
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontWeight: 700,
                       fontSize: '0.75rem',
-                      borderRadius: '6px',
+                      borderRadius: '2px',
                     }}
                   >
                     Log to Diary
@@ -441,7 +441,8 @@ export const FoodScannerPage: React.FC = () => {
               >
                 <Typography
                   sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: 'var(--font-telemetry)',
+                    fontVariantNumeric: 'tabular-nums',
                     fontSize: '0.82rem',
                     fontWeight: 700,
                     color: 'text.primary',
@@ -457,7 +458,7 @@ export const FoodScannerPage: React.FC = () => {
                     color: 'text.secondary',
                   }}
                 >
-                  Protein: <strong>{food.protein}g</strong> • Carbs: <strong>{food.carbs}g</strong> • Fat: <strong>{food.fat}g</strong>
+                  Protein: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.protein}g</Box> • Carbs: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.carbs}g</Box> • Fat: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.fat}g</Box>
                 </Typography>
 
                 <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -490,7 +491,7 @@ export const FoodScannerPage: React.FC = () => {
                 </Typography>
 
                 {food.additives.length === 0 ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, color: '#10B981' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, color: '#059669' }}>
                     <CheckCircleOutlineIcon sx={{ fontSize: '1rem' }} />
                     <Typography
                       sx={{
@@ -512,7 +513,7 @@ export const FoodScannerPage: React.FC = () => {
                           alignItems: 'center',
                           gap: 0.75,
                           p: '4px 8px',
-                          borderRadius: '6px',
+                          borderRadius: '2px',
                           border: (theme) => `1px solid ${theme.palette.divider}`,
                         }}
                       >
@@ -539,7 +540,7 @@ export const FoodScannerPage: React.FC = () => {
               {food.cleanAlternativeName && (
                 <CleanSwapCard>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <WarningAmberIcon sx={{ color: '#F59E0B', fontSize: '1.2rem' }} />
+                    <WarningAmberIcon sx={{ color: '#EAB308', fontSize: '1.2rem' }} />
                     <Box>
                       <Typography
                         sx={{
@@ -547,7 +548,7 @@ export const FoodScannerPage: React.FC = () => {
                           fontSize: '0.72rem',
                           fontWeight: 700,
                           textTransform: 'uppercase',
-                          color: '#10B981',
+                          color: '#059669',
                         }}
                       >
                         Recommended Clean Swap
@@ -599,8 +600,9 @@ export const FoodScannerPage: React.FC = () => {
         fullWidth
         PaperProps={{
           sx: {
-            borderRadius: '12px',
-            backgroundColor: 'background.paper',
+            borderRadius: '4px',
+            backgroundColor: '#12151B',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
           },
         }}
       >

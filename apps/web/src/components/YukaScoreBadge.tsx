@@ -29,7 +29,8 @@ export const YukaScoreBadge: React.FC<YukaScoreBadgeProps> = ({
       <Typography
         component="span"
         sx={{
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: 'var(--font-telemetry)',
+          fontVariantNumeric: 'tabular-nums',
           fontSize: 'inherit',
           fontWeight: 700,
           lineHeight: 1,

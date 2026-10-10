@@ -147,8 +147,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: '16px',
+          borderRadius: '4px',
           backgroundImage: 'none',
+          backgroundColor: '#12151B',
+          border: '1px solid rgba(255, 255, 255, 0.16)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)',
         },
       }}
       data-testid="auth-modal"
@@ -168,7 +171,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               variant="h6"
               sx={{
                 fontWeight: 800,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
                 fontSize: '1.05rem',
                 lineHeight: 1.2,
               }}
@@ -190,9 +193,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <Box
           sx={{
             display: 'flex',
-            borderRadius: '8px',
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
+            borderRadius: '2px',
+            backgroundColor: '#181D26',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
             p: 0.5,
           }}
         >
@@ -208,9 +211,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             color={tab === 'signin' ? 'primary' : 'inherit'}
             sx={{
               fontWeight: 700,
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
               fontSize: '0.8rem',
-              borderRadius: '6px',
+              borderRadius: '2px',
             }}
           >
             SIGN IN
@@ -227,9 +230,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             color={tab === 'signup' ? 'primary' : 'inherit'}
             sx={{
               fontWeight: 700,
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
               fontSize: '0.8rem',
-              borderRadius: '6px',
+              borderRadius: '2px',
             }}
           >
             CREATE ACCOUNT
@@ -342,10 +345,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           startIcon={<BoltIcon />}
           data-testid="auth-demo-btn"
           sx={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
             fontWeight: 700,
             fontSize: '0.8rem',
-            borderRadius: '8px',
+            borderRadius: '4px',
           }}
         >
           ⚡ QUICK DEMO ATHLETE LOGIN

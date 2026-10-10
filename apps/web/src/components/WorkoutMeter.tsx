@@ -7,13 +7,13 @@ import { MeterCard, HudMetricPod } from './styled';
 import { TransformationRank } from '../types/workout';
 
 export const getWorkoutIntensityRank = (percentage: number, totalTasks: number): TransformationRank => {
-  if (totalTasks === 0) return { title: 'REST / STANDBY', bp: 'OUTPUT: 0%', color: '#8E9BAE' };
-  if (percentage === 0) return { title: 'WARMUP & MOBILITY', bp: 'OUTPUT: PRE-TRAIN', color: '#5B687C' };
-  if (percentage <= 25) return { title: 'INITIATING VOLUME', bp: 'OUTPUT: 25%', color: '#00E5FF' };
-  if (percentage <= 50) return { title: 'IN THE ZONE', bp: 'OUTPUT: 50%', color: '#F59E0B' };
-  if (percentage <= 75) return { title: 'HIGH OUTPUT', bp: 'OUTPUT: 75%', color: '#10B981' };
-  if (percentage < 100) return { title: 'PEAK INTENSITY', bp: 'OUTPUT: 90%', color: '#10B981' };
-  return { title: 'SESSION CRUSHED! 🔥', bp: 'MAX EFFORT ⚡', color: '#10B981' };
+  if (totalTasks === 0) return { title: 'REST / STANDBY', bp: 'OUTPUT: 0%', color: '#8893A4' };
+  if (percentage === 0) return { title: 'WARMUP & MOBILITY', bp: 'OUTPUT: PRE-TRAIN', color: '#5E697A' };
+  if (percentage <= 25) return { title: 'INITIATING VOLUME', bp: 'OUTPUT: 25%', color: '#00D8F6' };
+  if (percentage <= 50) return { title: 'IN THE ZONE', bp: 'OUTPUT: 50%', color: '#EAB308' };
+  if (percentage <= 75) return { title: 'HIGH OUTPUT', bp: 'OUTPUT: 75%', color: '#FF5500' };
+  if (percentage < 100) return { title: 'PEAK INTENSITY', bp: 'OUTPUT: 90%', color: '#059669' };
+  return { title: 'SESSION CRUSHED! 🔥', bp: 'MAX EFFORT ⚡', color: '#059669' };
 };
 
 export const getTransformationRank = getWorkoutIntensityRank;
@@ -42,7 +42,7 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
               fontWeight: 600,
               letterSpacing: '0.04em',
               color: 'text.secondary',
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
             }}
           >
             SESSION HUD // INTENSITY GAUGE
@@ -54,10 +54,11 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
           size="small"
           variant="outlined"
           sx={{
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: '0.72rem',
             borderColor: 'divider',
             color: 'text.primary',
+            borderRadius: '2px',
           }}
         />
       </Box>
@@ -73,15 +74,17 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
       >
         {/* Metric 1: Completion */}
         <HudMetricPod>
-          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.7rem' }}>
             COMPLETION RATE
           </Typography>
           <Typography
             variant="h4"
             sx={{
-              fontWeight: 700,
+              fontWeight: 800,
               color: 'text.primary',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
+              fontVariantNumeric: 'tabular-nums',
+              letterSpacing: '-0.02em',
               mt: 0.25,
             }}
           >
@@ -91,15 +94,17 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
 
         {/* Metric 2: Completed / Total */}
         <HudMetricPod>
-          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.7rem' }}>
             MOVEMENTS CONQUERED
           </Typography>
           <Typography
             variant="h4"
             sx={{
-              fontWeight: 700,
+              fontWeight: 800,
               color: 'text.primary',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
+              fontVariantNumeric: 'tabular-nums',
+              letterSpacing: '-0.02em',
               mt: 0.25,
             }}
           >
@@ -109,16 +114,16 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
 
         {/* Metric 3: Output Phase */}
         <HudMetricPod>
-          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.7rem' }}>
             ENERGY TARGET
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.5 }}>
             {isMax ? (
-              <LocalFireDepartmentIcon sx={{ fontSize: '1.2rem', color: '#10B981' }} />
+              <LocalFireDepartmentIcon sx={{ fontSize: '1.2rem', color: '#059669' }} />
             ) : (
               <FitnessCenterIcon sx={{ fontSize: '1.15rem', color: 'text.secondary' }} />
             )}
-            <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif" }}>
+            <Typography variant="body2" sx={{ fontWeight: 700, fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)", color: rank.color }}>
               {rank.bp}
             </Typography>
           </Box>
@@ -127,17 +132,19 @@ export const WorkoutMeter: React.FC<WorkoutMeterProps> = ({ total, completed, bu
         {/* Metric 4: Burned Calories (Lyfta -> MyFitnessPal) */}
         {hasBurn && (
           <HudMetricPod>
-            <Typography variant="caption" sx={{ color: '#10B981', fontWeight: 600 }}>
+            <Typography variant="caption" sx={{ color: '#FF5500', fontWeight: 600, fontSize: '0.7rem' }}>
               BURNED (MYFITNESSPAL)
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.5 }}>
-              <LocalFireDepartmentIcon sx={{ fontSize: '1.2rem', color: '#10B981' }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.25 }}>
+              <LocalFireDepartmentIcon sx={{ fontSize: '1.2rem', color: '#FF5500' }} />
               <Typography
                 variant="h4"
                 sx={{
-                  fontWeight: 700,
-                  color: '#10B981',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 800,
+                  color: '#FF5500',
+                  fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
+                  fontVariantNumeric: 'tabular-nums',
+                  letterSpacing: '-0.02em',
                 }}
               >
                 +{burnedCalories}

@@ -43,13 +43,13 @@ export const DumbbellLogo: React.FC<{ size?: number }> = ({ size = 32 }) => (
     aria-label="IronPulse Dumbbell Logo"
   >
     {/* Center Bar */}
-    <rect x="7" y="14" width="18" height="4" rx="2" fill="#10B981" />
+    <rect x="7" y="14" width="18" height="4" rx="1" fill="#FF5500" />
     {/* Inner Plates */}
-    <rect x="5" y="10" width="3" height="12" rx="1.5" fill="#10B981" />
-    <rect x="24" y="10" width="3" height="12" rx="1.5" fill="#10B981" />
+    <rect x="5" y="10" width="3" height="12" rx="1" fill="#FF5500" />
+    <rect x="24" y="10" width="3" height="12" rx="1" fill="#FF5500" />
     {/* Outer Plates */}
-    <rect x="2" y="12" width="2" height="8" rx="1" fill="#64748B" />
-    <rect x="28" y="12" width="2" height="8" rx="1" fill="#64748B" />
+    <rect x="2" y="12" width="2" height="8" rx="1" fill="#5E697A" />
+    <rect x="28" y="12" width="2" height="8" rx="1" fill="#5E697A" />
   </svg>
 );
 
@@ -201,8 +201,10 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
                   sx: {
                     mt: 1,
                     minWidth: 200,
-                    borderRadius: '12px',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                    borderRadius: '4px',
+                    backgroundColor: '#181D26',
+                    border: '1px solid rgba(255, 255, 255, 0.16)',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
                   },
                 }}
               >
@@ -216,7 +218,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
                       label="ATHLETE"
                       size="small"
                       color="success"
-                      sx={{ height: 18, fontSize: '0.62rem', fontWeight: 700 }}
+                      sx={{ height: 18, fontSize: '0.62rem', fontWeight: 700, borderRadius: '2px' }}
                     />
                   </Box>
                 </Box>
@@ -258,10 +260,10 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
               onClick={() => setAuthModalOpen(true)}
               data-testid="header-signin-btn"
               sx={{
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
                 fontWeight: 700,
                 fontSize: '0.75rem',
-                borderRadius: '6px',
+                borderRadius: '4px',
                 py: 0.5,
                 px: 1.25,
               }}
