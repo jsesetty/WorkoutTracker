@@ -8,7 +8,15 @@ import {
 import { Routes, Route } from 'react-router-dom';
 import { getGymTheme } from './theme';
 import { Header } from './components/Header';
-import { AppShell } from './components/styled';
+import {
+  AppShell,
+  ConsoleLayoutGrid,
+  ConsoleCenterStage,
+} from './components/styled';
+import { DesktopNavRail } from './components/DesktopNavRail';
+import { DesktopTelemetryRail } from './components/DesktopTelemetryRail';
+import { WorkoutAIModal } from './components/WorkoutAIModal';
+import { AuthModal } from './components/AuthModal';
 import { HomePage } from './pages/HomePage';
 import { HistoryPage } from './pages/HistoryPage';
 import { ExercisesPage } from './pages/ExercisesPage';
@@ -48,6 +56,8 @@ export const App: React.FC = () => {
   const [workouts, setWorkouts] = useState<WorkoutItem[]>([]);
   const [filter, setFilter] = useState<FilterType>('all');
   const [confettiTrigger, setConfettiTrigger] = useState<number>(0);
+  const [globalAiModalOpen, setGlobalAiModalOpen] = useState<boolean>(false);
+  const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
 
   // Snackbar Notification State
   const [snackbar, setSnackbar] = useState<NotificationState>({
@@ -443,7 +453,7 @@ export const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <AppShell maxWidth="md">
+      <AppShell maxWidth={false} sx={{ maxWidth: '1560px', px: { xs: 2, sm: 2.5, md: 3, lg: 3.5 } }}>
         {/* Navigation Header */}
         <Header
           mode={mode}
@@ -451,53 +461,87 @@ export const App: React.FC = () => {
           onShowNotification={showNotification}
         />
 
-        {/* Page Routes */}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <HomePage
-                workouts={workouts}
-                filter={filter}
-                counts={counts}
-                confettiTrigger={confettiTrigger}
-                onAddWorkout={handleAddWorkout}
-                onToggleWorkout={handleToggleWorkout}
-                onUpdateTitle={handleUpdateTitle}
-                onDeleteWorkout={handleDeleteWorkout}
-                onFilterChange={setFilter}
-                onClearCompleted={handleClearCompleted}
-                onAddSet={handleAddSet}
-                onUpdateSet={handleUpdateSet}
-                onDeleteSet={handleDeleteSet}
-                workoutBurnedCalories={workoutBurnedCalories}
-                onCommitAIWorkouts={handleCommitAIWorkouts}
-                onShowNotification={showNotification}
+        {/* High-Density 3-Column Industrial Command Station Grid */}
+        <ConsoleLayoutGrid>
+          {/* Left Rail: Persistent Station Navigation & Athlete HUD (Desktop >= 1200px) */}
+          <DesktopNavRail
+            mode={mode}
+            onToggleTheme={handleToggleTheme}
+            onOpenAIModal={() => setGlobalAiModalOpen(true)}
+            onOpenAuthModal={() => setAuthModalOpen(true)}
+          />
+
+          {/* Center Stage: Active Workbench Route Content */}
+          <ConsoleCenterStage>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <HomePage
+                    workouts={workouts}
+                    filter={filter}
+                    counts={counts}
+                    confettiTrigger={confettiTrigger}
+                    onAddWorkout={handleAddWorkout}
+                    onToggleWorkout={handleToggleWorkout}
+                    onUpdateTitle={handleUpdateTitle}
+                    onDeleteWorkout={handleDeleteWorkout}
+                    onFilterChange={setFilter}
+                    onClearCompleted={handleClearCompleted}
+                    onAddSet={handleAddSet}
+                    onUpdateSet={handleUpdateSet}
+                    onDeleteSet={handleDeleteSet}
+                    workoutBurnedCalories={workoutBurnedCalories}
+                    onCommitAIWorkouts={handleCommitAIWorkouts}
+                    onShowNotification={showNotification}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path="/nutrition"
-            element={<NutritionPage workoutBurnedCalories={workoutBurnedCalories} />}
-          />
-          <Route path="/food-intel" element={<FoodScannerPage />} />
-          <Route path="/history" element={<HistoryPage workouts={workouts} />} />
-          <Route
-            path="/exercises"
-            element={
-              <ExercisesPage
-                onAddWorkout={handleAddWorkout}
-                onShowNotification={showNotification}
+              <Route
+                path="/nutrition"
+                element={<NutritionPage workoutBurnedCalories={workoutBurnedCalories} />}
               />
-            }
+              <Route path="/food-intel" element={<FoodScannerPage />} />
+              <Route path="/history" element={<HistoryPage workouts={workouts} />} />
+              <Route
+                path="/exercises"
+                element={
+                  <ExercisesPage
+                    onAddWorkout={handleAddWorkout}
+                    onShowNotification={showNotification}
+                  />
+                }
+              />
+              <Route path="/analytics" element={<AnalyticsPage workouts={workouts} />} />
+              <Route
+                path="/settings"
+                element={<SettingsPage mode={mode} onToggleTheme={handleToggleTheme} />}
+              />
+            </Routes>
+          </ConsoleCenterStage>
+
+          {/* Right Rail: Mechanical Rest Chronometer, Session Tonnage & Fuel Gauge (Desktop >= 1200px) */}
+          <DesktopTelemetryRail
+            workouts={workouts}
+            workoutBurnedCalories={workoutBurnedCalories}
           />
-          <Route path="/analytics" element={<AnalyticsPage workouts={workouts} />} />
-          <Route
-            path="/settings"
-            element={<SettingsPage mode={mode} onToggleTheme={handleToggleTheme} />}
-          />
-        </Routes>
+        </ConsoleLayoutGrid>
       </AppShell>
+
+      {/* Global AI Workout Natural Language Parsing Modal */}
+      <WorkoutAIModal
+        open={globalAiModalOpen}
+        onClose={() => setGlobalAiModalOpen(false)}
+        onCommitExercises={handleCommitAIWorkouts}
+        onShowNotification={showNotification}
+      />
+
+      {/* Global Athlete Authentication Modal */}
+      <AuthModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        onShowNotification={showNotification}
+      />
 
       {/* Global Notification Feedback */}
       <Snackbar

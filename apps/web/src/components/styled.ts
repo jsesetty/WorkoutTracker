@@ -805,3 +805,111 @@ export const AuthContainerBox = styled('form')(({ theme }) => ({
   gap: theme.spacing(2),
   paddingTop: theme.spacing(1),
 }));
+
+export const ConsoleLayoutGrid = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(2.5),
+  alignItems: 'flex-start',
+  width: '100%',
+  marginTop: theme.spacing(2),
+}));
+
+export const ConsoleLeftRail = styled(Box)(({ theme }) => ({
+  width: '240px',
+  flexShrink: 0,
+  position: 'sticky',
+  top: '20px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  [theme.breakpoints.down('lg')]: {
+    display: 'none',
+  },
+}));
+
+export const ConsoleCenterStage = styled(Box)({
+  flex: 1,
+  minWidth: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+});
+
+export const ConsoleRightRail = styled(Box)(({ theme }) => ({
+  width: '310px',
+  flexShrink: 0,
+  position: 'sticky',
+  top: '20px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  [theme.breakpoints.down('lg')]: {
+    display: 'none',
+  },
+}));
+
+export const RailCard = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderRadius: '4px',
+  border: `1px solid ${theme.palette.divider}`,
+  backgroundColor: theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
+  boxShadow: 'none',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(1.5),
+}));
+
+export const RailSectionTitle = styled(Typography)(({ theme }) => ({
+  fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
+  fontSize: '0.7rem',
+  fontWeight: 700,
+  letterSpacing: '0.06em',
+  color: theme.palette.text.secondary,
+  textTransform: 'uppercase',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}));
+
+export const StationRailBtn = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(({ theme, active }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  padding: '8px 12px',
+  borderRadius: '4px',
+  textTransform: 'uppercase',
+  fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
+  fontSize: '0.78rem',
+  fontWeight: 700,
+  letterSpacing: '0.03em',
+  color: active ? '#FF5500' : theme.palette.text.primary,
+  backgroundColor: active
+    ? theme.palette.mode === 'dark'
+      ? 'rgba(255, 85, 0, 0.12)'
+      : 'rgba(255, 85, 0, 0.08)'
+    : 'transparent',
+  border: `1px solid ${active ? 'rgba(255, 85, 0, 0.35)' : 'transparent'}`,
+  transition: 'all 0.1s ease-out',
+  '&:hover': {
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? 'rgba(255, 255, 255, 0.04)'
+        : 'rgba(0, 0, 0, 0.04)',
+    color: '#FF5500',
+  },
+}));
+
+export const ChronometerDigits = styled(Typography)(({ theme }) => ({
+  fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
+  fontSize: '2rem',
+  fontWeight: 800,
+  letterSpacing: '0.04em',
+  color: theme.palette.text.primary,
+  textAlign: 'center',
+  fontVariantNumeric: 'tabular-nums',
+  lineHeight: 1.1,
+  padding: '6px 0',
+}));

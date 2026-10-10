@@ -10,6 +10,8 @@ import {
   MenuItem,
   Avatar,
   Divider,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -61,6 +63,8 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotification }) => {
   const isDark = mode === 'dark';
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useAuth();
@@ -278,22 +282,24 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
         </Box>
       </HeaderBar>
 
-      {/* Route Navigation Bar */}
-      <NavLinksGroup sx={{ mt: 1, px: 0.25 }}>
-        {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <NavButton
-              key={item.path}
-              id={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}-btn`}
-              active={isActive}
-              onClick={() => navigate(item.path)}
-            >
-              {item.label}
-            </NavButton>
-          );
-        })}
-      </NavLinksGroup>
+      {/* Route Navigation Bar (Visible on Mobile/Tablet viewports below lg breakpoint) */}
+      {!isDesktop && (
+        <NavLinksGroup sx={{ mt: 1, px: 0.25 }}>
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <NavButton
+                key={item.path}
+                id={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}-btn`}
+                active={isActive}
+                onClick={() => navigate(item.path)}
+              >
+                {item.label}
+              </NavButton>
+            );
+          })}
+        </NavLinksGroup>
+      )}
 
       {/* Auth Modal */}
       <AuthModal
