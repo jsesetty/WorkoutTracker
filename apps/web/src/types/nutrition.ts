@@ -15,6 +15,8 @@ export interface FoodItem {
   readonly id: string;
   readonly name: string;
   readonly brand?: string;
+  readonly barcode?: string;
+  readonly imageUrl?: string;
   readonly calories: number;
   readonly protein: number;
   readonly carbs: number;

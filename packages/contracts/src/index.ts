@@ -173,3 +173,50 @@ export const NaturalLanguageParseResponseSchema = z.object({
 
 export type NaturalLanguageParseRequest = z.infer<typeof NaturalLanguageParseRequestSchema>;
 export type NaturalLanguageParseResponse = z.infer<typeof NaturalLanguageParseResponseSchema>;
+
+// ============================================================================
+// CHECKPOINT 4: Food Intelligence & Barcode Contracts
+// ============================================================================
+
+export const AdditiveRiskEnum = z.enum(['None', 'Low', 'Moderate', 'Hazardous']);
+export type AdditiveRisk = z.infer<typeof AdditiveRiskEnum>;
+
+export const AdditiveInfoSchema = z.object({
+  code: z.string(),
+  name: z.string(),
+  risk: AdditiveRiskEnum,
+  description: z.string().optional(),
+});
+export type AdditiveInfo = z.infer<typeof AdditiveInfoSchema>;
+
+export const YukaRatingEnum = z.enum(['Excellent', 'Good', 'Mediocre', 'Bad']);
+export type YukaRating = z.infer<typeof YukaRatingEnum>;
+
+export const FoodItemSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  brand: z.string().optional(),
+  barcode: z.string().optional(),
+  imageUrl: z.string().optional(),
+  calories: z.number().nonnegative(),
+  protein: z.number().nonnegative(),
+  carbs: z.number().nonnegative(),
+  fat: z.number().nonnegative(),
+  servingSize: z.string().default('100g'),
+  yukaScore: z.number().min(0).max(100),
+  yukaRating: YukaRatingEnum,
+  additives: z.array(AdditiveInfoSchema).default([]),
+  novaGroup: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]).default(1),
+  isOrganic: z.boolean().default(false),
+  cleanAlternativeId: z.string().optional(),
+  cleanAlternativeName: z.string().optional(),
+});
+export type FoodItemDTO = z.infer<typeof FoodItemSchema>;
+
+export const BarcodeLookupResponseSchema = z.object({
+  found: z.boolean(),
+  source: z.enum(['local_cache', 'open_food_facts']),
+  product: FoodItemSchema.optional(),
+  error: z.string().optional(),
+});
+export type BarcodeLookupResponse = z.infer<typeof BarcodeLookupResponseSchema>;

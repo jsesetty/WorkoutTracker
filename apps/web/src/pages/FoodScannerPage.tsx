@@ -22,12 +22,14 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import AddIcon from '@mui/icons-material/Add';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import {
   FoodInspectorCard,
   AdditiveRiskBadge,
   CleanSwapCard,
 } from '../components/styled';
 import { YukaScoreBadge } from '../components/YukaScoreBadge';
+import { BarcodeScannerModal } from '../components/BarcodeScannerModal';
 import { FoodItem, MealCategory, AdditiveInfo } from '../types/nutrition';
 import { storage } from '../services/storageFallback';
 
@@ -42,6 +44,9 @@ export const FoodScannerPage: React.FC = () => {
   // Quick log menu state
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFoodForLog, setSelectedFoodForLog] = useState<FoodItem | null>(null);
+
+  // Barcode scanner modal state
+  const [barcodeScannerOpen, setBarcodeScannerOpen] = useState(false);
 
   // New food dialog state
   const [newFoodDialogOpen, setNewFoodDialogOpen] = useState(false);
@@ -58,7 +63,7 @@ export const FoodScannerPage: React.FC = () => {
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     message: string;
-    severity: 'success' | 'error' | 'info';
+    severity: 'success' | 'error' | 'info' | 'warning';
   }>({ open: false, message: '', severity: 'info' });
 
   // Fetch foods
@@ -93,7 +98,8 @@ export const FoodScannerPage: React.FC = () => {
       result = result.filter(
         (f) =>
           f.name.toLowerCase().includes(q) ||
-          (f.brand && f.brand.toLowerCase().includes(q))
+          (f.brand && f.brand.toLowerCase().includes(q)) ||
+          (f.barcode && f.barcode.toLowerCase().includes(q))
       );
     }
 
@@ -204,6 +210,24 @@ export const FoodScannerPage: React.FC = () => {
     }
   };
 
+  const handleFoodDetectedFromScanner = (scannedFood: FoodItem) => {
+    setFoods((prev) => {
+      const exists = prev.some((f) => f.id === scannedFood.id);
+      if (!exists) {
+        const updated = [scannedFood, ...prev];
+        storage.saveFoods(updated);
+        return updated;
+      }
+      return prev;
+    });
+    setSearchQuery(scannedFood.name);
+    setSnackbar({
+      open: true,
+      message: `Scanned: ${scannedFood.name} (Yuka: ${scannedFood.yukaScore}/100)`,
+      severity: 'success',
+    });
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Header */}
@@ -225,19 +249,35 @@ export const FoodScannerPage: React.FC = () => {
           </Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={() => setNewFoodDialogOpen(true)}
-          sx={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700,
-            borderRadius: '8px',
-          }}
-        >
-          Add Food Item
-        </Button>
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<QrCodeScannerIcon />}
+            onClick={() => setBarcodeScannerOpen(true)}
+            data-testid="open-barcode-scanner-btn"
+            sx={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 700,
+              borderRadius: '8px',
+            }}
+          >
+            SCAN BARCODE
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => setNewFoodDialogOpen(true)}
+            sx={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 700,
+              borderRadius: '8px',
+            }}
+          >
+            Add Food Item
+          </Button>
+        </Box>
       </Box>
 
       {/* Search & Filter Toolbar */}
@@ -339,18 +379,32 @@ export const FoodScannerPage: React.FC = () => {
                     )}
                   </Box>
 
-                  {food.brand && (
-                    <Typography
-                      sx={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontSize: '0.78rem',
-                        color: 'text.secondary',
-                        fontWeight: 600,
-                      }}
-                    >
-                      Brand: {food.brand}
-                    </Typography>
-                  )}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                    {food.brand && (
+                      <Typography
+                        sx={{
+                          fontFamily: "'Space Grotesk', sans-serif",
+                          fontSize: '0.78rem',
+                          color: 'text.secondary',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Brand: {food.brand}
+                      </Typography>
+                    )}
+                    {food.barcode && (
+                      <Chip
+                        label={`UPC: ${food.barcode}`}
+                        size="small"
+                        sx={{
+                          height: '20px',
+                          fontSize: '0.68rem',
+                          fontFamily: "'Space Grotesk', monospace",
+                          fontWeight: 600,
+                        }}
+                      />
+                    )}
+                  </Box>
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -634,6 +688,16 @@ export const FoodScannerPage: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Barcode Scanner Modal */}
+      <BarcodeScannerModal
+        open={barcodeScannerOpen}
+        onClose={() => setBarcodeScannerOpen(false)}
+        onFoodDetected={handleFoodDetectedFromScanner}
+        onShowNotification={(msg, sev) =>
+          setSnackbar({ open: true, message: msg, severity: sev || 'info' })
+        }
+      />
 
       {/* Snackbar */}
       <Snackbar
