@@ -232,4 +232,41 @@ test.describe('IronPulse Gym Training Session Tracker E2E Tests', () => {
     await expect(page.locator('text=AI NATURAL LANGUAGE WORKOUT PARSER')).not.toBeVisible();
     await expect(page.locator('text=Concept2 Rowing Ergometer')).toBeVisible();
   });
+
+  test('opens Food Intel Barcode Scanner, inspects product via preset code, and detects nutritional telemetry', async ({ page }) => {
+    // Navigate to Food Intel page
+    const foodIntelBtn = page.locator('#nav-food-intel-btn');
+    await foodIntelBtn.click();
+    await expect(page.getByRole('heading', { name: 'Food Quality & Ingredient Intel' })).toBeVisible();
+
+    // Click SCAN BARCODE button
+    const scanBtn = page.locator('[data-testid="open-barcode-scanner-btn"]');
+    await expect(scanBtn).toBeVisible();
+    await scanBtn.click();
+
+    // Verify Barcode Scanner modal opens
+    await expect(page.locator('[data-testid="barcode-scanner-modal"]')).toBeVisible();
+    await expect(page.getByText('FOOD INTEL BARCODE SCANNER')).toBeVisible();
+
+    // Click preset chip for chicken
+    const presetChip = page.locator('[data-testid="preset-barcode-078742372487"]');
+    await expect(presetChip).toBeVisible();
+    await presetChip.click();
+
+    // Verify detected food card appears
+    const detectedCard = page.locator('[data-testid="detected-food-card"]');
+    await expect(detectedCard).toBeVisible();
+    await expect(detectedCard.getByText('Organic Free-Range Chicken Breast')).toBeVisible();
+    await expect(detectedCard.getByText('98/100')).toBeVisible();
+
+    // Click USE THIS FOOD
+    const useFoodBtn = page.locator('[data-testid="barcode-use-food-btn"]');
+    await expect(useFoodBtn).toBeVisible();
+    await useFoodBtn.click();
+
+    // Verify modal closes and detected food is highlighted
+    await expect(page.locator('[data-testid="barcode-scanner-modal"]')).not.toBeVisible();
+    await expect(page.locator('text=Organic Free-Range Chicken Breast').first()).toBeVisible();
+  });
 });
+

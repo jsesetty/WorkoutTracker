@@ -717,3 +717,38 @@ export const CleanSwapCard = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
 }));
 
+export const ScannerViewfinderBox = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  width: '100%',
+  height: '260px',
+  borderRadius: '12px',
+  backgroundColor: '#0A0F1D',
+  overflow: 'hidden',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: `2px solid ${theme.palette.mode === 'dark' ? 'rgba(16, 185, 129, 0.4)' : 'rgba(16, 185, 129, 0.5)'}`,
+  animation: 'pulseGlow 2.5s infinite ease-in-out',
+}));
+
+export const ScannerLaserBeam = styled(Box)({
+  position: 'absolute',
+  left: '5%',
+  width: '90%',
+  height: '2px',
+  backgroundColor: '#10B981',
+  boxShadow: '0 0 12px #10B981, 0 0 20px #10B981',
+  zIndex: 10,
+  animation: 'laserScan 2.4s infinite ease-in-out',
+});
+
+export const ScannerReticleBox = styled(Box)({
+  position: 'absolute',
+  width: '210px',
+  height: '140px',
+  border: '2px dashed rgba(255, 255, 255, 0.4)',
+  borderRadius: '8px',
+  pointerEvents: 'none',
+  zIndex: 5,
+});
+
