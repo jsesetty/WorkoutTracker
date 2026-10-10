@@ -188,13 +188,9 @@ export const App: React.FC = () => {
           setDetails: nextSets.length > 0 ? nextSets : undefined,
         }),
       });
-      if (!res.ok) throw new Error('Toggle failed');
+      if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
-      console.error('Failed to sync workout state:', err);
-      setWorkouts((prev) =>
-        prev.map((w) => (w.id === id ? { ...w, completed: !nextCompleted } : w))
-      );
-      showNotification('Failed to update workout status', 'error');
+      console.warn('API unavailable, state saved locally:', err);
     }
   };
 
@@ -220,7 +216,6 @@ export const App: React.FC = () => {
     };
 
     const updatedSetDetails = [...currentSets, newSet];
-    const prevWorkouts = [...workouts];
 
     setWorkouts((prev) =>
       prev.map((w) =>
@@ -245,13 +240,11 @@ export const App: React.FC = () => {
           completed: false,
         }),
       });
-      if (!res.ok) throw new Error('Add set failed');
-      showNotification(`Added Set ${nextSetNumber} to ${workout.title}`, 'info');
+      if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
-      console.error('Failed to add set:', err);
-      setWorkouts(prevWorkouts);
-      showNotification('Failed to add set', 'error');
+      console.warn('API unavailable, set saved locally:', err);
     }
+    showNotification(`Added Set ${nextSetNumber} to ${workout.title}`, 'info');
   };
 
   // Update Set Handler
@@ -275,7 +268,6 @@ export const App: React.FC = () => {
     );
 
     const allSetsDone = updatedSetDetails.length > 0 && updatedSetDetails.every((s) => s.completed);
-    const prevWorkouts = [...workouts];
 
     setWorkouts((prev) =>
       prev.map((w) =>
@@ -303,11 +295,9 @@ export const App: React.FC = () => {
           completed: allSetsDone,
         }),
       });
-      if (!res.ok) throw new Error('Update set failed');
+      if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
-      console.error('Failed to update set:', err);
-      setWorkouts(prevWorkouts);
-      showNotification('Failed to update set', 'error');
+      console.warn('API unavailable, set saved locally:', err);
     }
   };
 
@@ -321,7 +311,6 @@ export const App: React.FC = () => {
       .map((s, idx) => ({ ...s, setNumber: idx + 1 }));
 
     const allSetsDone = updatedSetDetails.length > 0 && updatedSetDetails.every((s) => s.completed);
-    const prevWorkouts = [...workouts];
 
     setWorkouts((prev) =>
       prev.map((w) =>
@@ -346,12 +335,11 @@ export const App: React.FC = () => {
           completed: allSetsDone,
         }),
       });
-      if (!res.ok) throw new Error('Delete set failed');
+      if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
-      console.error('Failed to delete set:', err);
-      setWorkouts(prevWorkouts);
-      showNotification('Failed to remove set', 'error');
+      console.warn('API unavailable, set removal saved locally:', err);
     }
+    showNotification('Removed set from exercise', 'info');
   };
 
   // Update Title Handler
@@ -359,7 +347,6 @@ export const App: React.FC = () => {
     const workout = workouts.find((w) => w.id === id);
     if (!workout) return;
 
-    const oldTitle = workout.title;
     setWorkouts((prev) =>
       prev.map((w) => (w.id === id ? { ...w, title: newTitle } : w))
     );
@@ -370,39 +357,24 @@ export const App: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: newTitle }),
       });
-      if (!res.ok) throw new Error('Update title failed');
-      showNotification('Exercise details updated', 'info');
+      if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
-      console.error('Failed to update title:', err);
-      setWorkouts((prev) =>
-        prev.map((w) => (w.id === id ? { ...w, title: oldTitle } : w))
-      );
-      showNotification('Failed to save updated exercise', 'error');
+      console.warn('API unavailable, title saved locally:', err);
     }
+    showNotification('Exercise details updated', 'info');
   };
 
   // Delete Workout Handler
   const handleDeleteWorkout = async (id: string) => {
-    const workoutIndex = workouts.findIndex((w) => w.id === id);
-    const removedWorkout = workouts[workoutIndex];
-
     setWorkouts((prev) => prev.filter((w) => w.id !== id));
 
     try {
       const res = await fetch(`/api/workouts/${id}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Delete failed');
-      showNotification('Exercise removed from session', 'info');
+      if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
-      console.error('Failed to delete exercise:', err);
-      if (removedWorkout) {
-        setWorkouts((prev) => {
-          const updated = [...prev];
-          updated.splice(workoutIndex, 0, removedWorkout);
-          return updated;
-        });
-      }
-      showNotification('Failed to remove exercise', 'error');
+      console.warn('API unavailable, deletion saved locally:', err);
     }
+    showNotification('Exercise removed from session', 'info');
   };
 
   // Clear Completed Handler
@@ -410,21 +382,18 @@ export const App: React.FC = () => {
     const completedCount = workouts.filter((w) => w.completed).length;
     if (completedCount === 0) return;
 
-    const prevWorkouts = [...workouts];
     setWorkouts((prev) => prev.filter((w) => !w.completed));
 
     try {
       const res = await fetch('/api/workouts-completed', { method: 'DELETE' });
-      if (!res.ok) throw new Error('Clear completed failed');
-      showNotification(
-        `Cleared ${completedCount} finished exercise${completedCount > 1 ? 's' : ''}`,
-        'info'
-      );
+      if (!res.ok) console.warn('Server sync failed, keeping local state');
     } catch (err) {
-      console.error('Failed to clear completed:', err);
-      setWorkouts(prevWorkouts);
-      showNotification('Failed to clear finished exercises', 'error');
+      console.warn('API unavailable, clear saved locally:', err);
     }
+    showNotification(
+      `Cleared ${completedCount} finished exercise${completedCount > 1 ? 's' : ''}`,
+      'info'
+    );
   };
 
   // Filter Counts
