@@ -2,17 +2,17 @@ import { styled } from '@mui/material/styles';
 import { Paper, Box, Typography, Container, Button } from '@mui/material';
 
 export const AppShell = styled(Container)(({ theme }) => ({
-  paddingTop: theme.spacing(3),
+  paddingTop: 0,
   paddingBottom: theme.spacing(6),
   minHeight: '100vh',
   width: '100%',
   maxWidth: '100%',
-  overflowX: 'hidden',
+  overflowX: 'clip',
   boxSizing: 'border-box',
   backgroundColor: theme.palette.background.default,
   transition: 'background-color 0.12s ease-out',
   [theme.breakpoints.down('sm')]: {
-    paddingTop: theme.spacing(1.5),
+    paddingTop: 0,
     paddingBottom: theme.spacing(3),
   },
 }));
@@ -886,7 +886,7 @@ export const ConsoleLeftRail = styled(Box)(({ theme }) => ({
   width: '240px',
   flexShrink: 0,
   position: 'sticky',
-  top: '20px',
+  top: '84px',
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(2),
@@ -907,7 +907,7 @@ export const ConsoleRightRail = styled(Box)(({ theme }) => ({
   width: '310px',
   flexShrink: 0,
   position: 'sticky',
-  top: '20px',
+  top: '84px',
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(2),

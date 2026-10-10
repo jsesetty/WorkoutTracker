@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -88,6 +88,25 @@ export const Header: React.FC<HeaderProps> = ({
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
 
+  // Prevent background main body scroll when side navigation drawer is open
+  useEffect(() => {
+    if (drawerOpen) {
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalHtmlOverflow = document.documentElement.style.overflow;
+      const originalTouchAction = document.body.style.touchAction;
+
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalHtmlOverflow;
+        document.body.style.touchAction = originalTouchAction;
+      };
+    }
+  }, [drawerOpen]);
+
   const today = new Date().toLocaleDateString(undefined, {
     weekday: 'short',
     month: 'short',
@@ -115,7 +134,23 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <Box component="header" sx={{ width: '100%', maxWidth: '100%' }}>
+    <Box
+      component="header"
+      sx={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 1100,
+        width: '100%',
+        maxWidth: '100%',
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark'
+            ? 'rgba(9, 11, 14, 0.94)'
+            : 'rgba(250, 250, 250, 0.94)',
+        backdropFilter: 'blur(10px)',
+        pt: { xs: 1, sm: 1.5 },
+        pb: { xs: 1, sm: 1.5 },
+      }}
+    >
       <HeaderBar>
         {/* Brand Section */}
         <BrandGroup>
@@ -344,6 +379,10 @@ export const Header: React.FC<HeaderProps> = ({
           anchor="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
+          ModalProps={{
+            keepMounted: true,
+            disableScrollLock: false,
+          }}
           PaperProps={{
             sx: {
               width: { xs: '84vw', sm: 320 },
@@ -356,6 +395,9 @@ export const Header: React.FC<HeaderProps> = ({
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
+              touchAction: 'pan-y',
+              overscrollBehavior: 'contain',
+              overflowY: 'auto',
             },
           }}
         >
