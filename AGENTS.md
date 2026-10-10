@@ -28,18 +28,22 @@ You operate as a **Principal Staff Software Engineer and AI Workflow Architect**
 - **Zero Lint & Warning Suppression**: Never disable ESLint rules inline (`/* eslint-disable */`), never modify config files to mute errors, and never dismiss compiler warnings.
 - **Strict Typing**: All component props, hook return signatures, API request/response payloads, and state items must have explicit interfaces or types located in `src/types/`.
 
-### 2.3 Styling Discipline & Design System Compliance (Zero Inline Styles)
+### 2.3 Styling Discipline & Design System Compliance (Zero Inline Styles & Anti-AI Slop Mandate)
 - **Authoritative Design System**: All visual design decisions, color tokens, typography scales, spacing grids, elevation levels, and kinetic animations must strictly comply with [DESIGN.md](file:///c:/Users/mouli/Antigravity_Dev/ToDoApp/DESIGN.md). Never invent arbitrary colors, margins, or fonts.
+- **Strict Anti-AI Slop Mandate**:
+  - **No Generic AI Tropes**: Strictly forbid `rounded-2xl`/`rounded-3xl` cards, purple/indigo mesh glows, 3-column bento boxes with centered icons, loose floating drop shadows, bouncy scale hover effects (`hover:scale-105`), and marketing placeholder copy.
+  - **Machined Restraint**: Corner radii must never exceed `6px` (`rounded-none` to `rounded-sm` / `4px`-`6px` max). Elevation is achieved solely through solid surfaces and crisp 1px division borders (`rgba(255, 255, 255, 0.08)`).
 - **No Raw Inline Styles**: Never use `style={{ ... }}` or scattered ad-hoc `sx={{ ... }}` objects with arbitrary pixel values or hardcoded hex colors.
 - **Centralized Token Derivation**:
-  - **Web (`apps/web`)**: All color palettes, dark/light themes, typography, and component overrides must derive from `apps/web/src/theme.ts` and global CSS tokens in `apps/web/src/index.css`.
+  - **Web (`apps/web`)**: All color palettes, surfaces, typography, and component overrides must derive from `apps/web/src/theme.ts` and global tokens in [DESIGN.md](file:///c:/Users/mouli/Antigravity_Dev/ToDoApp/DESIGN.md).
   - **Mobile (`apps/mobile`)**: All colors, spacing, and border radii must derive from `apps/mobile/src/theme.ts`.
 - **Styled Component Pattern (Web)**: Reusable UI wrappers and styled variants must use Emotion's `styled` utility exported from `@mui/material/styles` (located in `apps/web/src/components/styled.ts` or scoped component styled definitions).
-- **Transient Prop Hygiene**: Custom styling props (e.g., `active`, `completed`, `isMax`, `borderColor`, `risk`) passed to styled components **must** use `shouldForwardProp` to prevent invalid HTML attribute leakage into the DOM.
+- **Transient Prop Hygiene**: Custom styling props (e.g., `isCompleted`, `isPR`, `active`, `risk`, `borderColor`) passed to styled components **must** use `shouldForwardProp` to prevent invalid HTML attribute leakage into the DOM.
 - **Typography Scale Matching**:
-  - Headings & Display: `'Plus Jakarta Sans'` (weights: 600, 700, 800; negative letter-spacing).
-  - Brand Titles: `'Syne'` (weight: 800).
-  - Telemetry, Steppers, & Badges: `'Space Grotesk'` (monospace data typography).
+  - **Brand Hero**: `'Syne'` (weight: 800) — reserved solely for the IRONPULSE masthead.
+  - **Section Headers**: `'Space Grotesk'` (weights: 600, 700; `-0.03em` tracking).
+  - **Body & Prose**: `'Plus Jakarta Sans'` (weights: 400, 500; 14px default base).
+  - **Telemetry & Numbers**: `'Geist Mono'` / `'JetBrains Mono'` (`fontVariant: ['tabular-nums']`) for rep counters, poundages, splits, and timers.
 
 ### 2.4 File Modification Hygiene
 - **Pre-Modification Audit**: Always view and inspect the complete target file before applying changes.

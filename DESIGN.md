@@ -1,233 +1,197 @@
 # IronPulse Design System Specification (`DESIGN.md`)
 
-> **Scope**: Authoritative design language, token catalog, and styling architecture for the IronPulse ecosystem across Web (`apps/web`) and Mobile (`apps/mobile`).  
-> **Status**: Mandatory & Active. All UI components, page layouts, modals, and design modifications must strictly comply with this document.
+> **Scope**: Authoritative design contract, token catalog, and styling architecture for the IronPulse ecosystem across Web (`apps/web`) and Mobile (`apps/mobile`).  
+> **Status**: Active & Mandatory. All UI components, page structures, data layouts, and agent-generated modifications must strictly comply with this document.
 
 ---
 
-## 1. Design Philosophy & Aesthetic Identity
+## 1. Anti-AI Slop Mandate & Core Aesthetic Identity
 
-IronPulse combines **Cyber-Athletic Minimalism** with a **Studio Performance Cockpit**. The visual language is inspired by high-end performance gym equipment, telemetry HUD interfaces, and modern studio fitness consoles.
+This system is engineered specifically to prevent generic generative AI UI tropes (such as loose Inter-font layouts, rounded-3xl pastel cards, violet/indigo mesh glows, and symmetric 3-box bento grids).
 
-### Core Visual Principles
-1. **Dark-First Cockpit Atmosphere**: Deep void backgrounds (`#111317` Web / `#0A0D14` Mobile) eliminate visual fatigue and accentuate high-contrast biometric metrics.
-2. **Kinetic Performance Accents**: Vivid accents (Studio Emerald `#10B981` on Web, Athletic Neon Amber `#FF5722` on Mobile, and Cyber Cyan `#00E5FF`) immediately direct user attention to critical telemetry.
-3. **Data-Dense Telemetry Typography**: Strict separation between human-readable editorial text (`Plus Jakarta Sans`), high-impact brand headers (`Syne`), and monospace metric telemetry (`Space Grotesk`).
-4. **Border-Driven Tactile Geometry**: Clean 1px translucent borders (`rgba(255, 255, 255, 0.08)`) and controlled corner radii replace heavy, skeuomorphic drop shadows.
-5. **Living Interfaces**: Subtle micro-animations (`laserScan`, `pulseGlow`, smooth `0.15s` transitions) provide continuous feedback during workout logging and nutritional scanning.
+IronPulse follows an **Industrial Telemetry Console & Physical Rig Utility** aesthetic. The design language draws direct influence from precision competition machinery (Eleiko, Concept2, Rogue), mechanical athletic chronometers, and high-density telemetry consoles.
+
+### Core Visual Directives
+1. **Engineered Obsidian Base**: Deep obsidian canvas (`#090B0E`) without pastel tinting or floating ambient gradient blobs.
+2. **Single Operational Action Accent**: Industrial Hazard Amber (`#FF5500`) is the single universal primary action and focus trigger across all platforms. Field Emerald (`#059669`) is reserved strictly for completed milestones, confirmed sets, and PR records.
+3. **True Tabular Telemetry**: Numerical readouts, reps, barbell weights, timers, and timestamps are strictly rendered in true monospaced fonts with tabular figures (`tnum`).
+4. **Machined Mechanical Geometry**: Low, restrained corner radii (`rounded-none` to `rounded-sm`, max 4px–6px) and crisp 1px structural borders replace soft, floating drop shadows.
+5. **High Data Density Over Marketing Bento Boxes**: Prioritize split-pane viewports (e.g., 70% data workbench / 30% inspector panel), continuous log feeds, and structured tables over decorative cards with centered icons.
 
 ---
 
-## 2. Color System & Token Catalog
+## 2. Hard Anti-Patterns (Strictly Banned)
 
-### 2.1 Primary Brand & Kinetic Accents
-| Token | Hex / Value | Platform Usage | Intended Application |
-| :--- | :--- | :--- | :--- |
-| `primary.main` (Web) | `#10B981` | Web (MUI / Emotion) | Studio Emerald: Primary buttons, active tabs, completed sets, success badges |
-| `primary.light` (Web) | `#34D399` | Web | Hover glows, progress bar highlights |
-| `primary.dark` (Web) | `#059669` | Web | Button active/pressed states |
-| `secondary.main` (Web) | `#64748B` | Web | Titanium Slate: Secondary actions, muted chips, column headers |
-| `primary` (Mobile) | `#FF5722` | Mobile (RN Theme) | Athletic Neon Amber: Primary mobile CTAs, hero badges, workout triggers |
-| `primaryGlow` (Mobile) | `rgba(255, 87, 34, 0.25)` | Mobile | Hero button shadows, active glow indicators |
-| `secondary` (Mobile) | `#00E5FF` | Mobile | Cyber Cyan: Secondary actions, navigation highlights |
-| `success` (Mobile) | `#00E676` | Mobile | Electric Emerald: Verified checkmarks, completed workout indicators |
+Any code containing the following patterns will be rejected:
 
-### 2.2 Surface & Elevation Palette
-
-#### Dark Mode (Default Cockpit)
-| Layer | Web Token | Mobile Token | Description |
-| :--- | :--- | :--- | :--- |
-| **Root Void** | `#111317` | `#0A0D14` | Viewport backdrop, body background |
-| **Surface Paper** | `#181B20` | `#121622` | Cards, list items, modal surfaces, headers |
-| **Elevated Surface** | `rgba(255, 255, 255, 0.04)` | `#1A2030` | Hover states, nested pods, stepper containers |
-| **Subtle Divider** | `rgba(255, 255, 255, 0.08)` | `rgba(255, 255, 255, 0.08)` | Card borders, table dividers, separator lines |
-| **Active/Hover Border** | `rgba(255, 255, 255, 0.20)` | `rgba(255, 255, 255, 0.16)` | Card hover boundaries, active input borders |
-
-#### Light Mode (Studio Alabaster)
-| Layer | Web Token | Description |
+| Banned AI Trope | Why It Fails | Mandatory Replacement |
 | :--- | :--- | :--- |
-| **Root Background** | `#FAFAFA` | Clean studio ambient backdrop |
-| **Paper Surface** | `#FFFFFF` | Card paper, elevated panels, modal backgrounds |
-| **Dividers & Borders** | `#E5E7EB` | Hairline border lines |
-| **Muted Hover Surface** | `rgba(0, 0, 0, 0.02)` | Table row hovers, stepper backdrops |
-
-### 2.3 Text & Contrast Hierarchy
-| Level | Dark Mode Token | Light Mode Token | Typical Usage |
-| :--- | :--- | :--- | :--- |
-| **Text Primary** | `#F3F4F6` / `#F0F4F8` | `#111827` | Headings, card titles, numeric readout values |
-| **Text Secondary** | `#9CA3AF` / `#8E9CAE` | `#6B7280` | Subtitles, helper text, inactive navigation items |
-| **Text Muted** | `#6B7280` / `#556272` | `#9CA3AF` | Timestamp stamps, column headers, placeholder text |
-
-### 2.4 Macro Engine Nutrition Palette (Universal Cross-Platform)
-Both Web and Mobile strictly share identical color tokens for nutritional macronutrient tracking:
-
-| Macronutrient | Color Token | Hex Code | Visual Character |
-| :--- | :--- | :--- | :--- |
-| **Protein** | `colors.protein` | `#FF5722` | High-energy Athletic Coral / Amber |
-| **Carbohydrates** | `colors.carbs` | `#00E5FF` | Fast-glycogen Cyber Cyan |
-| **Fats** | `colors.fats` | `#FFD600` | Dense-energy Gold / Amber |
-| **Clean / Deficit** | `colors.success` | `#10B981` | Studio Emerald (caloric balance / wholesome status) |
-
-### 2.5 Food Additive Hazard Classification Palette
-Used in barcode scanning and nutrition ingredient risk badges:
-
-| Risk Tier | Color Token | Hex Code | Border / BG Fill Pattern |
-| :--- | :--- | :--- | :--- |
-| **None (Clean)** | Emerald | `#10B981` | `border: 1px solid #10B98150; bg: #10B98112` |
-| **Low Risk** | Cyan | `#06B6D4` | `border: 1px solid #06B6D450; bg: #06B6D412` |
-| **Moderate Risk**| Amber | `#F59E0B` | `border: 1px solid #F59E0B50; bg: #F59E0B12` |
-| **Hazardous** | Crimson | `#EF4444` | `border: 1px solid #EF444450; bg: #EF444412` |
+| **`rounded-2xl` / `rounded-3xl` cards** | Generates floaty, toy-like "bubble" UI. | Use `rounded-none`, `rounded-xs` (2px), or `rounded-sm` (4px). Max card radius is 6px. |
+| **Purple/Indigo gradients & blur glows** | Hallmarks of generic LLM boilerplates. | Solid surfaces with crisp 1px division borders (`rgba(255, 255, 255, 0.08)`). Zero blurred mesh blobs. |
+| **3-Column Bento Cards with centered Lucide icons** | Vague, low-density filler layout. | Tabular set logs, split-screen master-detail views, or compact control decks. |
+| **Loose, floating drop shadows** | Makes interfaces feel detached and blurry. | Sharp 1px mechanical outlines and solid elevation layers (`#090B0E` → `#12151B` → `#181D26`). |
+| **Bouncy hover transitions (`hover:scale-105`)** | Distracting and unnatural for performance apps. | Snappy, mechanical color/border shifts `<= 120ms ease-out`. |
+| **Superlative placeholder text** | "Supercharge your fitness journey." | Concrete telemetry terminology: `"Log Set 3 @ 140kg"`, `"Rest Interval: 01:30"`. |
 
 ---
 
-## 3. Typography Architecture
+## 3. Typographic Architecture
 
-IronPulse uses a three-tier typographic system loaded via Google Fonts and defined in CSS custom properties and theme definitions:
+IronPulse strictly segregates brand display, technical headings, general UI reading, and telemetry data:
 
 ```css
 :root {
-  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-brand: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-data: 'Space Grotesk', 'JetBrains Mono', Consolas, monospace;
+  --font-brand: 'Syne', sans-serif;
+  --font-display: 'Space Grotesk', -apple-system, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-telemetry: 'Geist Mono', 'JetBrains Mono', monospace;
 }
 ```
 
-### 3.1 Type Hierarchy Table
-| Style Tier | Font Family | Weights | Letter Spacing | Use Cases |
-| :--- | :--- | :--- | :--- | :--- |
-| **Display H1–H4** | `'Plus Jakarta Sans'` | `700`, `800` | `-0.02em` to `-0.015em` | Page titles, primary modal headers, dashboard greeting |
-| **Display H5–H6** | `'Plus Jakarta Sans'` | `600`, `700` | `-0.01em` | Section headers, card titles, exercise names |
-| **Brand Hero** | `'Syne'` | `800` | `0` | `IRONPULSE` logo mark, splash headlines |
-| **Body Primary** | `'Plus Jakarta Sans'` | `400`, `500` | `0` | Dialog messages, instructions, descriptions |
-| **Telemetry / Data** | `'Space Grotesk'` | `600`, `700` | `+0.02em` to `+0.05em` | Rep counters, weight inputs, timestamps, timers, macro numbers |
-| **Buttons & Tabs** | `'Space Grotesk'` | `600` | `+0.03em` | Primary & secondary buttons, tab labels, action triggers |
-| **Chips & Tags** | `'Space Grotesk'` | `600`, `700` | `+0.04em` | Set index tags, hazard badges, muscle group pills |
+### Typographic Roles & Rules
+- **Brand Hero (`Syne`, 800 weight)**: Reserved solely for the `IRONPULSE` masthead and top-level launch screens.
+- **Section Headers (`Space Grotesk`, 600–700 weight, `-0.03em` tracking)**: Page headings, drawer titles, exercise group names. Always compact and tight.
+- **Body & Prose (`Plus Jakarta Sans`, 400–500 weight, 14px default base)**: System messages, movement cues, workout notes.
+- **Telemetry & Figures (`Geist Mono` / `JetBrains Mono`, `fontVariant: ['tabular-nums']`)**: Rep counters, poundages, splits, heart rate readings, macro totals, and set tags.
 
 ---
 
-## 4. Spatial Geometry, Spacing & Elevation
+## 4. Color Palette & Functional Token Catalog
 
-### 4.1 Spacing Scale (8pt Grid)
-All padding, margin, and gap values must strictly derive from the spacing grid:
+### 4.1 Kinetic Brand & Action Tokens (Cross-Platform)
 
-| Token | Pixels | Rem (16px base) | Example Application |
-| :--- | :--- | :--- | :--- |
-| `xs` | `4px` | `0.25rem` | Badge padding, micro button gaps, steppers |
-| `sm` | `8px` | `0.5rem` | Chip padding, list item row gaps, button vertical padding |
-| `md` | `16px` | `1.0rem` | Card interior padding, toolbar gaps, form input spacing |
-| `lg` | `24px` | `1.5rem` | Container padding, modal body padding, grid gutters |
-| `xl` | `32px` | `2.0rem` | Screen padding, major section separators |
-| `2xl` | `48px` | `3.0rem` | Viewport top/bottom page gutters (`AppShell`) |
-
-### 4.2 Border Radius Hierarchy
-| Tier | Value | Web Pattern | Mobile Pattern | Typical Elements |
-| :--- | :--- | :--- | :--- | :--- |
-| **Micro** | `4px` - `6px` | `borderRadius: '6px'` | `theme.borderRadius.sm` | Stepper buttons, chips, table row containers |
-| **Input & Button**| `8px` - `10px` | `borderRadius: '8px'` | `theme.borderRadius.md` | Form fields, primary buttons, workout cards |
-| **Card & Modal** | `12px` | `borderRadius: '12px'` | `theme.borderRadius.md` | Meter cards, dialogs, food inspector cards |
-| **Elevated Hero** | `16px` - `18px` | `borderRadius: '16px'` | `theme.borderRadius.lg` | Mobile hero HUD cards, scanner viewfinder |
-| **Pill / Circular**| `9999px` / `50%` | `borderRadius: '9999px'` | `theme.borderRadius.full` | Avatar button, macro progress bars, status dots |
-
-### 4.3 Elevation & Shadows
-IronPulse uses minimal blur elevation, prioritizing crisp border reticles in dark mode:
-
-```ts
-// Web Card Default Elevation
-boxShadow: isDark ? '0 1px 3px rgba(0, 0, 0, 0.3)' : '0 1px 3px rgba(0, 0, 0, 0.05)'
-
-// Floating Popover / Dropdown Menu
-boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)'
-
-// Scanner HUD Glow
-boxShadow: '0 0 12px rgba(16, 185, 129, 0.3), inset 0 0 12px rgba(16, 185, 129, 0.15)'
+```typescript
+export const tokens = {
+  canvas: {
+    void: '#090B0E',        // Deepest dark backdrop (Web & Mobile)
+    surface: '#12151B',     // Active workbench cards and data rows
+    elevated: '#181D26',    // Dropdown popovers, nested pods, inputs
+    subtleBorder: 'rgba(255, 255, 255, 0.08)',
+    activeBorder: 'rgba(255, 255, 255, 0.22)',
+  },
+  accent: {
+    primary: '#FF5500',     // Industrial Hazard Amber (Primary CTAs, active states)
+    primaryHover: '#E04B00',
+    primarySubtle: 'rgba(255, 85, 0, 0.12)',
+    success: '#059669',     // Field Emerald (Completed sets, verified PR flags)
+    successSubtle: 'rgba(5, 150, 105, 0.14)',
+    telemetryCyan: '#00D8F6', // Split times, glycogen status, pacing meters
+    mutedSlate: '#5E697A',  // Column headers, inactive markers
+  },
+  text: {
+    primary: '#F0F3F7',
+    secondary: '#8893A4',
+    muted: '#4F5868',
+  },
+  macros: {
+    protein: '#FF5500',     // High-tension Amber
+    carbs: '#00D8F6',       // Fast Glycogen Cyan
+    fats: '#EAB308',        // Dense Gold
+    balance: '#059669',     // Balanced Emerald
+  }
+} as const;
 ```
 
 ---
 
-## 5. Kinetic Motion & Micro-Interactions
+## 5. Spatial Geometry & Elevation System
 
-### 5.1 Keyframe Animations
-Defined globally in `apps/web/src/index.css`:
+### 5.1 Spacing Scale (Base 8pt Grid)
+All padding, margin, and gap calculations must strictly adhere to the scale:
+- **`xs`: 4px** (Tags, micro-steppers, inline badges)
+- **`sm`: 8px** (Row gaps, chip padding, compact button padding)
+- **`md`: 16px** (Card padding, form field gaps, table cell padding)
+- **`lg`: 24px** (Module gaps, modal body padding)
+- **`xl`: 32px** (Major screen dividers, split-pane gutters)
 
-1. **`laserScan`**:
-   - Used for barcode viewfinder laser sweeping.
-   - Cycle: `2.4s infinite ease-in-out`.
-   - Motion: Travels vertically from `top: 8%` to `top: 88%` with opacity modulation (`0.7` to `1.0`).
+### 5.2 Radius Scale
+- **`radius-none`: 0px** (Dense table cells, full-width split decks)
+- **`radius-xs`: 2px** (Status indicators, inline telemetry pills)
+- **`radius-sm`: 4px** (Inputs, primary CTAs, steppers)
+- **`radius-md`: 6px** (Maximum allowed card and modal border radius)
 
-2. **`pulseGlow`**:
-   - Used for optical scanner borders and live HUD metrics.
-   - Cycle: `2.5s infinite ease-in-out`.
-   - Transition: Oscillates box shadow between subtle (`12px` spread, `0.3` alpha) and bright (`24px` spread, `0.6` alpha).
+> [!CAUTION]
+> `rounded-xl` through `rounded-3xl` are strictly forbidden.
 
-### 5.2 Transition Timings
-- **Button & Tab Hovers**: `all 0.15s ease-in-out`
-- **Theme Color Mode Switches**: `background-color 0.2s ease, color 0.2s ease`
-- **Card Hover Border Highlights**: `border-color 0.15s ease, box-shadow 0.15s ease`
+### 5.3 Elevation
+No blurred box shadows on content cards. Elevation is indicated solely through solid surfaces and borders:
+
+```css
+/* Standard Workbench Card */
+background-color: #12151B;
+border: 1px solid rgba(255, 255, 255, 0.08);
+box-shadow: none;
+
+/* Popover / Action Menu */
+background-color: #181D26;
+border: 1px solid rgba(255, 255, 255, 0.16);
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+
+/* Keyboard Focus */
+outline: 2px solid #FF5500;
+outline-offset: 2px;
+```
 
 ---
 
-## 6. Implementation Recipes & Component Conventions
+## 6. Implementation Conventions
 
-### 6.1 Web: Emotion Styled Component Pattern
-All web components must use Emotion's `styled` utility exported from `@mui/material/styles`.
-
-#### Rule: Transient Props with `shouldForwardProp`
-Custom styling props (such as `active`, `completed`, `isMax`, `risk`, `borderColor`) **must not leak into HTML DOM elements**. Always wrap them with `shouldForwardProp`:
+### 6.1 Web: Emotion / MUI Component Pattern
+Never leak custom props to the DOM. Use `shouldForwardProp` and crisp mechanical borders:
 
 ```tsx
 import { styled } from '@mui/material/styles';
-import { Paper, Typography } from '@mui/material';
+import { Paper } from '@mui/material';
 
-export const WorkoutCardPaper = styled(Paper, {
-  shouldForwardProp: (prop) => prop !== 'borderColor' && prop !== 'completed',
-})<{ borderColor: string; completed?: boolean }>(({ theme, borderColor, completed }) => ({
-  padding: theme.spacing(1.75, 2),
-  borderRadius: '10px',
+export const SetRowContainer = styled(Paper, {
+  shouldForwardProp: (prop) => prop !== 'isCompleted' && prop !== 'isPR',
+})<{ isCompleted?: boolean; isPR?: boolean }>(({ theme, isCompleted, isPR }) => ({
   display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(1),
-  border: `1px solid ${theme.palette.divider}`,
-  borderLeft: `4px solid ${borderColor}`,
-  opacity: completed ? 0.75 : 1,
-  backgroundColor: completed
-    ? theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, 0.02)'
-      : 'rgba(0, 0, 0, 0.015)'
-    : theme.palette.background.paper,
-  transition: 'border-color 0.15s ease',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '10px 14px',
+  borderRadius: '4px',
+  backgroundColor: isCompleted ? 'rgba(5, 150, 105, 0.06)' : '#12151B',
+  border: `1px solid ${
+    isPR 
+      ? '#FF5500' 
+      : isCompleted 
+        ? 'rgba(5, 150, 105, 0.35)' 
+        : 'rgba(255, 255, 255, 0.08)'
+  }`,
+  transition: 'border-color 100ms ease-out, background-color 100ms ease-out',
   '&:hover': {
-    borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : '#CBD5E1',
-    borderLeftColor: borderColor,
+    borderColor: isCompleted ? '#059669' : 'rgba(255, 255, 255, 0.22)',
   },
 }));
 ```
 
 ### 6.2 Mobile: React Native StyleSheet Pattern
-All mobile screens and components must use `StyleSheet.create` and reference tokens directly from `../theme`:
+Always declare explicit monospace tabular figures on numerical telemetry counters:
 
 ```tsx
 import { StyleSheet } from 'react-native';
-import { theme } from '../theme';
+import { tokens } from '../theme';
 
 export const styles = StyleSheet.create({
   card: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
-    padding: theme.spacing.md,
+    backgroundColor: tokens.canvas.surface,
+    borderRadius: 4,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    marginBottom: theme.spacing.md,
+    borderColor: tokens.canvas.subtleBorder,
+    padding: 12,
   },
-  headerText: {
-    color: theme.colors.textPrimary,
-    fontSize: 14,
-    fontWeight: '800',
-    letterSpacing: 0.8,
+  label: {
+    fontFamily: 'SpaceGrotesk-SemiBold',
+    fontSize: 12,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    color: tokens.text.secondary,
   },
-  metricNumber: {
-    color: theme.colors.primary,
-    fontSize: 28,
-    fontWeight: '900',
+  metricDisplay: {
+    fontFamily: 'GeistMono-Bold',
+    fontSize: 24,
+    color: tokens.accent.primary,
     fontVariant: ['tabular-nums'],
   },
 });
@@ -235,20 +199,22 @@ export const styles = StyleSheet.create({
 
 ---
 
-## 7. Strict Prohibitions (Zero-Tolerance Anti-Patterns)
+## 7. Motion & Micro-Interactions
 
-1. ❌ **No Raw Inline Styles**: Never write `style={{ color: '#10B981', padding: '10px' }}` in React JSX.
-2. ❌ **No Ad-Hoc `sx` Pixel Blobs**: Never write `<Box sx={{ p: '13px', backgroundColor: '#181b20' }}>`.
-3. ❌ **No Hardcoded Hex Colors**: All colors must resolve from `theme.palette.*` (Web) or `theme.colors.*` (Mobile).
-4. ❌ **No Arbitrary Font Stacks**: Never declare inline `fontFamily: "Arial"` or generic browser defaults. Use the three designated font families (`Plus Jakarta Sans`, `Syne`, `Space Grotesk`).
-5. ❌ **No Broken HTML Attribute Leakage**: Never pass boolean styling props to styled elements without `shouldForwardProp`.
+- **Duration**: Transition durations must be between 80ms and 120ms (`ease-out`). Avoid long floating eases.
+- **State Confirmation**: Clicking a set confirmation or barcode scan trigger results in a distinct instantaneous color swap, not an expanding ripple or bouncing scale effect.
+- **Scan HUD**: Viewfinder scanning indicators use a crisp 1px line (`#00D8F6`) traveling across the container with zero ambient gaussian blur.
 
 ---
 
-## 8. Accessibility & Quality Gate (WCAG 2.1 AA)
+## 8. Quality & Accessibility Verification Gate
 
-- **Color Contrast**: All primary text readouts on dark void backgrounds must maintain a minimum contrast ratio of `7:1` (exceeding AAA standard). Secondary text (`#9CA3AF`) on void maintains `4.8:1` (passing AA standard).
-- **Interactive Target Sizes**:
-  - Web: Buttons, steppers, and inputs must have a minimum interactive touch target of `36px × 36px` (preferably `40px`).
-  - Mobile: Touchable triggers must meet the minimum `44pt × 44pt` Apple Human Interface / Material guidelines.
-- **Visual Focus States**: Keyboard tab navigation must render distinct focus outlines with primary brand contrast (`borderColor: #10B981`).
+- **Color Contrast**: Primary text (`#F0F3F7`) on base canvas (`#090B0E`) maintains a 17.4:1 contrast ratio (exceeds WCAG AAA). Secondary text (`#8893A4`) maintains a 5.8:1 ratio (exceeds WCAG AA).
+- **Target Sizes**:
+  - **Web**: Interactive inputs and stepper increment triggers must be at least 36px × 36px (ideal 40px).
+  - **Mobile**: Touchable targets must strictly meet 44pt × 44pt.
+- **Focus Indicators**: Keyboard tab navigation must render an unmistakable mechanical focus ring:
+  ```css
+  outline: 2px solid #FF5500;
+  outline-offset: 2px;
+  ```
