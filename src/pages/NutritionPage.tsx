@@ -35,7 +35,9 @@ import {
   NutritionGoals,
   FoodItem,
   MealCategory,
+  YukaRating,
 } from '../types/nutrition';
+import { storage } from '../services/storageFallback';
 
 interface NutritionPageProps {
   readonly workoutBurnedCalories?: number;
@@ -95,25 +97,39 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
       if (mealsRes.ok) {
         const mealsData: LoggedMeal[] = await mealsRes.json();
         setMeals(mealsData);
+        storage.saveMeals(mealsData);
+      } else {
+        setMeals(storage.getMeals());
       }
       if (goalsRes.ok) {
         const goalsData: NutritionGoals = await goalsRes.json();
         setGoals(goalsData);
+      } else {
+        setGoals(storage.getGoals());
       }
       if (foodsRes.ok) {
         const foodsData: FoodItem[] = await foodsRes.json();
         setFoods(foodsData);
+        storage.saveFoods(foodsData);
+      } else {
+        setFoods(storage.getFoods());
       }
     } catch {
-      setSnackbar({
-        open: true,
-        message: 'Failed to synchronize nutrition records with server',
-        severity: 'error',
-      });
+      // Use offline storage on static hosting
+      setMeals(storage.getMeals());
+      setGoals(storage.getGoals());
+      setFoods(storage.getFoods());
     } finally {
       setLoading(false);
     }
   }, []);
+
+  // Sync meals to local storage on change
+  useEffect(() => {
+    if (meals.length > 0) {
+      storage.saveMeals(meals);
+    }
+  }, [meals]);
 
   useEffect(() => {
     fetchData();
@@ -220,10 +236,27 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
         severity: 'success',
       });
     } catch {
+      // Static / offline fallback
+      const offlineMeal: LoggedMeal = {
+        id: `meal-local-${Date.now()}`,
+        name: payload.name,
+        category: payload.category,
+        calories: payload.calories,
+        protein: payload.protein,
+        carbs: payload.carbs,
+        fat: payload.fat,
+        servingSize: payload.servingSize,
+        createdAt: new Date().toISOString(),
+        foodId: payload.foodId,
+        yukaScore: payload.yukaScore ?? 85,
+        yukaRating: (payload.yukaRating as YukaRating) || 'Good',
+      };
+      setMeals((prev) => [offlineMeal, ...prev]);
+      setDialogOpen(false);
       setSnackbar({
         open: true,
-        message: 'Could not persist meal item',
-        severity: 'error',
+        message: `Logged ${offlineMeal.name} to ${offlineMeal.category}!`,
+        severity: 'success',
       });
     }
   };

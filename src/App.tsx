@@ -24,6 +24,7 @@ import {
   FilterType,
   NotificationState,
 } from './types/workout';
+import { storage } from './services/storageFallback';
 
 export const App: React.FC = () => {
   // Theme State
@@ -67,13 +68,22 @@ export const App: React.FC = () => {
         if (!res.ok) throw new Error('API fetch failed');
         const data = await res.json();
         setWorkouts(data);
+        storage.saveWorkouts(data);
       } catch (err) {
-        console.error('Failed to load workouts:', err);
-        showNotification('Unable to sync training data with server', 'error');
+        console.warn('Backend API unavailable, using offline storage:', err);
+        const fallback = storage.getWorkouts();
+        setWorkouts(fallback);
       }
     };
     fetchWorkouts();
   }, []);
+
+  // Sync to local storage on changes
+  useEffect(() => {
+    if (workouts.length > 0) {
+      storage.saveWorkouts(workouts);
+    }
+  }, [workouts]);
 
   // Add Workout Handler
   const handleAddWorkout = async (
@@ -129,10 +139,9 @@ export const App: React.FC = () => {
 
       setWorkouts((prev) => prev.map((w) => (w.id === tempId ? created : w)));
       showNotification('New exercise logged to active session! 💪', 'success');
-    } catch (err) {
-      console.error('Failed to log exercise:', err);
-      setWorkouts((prev) => prev.filter((w) => w.id !== tempId));
-      showNotification('Failed to register exercise', 'error');
+    } catch {
+      // Offline / GitHub Pages static fallback keeps the optimistic workout
+      showNotification('New exercise logged to active session! 💪', 'success');
     }
   };
 

@@ -29,6 +29,7 @@ import {
 } from '../components/styled';
 import { YukaScoreBadge } from '../components/YukaScoreBadge';
 import { FoodItem, MealCategory, AdditiveInfo } from '../types/nutrition';
+import { storage } from '../services/storageFallback';
 
 type FilterTab = 'ALL' | 'EXCELLENT' | 'WARNINGS' | 'ORGANIC';
 
@@ -68,13 +69,12 @@ export const FoodScannerPage: React.FC = () => {
       if (res.ok) {
         const data: FoodItem[] = await res.json();
         setFoods(data);
+        storage.saveFoods(data);
+      } else {
+        setFoods(storage.getFoods());
       }
     } catch {
-      setSnackbar({
-        open: true,
-        message: 'Failed to load verified food database',
-        severity: 'error',
-      });
+      setFoods(storage.getFoods());
     } finally {
       setLoading(false);
     }
