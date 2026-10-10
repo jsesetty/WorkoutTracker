@@ -445,7 +445,11 @@ export const App: React.FC = () => {
 
       <AppShell maxWidth="md">
         {/* Navigation Header */}
-        <Header mode={mode} onToggleTheme={handleToggleTheme} />
+        <Header
+          mode={mode}
+          onToggleTheme={handleToggleTheme}
+          onShowNotification={showNotification}
+        />
 
         {/* Page Routes */}
         <Routes>

@@ -27,6 +27,8 @@ export default function App() {
     fatGrams: 65,
   });
 
+  const [athleteEmail, setAthleteEmail] = useState<string | null>('athlete@ironpulse.fit');
+
   // Initial Data Fetch
   useEffect(() => {
     let isMounted = true;
@@ -82,9 +84,19 @@ export default function App() {
           <Text style={styles.brandTitle}>IRONPULSE</Text>
           <Text style={styles.brandTag}>MOBILE // V1.0</Text>
         </View>
-        <View style={styles.syncStatus}>
-          <View style={styles.syncDot} />
-          <Text style={styles.syncText}>SYNCED</Text>
+        <View style={styles.headerRight}>
+          <TouchableOpacity
+            onPress={() => setAthleteEmail(athleteEmail ? null : 'athlete@ironpulse.fit')}
+            style={[styles.athleteBadge, athleteEmail ? styles.athleteActive : styles.athleteGuest]}
+          >
+            <Text style={[styles.athleteText, athleteEmail ? styles.athleteTextActive : styles.athleteTextGuest]}>
+              {athleteEmail ? 'ATHLETE' : 'GUEST'}
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.syncStatus}>
+            <View style={styles.syncDot} />
+            <Text style={styles.syncText}>SYNCED</Text>
+          </View>
         </View>
       </View>
 
@@ -198,6 +210,36 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: '800',
     letterSpacing: 1,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  athleteBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+  },
+  athleteActive: {
+    backgroundColor: 'rgba(0, 245, 155, 0.12)',
+    borderColor: theme.colors.primary,
+  },
+  athleteGuest: {
+    backgroundColor: theme.colors.surfaceElevated,
+    borderColor: theme.colors.border,
+  },
+  athleteText: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.6,
+  },
+  athleteTextActive: {
+    color: theme.colors.primary,
+  },
+  athleteTextGuest: {
+    color: theme.colors.textMuted,
   },
   syncStatus: {
     flexDirection: 'row',

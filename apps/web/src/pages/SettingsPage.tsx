@@ -10,9 +10,16 @@ import {
   Switch,
   FormControlLabel,
   Divider,
+  Button,
+  Chip,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { ContentWrapper } from '../components/styled';
+import { useAuth } from '../auth/AuthProvider';
+import { AuthModal } from '../components/AuthModal';
 
 interface SettingsPageProps {
   readonly mode: 'dark' | 'light';
@@ -20,6 +27,8 @@ interface SettingsPageProps {
 }
 
 export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme }) => {
+  const { user, signOut } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [unit, setUnit] = useState<'kg' | 'lbs'>('kg');
   const [restTimer, setRestTimer] = useState<number>(90);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
@@ -162,6 +171,105 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
           />
         </Box>
       </Paper>
+
+      {/* Account & Session Management Card */}
+      <Paper
+        sx={{
+          p: 3.5,
+          borderRadius: '18px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          boxShadow: '0 16px 36px rgba(0, 0, 0, 0.35)',
+        }}
+        data-testid="settings-account-card"
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 800, fontFamily: "'Syne', sans-serif" }}>
+              ATHLETE ACCOUNT & SECURITY
+            </Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              Manage active session and cloud sync identity
+            </Typography>
+          </Box>
+          {user ? (
+            <Chip
+              icon={<VerifiedUserIcon sx={{ fontSize: '0.85rem !important' }} />}
+              label="AUTHENTICATED"
+              color="success"
+              size="small"
+              sx={{ fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}
+            />
+          ) : (
+            <Chip
+              label="GUEST MODE"
+              size="small"
+              variant="outlined"
+              sx={{ fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif" }}
+            />
+          )}
+        </Box>
+
+        <Divider />
+
+        {user ? (
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
+            <Box>
+              <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                {user.email}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "'Space Grotesk', monospace" }}>
+                Session ID: {user.id.substring(0, 18)}...
+              </Typography>
+            </Box>
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<LogoutIcon />}
+              onClick={() => signOut()}
+              data-testid="settings-signout-btn"
+              sx={{
+                fontWeight: 700,
+                fontFamily: "'Space Grotesk', sans-serif",
+                borderRadius: '8px',
+              }}
+            >
+              Sign Out
+            </Button>
+          </Box>
+        ) : (
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
+            <Box>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                You are currently training in Guest mode. Sign in to sync workouts and nutritional diary across devices.
+              </Typography>
+            </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              startIcon={<LockOutlinedIcon />}
+              onClick={() => setAuthModalOpen(true)}
+              data-testid="settings-signin-btn"
+              sx={{
+                fontWeight: 700,
+                fontFamily: "'Space Grotesk', sans-serif",
+                borderRadius: '8px',
+              }}
+            >
+              Sign In
+            </Button>
+          </Box>
+        )}
+      </Paper>
+
+      {/* Auth Modal Trigger */}
+      <AuthModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+      />
     </ContentWrapper>
   );
 };

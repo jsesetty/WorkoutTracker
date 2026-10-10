@@ -268,5 +268,44 @@ test.describe('IronPulse Gym Training Session Tracker E2E Tests', () => {
     await expect(page.locator('[data-testid="barcode-scanner-modal"]')).not.toBeVisible();
     await expect(page.locator('text=Organic Free-Range Chicken Breast').first()).toBeVisible();
   });
+
+  test('authenticates athlete via AuthModal, updates Header Avatar HUD, and executes sign out', async ({ page }) => {
+    // Verify Sign In button is present in Header
+    const signInBtn = page.locator('[data-testid="header-signin-btn"]');
+    await expect(signInBtn).toBeVisible();
+    await signInBtn.click();
+
+    // Verify Auth Modal opens
+    const authModal = page.locator('[data-testid="auth-modal"]');
+    await expect(authModal).toBeVisible();
+    await expect(page.getByText('IRONPULSE ATHLETE ACCESS')).toBeVisible();
+
+    // Click Demo Athlete Login button
+    const demoBtn = page.locator('[data-testid="auth-demo-btn"]');
+    await expect(demoBtn).toBeVisible();
+    await demoBtn.click();
+
+    // Verify modal closes and user avatar appears in header
+    await expect(authModal).not.toBeVisible();
+    const userBtn = page.locator('[data-testid="header-user-btn"]');
+    await expect(userBtn).toBeVisible();
+    await expect(userBtn.getByText('demo.athlete@ironpulse.fit')).toBeVisible();
+
+    // Open User Menu
+    await userBtn.click();
+    const userMenu = page.locator('[data-testid="header-user-menu"]');
+    await expect(userMenu).toBeVisible();
+    await expect(userMenu.getByText('ATHLETE', { exact: true })).toBeVisible();
+
+    // Click Sign Out
+    const logoutBtn = page.locator('[data-testid="header-logout-btn"]');
+    await expect(logoutBtn).toBeVisible();
+    await logoutBtn.click();
+
+    // Verify Header reverts to Sign In button
+    await expect(page.locator('[data-testid="header-signin-btn"]')).toBeVisible();
+    await expect(userBtn).not.toBeVisible();
+  });
 });
+
 
