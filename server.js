@@ -264,7 +264,24 @@ const handleUpdateWorkout = async (req, res) => {
     const index = workouts.findIndex(w => w.id === id);
 
     if (index === -1) {
-      return res.status(404).json({ error: 'Workout not found' });
+      // Upsert fallback: if workout was created offline with client UUID, persist it
+      const allSetsDone = Array.isArray(setDetails) && setDetails.length > 0 && setDetails.every(s => s.completed);
+      const newWorkout = {
+        id,
+        title: title || 'Logged Exercise',
+        muscleGroup: muscleGroup || 'Chest',
+        intensity: intensity || priority || 'medium',
+        sets: typeof sets === 'number' ? sets : (Array.isArray(setDetails) ? setDetails.length : 3),
+        reps: reps !== undefined ? String(reps) : '10',
+        weight: weight !== undefined ? String(weight) : '',
+        completed: typeof completed === 'boolean' ? completed : Boolean(allSetsDone),
+        createdAt: new Date().toISOString(),
+        notes: notes || '',
+        setDetails: Array.isArray(setDetails) ? setDetails : []
+      };
+      workouts.push(newWorkout);
+      await saveWorkouts(workouts);
+      return res.status(200).json(newWorkout);
     }
 
     if (Array.isArray(setDetails)) {
@@ -332,6 +349,40 @@ const handleUpdateWorkout = async (req, res) => {
 };
 app.patch('/api/workouts/:id', handleUpdateWorkout);
 app.patch('/api/todos/:id', handleUpdateWorkout);
+
+// Batch sync endpoint for offline outbox reconciliation
+app.post('/api/v1/sync', async (req, res) => {
+  try {
+    const { exercises } = req.body || {};
+    let workouts = await getWorkouts();
+    let updatedCount = 0;
+
+    if (Array.isArray(exercises)) {
+      for (const item of exercises) {
+        if (!item || !item.id) continue;
+        const idx = workouts.findIndex(w => w.id === item.id);
+        if (idx !== -1) {
+          workouts[idx] = { ...workouts[idx], ...item };
+        } else {
+          workouts.unshift(item);
+        }
+        updatedCount++;
+      }
+    }
+
+    if (updatedCount > 0) {
+      await saveWorkouts(workouts);
+    }
+
+    res.json({
+      success: true,
+      syncedAt: new Date().toISOString(),
+      count: updatedCount
+    });
+  } catch {
+    res.status(500).json({ error: 'Sync failed' });
+  }
+});
 
 // 4. Delete a single workout
 const handleDeleteWorkout = async (req, res) => {

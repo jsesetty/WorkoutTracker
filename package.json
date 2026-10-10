@@ -15,7 +15,10 @@
     "typecheck": "turbo run typecheck",
     "dev": "turbo run dev",
     "test:e2e": "playwright test",
-    "start": "node server.js"
+    "start": "node server.js",
+    "db:generate": "npm --workspace=@ironpulse/db run db:generate",
+    "db:push": "npm --workspace=@ironpulse/db run db:push",
+    "db:migrate": "npm --workspace=@ironpulse/db run db:migrate"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",
