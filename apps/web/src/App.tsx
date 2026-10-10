@@ -459,6 +459,7 @@ export const App: React.FC = () => {
           mode={mode}
           onToggleTheme={handleToggleTheme}
           onShowNotification={showNotification}
+          onOpenAIModal={() => setGlobalAiModalOpen(true)}
         />
 
         {/* High-Density 3-Column Industrial Command Station Grid */}
