@@ -28,10 +28,22 @@ You operate as a **Principal Staff Software Engineer and AI Workflow Architect**
 - **Zero Lint & Warning Suppression**: Never disable ESLint rules inline (`/* eslint-disable */`), never modify config files to mute errors, and never dismiss compiler warnings.
 - **Strict Typing**: All component props, hook return signatures, API request/response payloads, and state items must have explicit interfaces or types located in `src/types/`.
 
-### 2.3 Styling Discipline (Zero Inline Styles)
+### 2.3 Styling Discipline & Design System Compliance (Zero Inline Styles & Anti-AI Slop Mandate)
+- **Authoritative Design System**: All visual design decisions, color tokens, typography scales, spacing grids, elevation levels, and kinetic animations must strictly comply with [DESIGN.md](file:///c:/Users/mouli/Antigravity_Dev/ToDoApp/DESIGN.md). Never invent arbitrary colors, margins, or fonts.
+- **Strict Anti-AI Slop Mandate**:
+  - **No Generic AI Tropes**: Strictly forbid `rounded-2xl`/`rounded-3xl` cards, purple/indigo mesh glows, 3-column bento boxes with centered icons, loose floating drop shadows, bouncy scale hover effects (`hover:scale-105`), and marketing placeholder copy.
+  - **Machined Restraint**: Corner radii must never exceed `6px` (`rounded-none` to `rounded-sm` / `4px`-`6px` max). Elevation is achieved solely through solid surfaces and crisp 1px division borders (`rgba(255, 255, 255, 0.08)`).
 - **No Raw Inline Styles**: Never use `style={{ ... }}` or scattered ad-hoc `sx={{ ... }}` objects with arbitrary pixel values or hardcoded hex colors.
-- **Centralized Design System**: All colors, typography, border radii, and elevation levels must derive from `src/theme.ts`.
-- **Styled Component Pattern**: Reusable UI wrappers and styled variants must use Emotion's `styled` utility (located in `src/components/styled.ts` or component-specific styled definitions) or global CSS tokens in `src/index.css`.
+- **Centralized Token Derivation**:
+  - **Web (`apps/web`)**: All color palettes, surfaces, typography, and component overrides must derive from `apps/web/src/theme.ts` and global tokens in [DESIGN.md](file:///c:/Users/mouli/Antigravity_Dev/ToDoApp/DESIGN.md).
+  - **Mobile (`apps/mobile`)**: All colors, spacing, and border radii must derive from `apps/mobile/src/theme.ts`.
+- **Styled Component Pattern (Web)**: Reusable UI wrappers and styled variants must use Emotion's `styled` utility exported from `@mui/material/styles` (located in `apps/web/src/components/styled.ts` or scoped component styled definitions).
+- **Transient Prop Hygiene**: Custom styling props (e.g., `isCompleted`, `isPR`, `active`, `risk`, `borderColor`) passed to styled components **must** use `shouldForwardProp` to prevent invalid HTML attribute leakage into the DOM.
+- **Typography Scale Matching**:
+  - **Brand Hero**: `'Syne'` (weight: 800) — reserved solely for the IRONPULSE masthead.
+  - **Section Headers**: `'Space Grotesk'` (weights: 600, 700; `-0.03em` tracking).
+  - **Body & Prose**: `'Plus Jakarta Sans'` (weights: 400, 500; 14px default base).
+  - **Telemetry & Numbers**: `'Geist Mono'` / `'JetBrains Mono'` (`fontVariant: ['tabular-nums']`) for rep counters, poundages, splits, and timers.
 
 ### 2.4 File Modification Hygiene
 - **Pre-Modification Audit**: Always view and inspect the complete target file before applying changes.
@@ -79,19 +91,22 @@ flowchart LR
 ### 4.1 Project Stack Overview
 | Layer | Technology | Key Files / Conventions |
 | :--- | :--- | :--- |
-| **Frontend Runtime** | React 18 + TypeScript | `src/main.tsx`, `src/App.tsx`, `src/pages/*.tsx` |
-| **Build & Bundler** | Vite 5 | `vite.config.ts`, `tsconfig.json` |
-| **Routing** | React Router (`react-router-dom`) | Declarative routes in `src/App.tsx` or `src/routes.tsx` |
-| **UI & Styling** | MUI v6 + Emotion Styled | `src/theme.ts`, `src/components/styled.ts`, `src/index.css` |
-| **State & Data** | Custom React Hooks + REST | Optimistic state updates with HTTP sync to `/api/*` |
-| **Backend API** | Express.js (Node.js ESM) | `server.js`, persistent JSON stores in `data/*.json` |
-| **Testing** | Jest + RTL + Playwright | `src/**/__tests__/*.test.tsx`, `tests/e2e/*.spec.js` |
+| **Design System** | Cyber-Athletic Studio Specification | `DESIGN.md` (Authoritative tokens, typography & styled patterns) |
+| **Frontend Web** | React 18 + TypeScript + Vite 5 | `apps/web/src/main.tsx`, `apps/web/src/App.tsx`, `apps/web/src/pages/*.tsx` |
+| **Frontend Mobile** | React Native + Expo | `apps/mobile/App.tsx`, `apps/mobile/src/screens/*.tsx` |
+| **UI & Styling (Web)** | MUI v6 + Emotion Styled | `apps/web/src/theme.ts`, `apps/web/src/components/styled.ts`, `apps/web/src/index.css` |
+| **UI & Styling (Mobile)** | React Native StyleSheet | `apps/mobile/src/theme.ts` |
+| **Shared Contracts** | TypeScript Schemas & Contracts | `packages/contracts/src/index.ts` |
+| **State & Data** | Custom React Hooks + REST + Offline DB | Optimistic state updates with HTTP sync to `/api/*`, IndexedDB |
+| **Backend API** | Express.js (Node.js ESM) | `server.js`, `apps/api/server.js`, persistent JSON stores in `data/*.json` |
+| **Testing** | Jest + RTL + Playwright | `apps/web/src/**/__tests__/*.test.tsx`, `tests/e2e/*.spec.js` |
 
 ### 4.2 Component & Hook Conventions
 - **Component File Structure**:
-  - `src/components/<ComponentName>.tsx` (UI component)
-  - `src/components/styled.ts` (Reusable styled components)
-  - `src/pages/<PageName>.tsx` (Route entry pages)
+  - `apps/web/src/components/<ComponentName>.tsx` (Web UI component)
+  - `apps/web/src/components/styled.ts` (Web reusable styled components)
+  - `apps/web/src/pages/<PageName>.tsx` (Web route entry pages)
+  - `apps/mobile/src/screens/<ScreenName>.tsx` (Mobile screen component)
 - **Functional Components Only**: Use standard arrow functions or named function expressions with typed props:
   ```tsx
   interface WorkoutCardProps {
@@ -168,6 +183,13 @@ Validate end-to-end user journeys using Playwright:
 npm run test:e2e
 ```
 *Criteria: All core browser scenarios (load, interact, filter, navigate) execute successfully.*
+
+### Step 5: Design System & Styling Token Audit
+Audit all modified or newly created UI components against [DESIGN.md](file:///c:/Users/mouli/Antigravity_Dev/ToDoApp/DESIGN.md):
+- Zero inline styles (`style={{ ... }}`) or ad-hoc raw pixel/hex `sx={{ ... }}` objects.
+- All colors resolve through `theme.palette.*` (Web) or `theme.colors.*` (Mobile).
+- All custom styled component props use `shouldForwardProp` filtering.
+- Font families strictly align with `--font-display`, `--font-brand`, and `--font-data`.
 
 ---
 

@@ -37,7 +37,8 @@ export const MacroProgressBar: React.FC<MacroProgressBarProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
           <Typography
             sx={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
+              fontVariantNumeric: 'tabular-nums',
               fontSize: '0.84rem',
               fontWeight: 700,
               color: 'text.primary',
@@ -50,8 +51,9 @@ export const MacroProgressBar: React.FC<MacroProgressBarProps> = ({
           </Typography>
           <Typography
             sx={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: '0.72rem',
+              fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
+              fontVariantNumeric: 'tabular-nums',
+              fontSize: '0.75rem',
               fontWeight: 700,
               color: color,
             }}

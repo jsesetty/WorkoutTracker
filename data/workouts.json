@@ -1,44 +1,180 @@
 [
   {
-    "id": "workout-1791586935138-6um1t",
-    "title": "Bulgarian Split Squat 1791586934810",
-    "muscleGroup": "Chest",
+    "id": "5d847f86-cf43-4b52-8ade-d62f042c36c9",
+    "title": "Clean & Press",
+    "muscleGroup": "Full Body",
     "intensity": "medium",
-    "sets": 4,
-    "reps": "10",
-    "weight": "40 kg",
+    "sets": 3,
+    "reps": 10,
+    "weight": "",
     "setDetails": [
       {
-        "id": "temp-1791586935144-s-1",
+        "id": "1cf96e30-9a79-4b61-be6c-32449b03d9b5",
         "setNumber": 1,
-        "reps": 11,
-        "weight": "42.5 kg",
-        "completed": true
+        "reps": 10,
+        "weight": "",
+        "completed": false
       },
       {
-        "id": "temp-1791586935144-s-2",
+        "id": "6c8daad5-188c-4eba-9c4c-67b93c50aee1",
         "setNumber": 2,
         "reps": 10,
-        "weight": "40 kg",
+        "weight": "",
         "completed": false
       },
       {
-        "id": "temp-1791586935144-s-3",
+        "id": "a6440a5f-2c1e-4df8-9892-c9c1d526bd77",
         "setNumber": 3,
         "reps": 10,
-        "weight": "40 kg",
-        "completed": false
-      },
-      {
-        "id": "workout-1791586935138-6um1t-s-1791586935611-4",
-        "setNumber": 4,
-        "reps": 10,
+        "weight": "",
         "completed": false
       }
     ],
     "completed": false,
-    "createdAt": "2026-10-09T23:02:15.138Z",
-    "notes": ""
+    "createdAt": "2026-10-10T05:04:44.496Z"
+  },
+  {
+    "id": "31019fb6-8fba-4c1d-849b-e2b620f9131b",
+    "title": "Barbell Thrusters",
+    "muscleGroup": "Full Body",
+    "intensity": "medium",
+    "sets": 3,
+    "reps": 10,
+    "weight": "",
+    "setDetails": [
+      {
+        "id": "1051c4b0-22be-4953-9b9b-995686959856",
+        "setNumber": 1,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      },
+      {
+        "id": "733e0d49-139f-4a28-9d05-641c8aad85ea",
+        "setNumber": 2,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      },
+      {
+        "id": "15bba363-b828-4ef1-9506-f937e74c6ed4",
+        "setNumber": 3,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      }
+    ],
+    "completed": false,
+    "createdAt": "2026-10-10T05:04:50.430Z"
+  },
+  {
+    "id": "4d1d4abc-7eb7-47bd-9f6f-c08330a48b00",
+    "title": "Kettlebell Swings",
+    "muscleGroup": "Full Body",
+    "intensity": "medium",
+    "sets": 3,
+    "reps": 10,
+    "weight": "",
+    "setDetails": [
+      {
+        "id": "f7ac7ea2-48e8-4252-bb40-307f01eef5eb",
+        "setNumber": 1,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      },
+      {
+        "id": "6c5d64c3-6f8f-4eb8-908b-680d4992599a",
+        "setNumber": 2,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      },
+      {
+        "id": "d1273f27-913e-4758-83e7-1db837483f77",
+        "setNumber": 3,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      }
+    ],
+    "completed": false,
+    "createdAt": "2026-10-10T05:04:38.276Z"
+  },
+  {
+    "id": "f415f36b-6a58-48fd-9312-698889878010",
+    "title": "chest",
+    "muscleGroup": "Chest",
+    "intensity": "medium",
+    "sets": 3,
+    "reps": 10,
+    "weight": "",
+    "setDetails": [
+      {
+        "id": "8feb9f03-1f93-4af5-932b-828b293db7ca",
+        "setNumber": 1,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      },
+      {
+        "id": "04c64d8f-8a83-4200-8c46-f4f819f20506",
+        "setNumber": 2,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      },
+      {
+        "id": "b78c6625-fb59-47e7-9e85-c3197b5c2416",
+        "setNumber": 3,
+        "reps": 10,
+        "weight": "",
+        "completed": false
+      }
+    ],
+    "completed": false,
+    "createdAt": "2026-10-10T03:40:20.961Z"
+  },
+  {
+    "id": "e8b33497-db0d-460b-8188-1fcd109f4f44",
+    "title": "chest 2",
+    "muscleGroup": "Chest",
+    "intensity": "medium",
+    "sets": 4,
+    "reps": 10,
+    "weight": "",
+    "setDetails": [
+      {
+        "id": "3a201c4d-a116-49f9-9291-5b3c907e26c9",
+        "setNumber": 1,
+        "reps": 10,
+        "weight": "",
+        "completed": true
+      },
+      {
+        "id": "4c82c717-da2d-47f5-b37a-a0ac0ef12b1f",
+        "setNumber": 2,
+        "reps": 10,
+        "weight": "",
+        "completed": true
+      },
+      {
+        "id": "9ae6887e-b655-4ec3-94be-c110a022c0c0",
+        "setNumber": 3,
+        "reps": 10,
+        "weight": "",
+        "completed": true
+      },
+      {
+        "id": "2b1a09b9-9b6f-4fac-804b-212549a0096c",
+        "setNumber": 4,
+        "reps": 10,
+        "weight": "",
+        "completed": true
+      }
+    ],
+    "completed": true,
+    "createdAt": "2026-10-10T03:40:36.814Z"
   },
   {
     "id": "workout-1791586932122-6enua",
@@ -418,7 +554,7 @@
         "id": "temp-1791586413330-s-1",
         "setNumber": 1,
         "reps": 11,
-        "weight": "42.5 kg",
+        "weight": "47.5 kg",
         "completed": true
       },
       {
@@ -426,25 +562,26 @@
         "setNumber": 2,
         "reps": 10,
         "weight": "40 kg",
-        "completed": false
+        "completed": true
       },
       {
         "id": "temp-1791586413330-s-3",
         "setNumber": 3,
         "reps": 10,
         "weight": "40 kg",
-        "completed": false
+        "completed": true
       },
       {
         "id": "workout-1791586413330-zarqg-s-1791586413663-4",
         "setNumber": 4,
         "reps": 10,
-        "completed": false
+        "completed": true
       }
     ],
-    "completed": false,
+    "completed": true,
     "createdAt": "2026-10-09T22:53:33.330Z",
-    "notes": ""
+    "notes": "",
+    "completedAt": "2026-10-10T06:11:50.419Z"
   },
   {
     "id": "workout-1791586410794-s3vrk",

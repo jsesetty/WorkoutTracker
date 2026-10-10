@@ -42,10 +42,10 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
             alignItems: 'center',
             justifyContent: 'center',
             p: 1.25,
-            borderRadius: '12px',
-            backgroundColor: 'rgba(0, 245, 155, 0.12)',
+            borderRadius: '4px',
+            backgroundColor: 'rgba(255, 85, 0, 0.12)',
             color: 'primary.main',
-            boxShadow: '0 0 16px rgba(0, 245, 155, 0.25)',
+            boxShadow: 'none',
           }}
         >
           <SettingsIcon sx={{ fontSize: '1.8rem' }} />
@@ -55,8 +55,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
             variant="h5"
             sx={{
               fontWeight: 800,
-              fontFamily: "'Syne', sans-serif",
-              letterSpacing: '-0.02em',
+              fontFamily: "var(--font-brand, 'Syne', sans-serif)",
+              letterSpacing: '0',
             }}
           >
             TRACKER PREFERENCES & SETTINGS
@@ -69,12 +69,14 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
 
       <Paper
         sx={{
-          p: 3.5,
-          borderRadius: '18px',
+          p: 3,
+          borderRadius: '4px',
           display: 'flex',
           flexDirection: 'column',
           gap: 2.75,
-          boxShadow: '0 16px 36px rgba(0, 0, 0, 0.35)',
+          boxShadow: 'none',
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          backgroundColor: 'background.paper',
         }}
       >
         {/* Weight Units */}
@@ -175,18 +177,20 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
       {/* Account & Session Management Card */}
       <Paper
         sx={{
-          p: 3.5,
-          borderRadius: '18px',
+          p: 3,
+          borderRadius: '4px',
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
-          boxShadow: '0 16px 36px rgba(0, 0, 0, 0.35)',
+          boxShadow: 'none',
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          backgroundColor: 'background.paper',
         }}
         data-testid="settings-account-card"
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: 800, fontFamily: "'Syne', sans-serif" }}>
+            <Typography variant="h6" sx={{ fontWeight: 800, fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)", letterSpacing: '-0.02em' }}>
               ATHLETE ACCOUNT & SECURITY
             </Typography>
             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
@@ -199,14 +203,14 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
               label="AUTHENTICATED"
               color="success"
               size="small"
-              sx={{ fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}
+              sx={{ fontWeight: 700, fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)", borderRadius: '2px' }}
             />
           ) : (
             <Chip
               label="GUEST MODE"
               size="small"
               variant="outlined"
-              sx={{ fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif" }}
+              sx={{ fontWeight: 600, fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)", borderRadius: '2px' }}
             />
           )}
         </Box>
@@ -219,7 +223,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
               <Typography variant="body1" sx={{ fontWeight: 700 }}>
                 {user.email}
               </Typography>
-              <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "'Space Grotesk', monospace" }}>
+              <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)" }}>
                 Session ID: {user.id.substring(0, 18)}...
               </Typography>
             </Box>
@@ -232,8 +236,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
               data-testid="settings-signout-btn"
               sx={{
                 fontWeight: 700,
-                fontFamily: "'Space Grotesk', sans-serif",
-                borderRadius: '8px',
+                fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
+                borderRadius: '4px',
               }}
             >
               Sign Out
@@ -255,8 +259,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
               data-testid="settings-signin-btn"
               sx={{
                 fontWeight: 700,
-                fontFamily: "'Space Grotesk', sans-serif",
-                borderRadius: '8px',
+                fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
+                borderRadius: '4px',
               }}
             >
               Sign In

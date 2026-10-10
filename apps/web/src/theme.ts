@@ -7,70 +7,82 @@ export const getGymTheme = (mode: 'dark' | 'light' = 'dark'): Theme => {
     palette: {
       mode,
       primary: {
-        main: '#10B981', // Studio Emerald
-        light: '#34D399',
-        dark: '#059669',
+        main: '#FF5500', // Industrial Hazard Amber
+        light: 'rgba(255, 85, 0, 0.2)',
+        dark: '#E04B00',
         contrastText: '#FFFFFF',
       },
       secondary: {
-        main: '#64748B', // Titanium Slate
-        light: '#94A3B8',
-        dark: '#475569',
+        main: '#5E697A', // Muted Slate
+        light: '#8893A4',
+        dark: '#3A4250',
         contrastText: '#FFFFFF',
+      },
+      info: {
+        main: '#00D8F6', // Telemetry Cyan
+        light: '#66E8FC',
+        dark: '#00ADC5',
+        contrastText: '#090B0E',
       },
       warning: {
-        main: '#F59E0B', // Amber
-        light: '#FBBF24',
-        dark: '#D97706',
-        contrastText: '#FFFFFF',
+        main: '#EAB308', // Dense Gold
+        light: '#FACC15',
+        dark: '#CA8A04',
+        contrastText: '#090B0E',
       },
       success: {
-        main: '#10B981',
-        light: '#34D399',
-        dark: '#059669',
+        main: '#059669', // Field Emerald
+        light: '#10B981',
+        dark: '#047857',
         contrastText: '#FFFFFF',
       },
       error: {
-        main: '#EF4444', // Crimson Red
+        main: '#EF4444', // Hazard Red
         light: '#F87171',
         dark: '#DC2626',
         contrastText: '#FFFFFF',
       },
       background: {
-        default: isDark ? '#111317' : '#FAFAFA',
-        paper: isDark ? '#181B20' : '#FFFFFF',
+        default: isDark ? '#090B0E' : '#FAFAFA', // Obsidian Canvas
+        paper: isDark ? '#12151B' : '#FFFFFF',   // Active Workbench
       },
       text: {
-        primary: isDark ? '#F3F4F6' : '#111827',
-        secondary: isDark ? '#9CA3AF' : '#6B7280',
+        primary: isDark ? '#F0F3F7' : '#111827',
+        secondary: isDark ? '#8893A4' : '#5E697A',
       },
       divider: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E5E7EB',
     },
     typography: {
       fontFamily: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif",
       h1: {
+        fontFamily: "'Space Grotesk', -apple-system, sans-serif",
         fontWeight: 700,
-        letterSpacing: '-0.02em',
+        letterSpacing: '-0.03em',
       },
       h2: {
+        fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+        fontWeight: 700,
+        letterSpacing: '-0.03em',
+      },
+      h3: {
+        fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+        fontWeight: 700,
+        letterSpacing: '-0.025em',
+      },
+      h4: {
+        fontFamily: "'Space Grotesk', -apple-system, sans-serif",
         fontWeight: 700,
         letterSpacing: '-0.02em',
       },
-      h3: {
-        fontWeight: 700,
-        letterSpacing: '-0.015em',
-      },
-      h4: {
-        fontWeight: 700,
-        letterSpacing: '-0.015em',
-      },
       h5: {
+        fontFamily: "'Space Grotesk', -apple-system, sans-serif",
         fontWeight: 600,
-        letterSpacing: '-0.01em',
+        letterSpacing: '-0.02em',
       },
       h6: {
+        fontFamily: "'Space Grotesk', -apple-system, sans-serif",
         fontWeight: 600,
-        letterSpacing: '-0.01em',
+        letterSpacing: '-0.015em',
       },
       subtitle1: {
         fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -83,7 +95,7 @@ export const getGymTheme = (mode: 'dark' | 'light' = 'dark'): Theme => {
       button: {
         fontFamily: "'Space Grotesk', sans-serif",
         fontWeight: 600,
-        letterSpacing: '0.03em',
+        letterSpacing: '0.04em',
         textTransform: 'uppercase',
       },
       caption: {
@@ -91,15 +103,15 @@ export const getGymTheme = (mode: 'dark' | 'light' = 'dark'): Theme => {
       },
     },
     shape: {
-      borderRadius: 10,
+      borderRadius: 4,
     },
     components: {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            backgroundColor: isDark ? '#111317' : '#FAFAFA',
+            backgroundColor: isDark ? '#090B0E' : '#FAFAFA',
             minHeight: '100vh',
-            transition: 'background-color 0.2s ease, color 0.2s ease',
+            transition: 'background-color 0.12s ease-out, color 0.12s ease-out',
           },
         },
       },
@@ -107,35 +119,36 @@ export const getGymTheme = (mode: 'dark' | 'light' = 'dark'): Theme => {
         styleOverrides: {
           root: {
             backgroundImage: 'none',
-            backgroundColor: isDark ? '#181B20' : '#FFFFFF',
+            backgroundColor: isDark ? '#12151B' : '#FFFFFF',
+            borderRadius: 4,
             border: isDark
               ? '1px solid rgba(255, 255, 255, 0.08)'
               : '1px solid #E5E7EB',
-            boxShadow: isDark
-              ? '0 1px 3px rgba(0, 0, 0, 0.3)'
-              : '0 1px 3px rgba(0, 0, 0, 0.05)',
-            transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+            boxShadow: 'none',
+            transition: 'border-color 0.1s ease-out',
           },
         },
       },
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
-            padding: '8px 18px',
+            borderRadius: 4,
+            padding: '7px 16px',
             fontWeight: 600,
-            textTransform: 'none',
+            fontFamily: "'Space Grotesk', sans-serif",
+            textTransform: 'uppercase',
+            letterSpacing: '0.03em',
             boxShadow: 'none',
-            transition: 'all 0.15s ease-in-out',
+            transition: 'all 0.1s ease-out',
             '&:hover': {
               boxShadow: 'none',
             },
           },
           containedPrimary: {
-            backgroundColor: '#10B981',
+            backgroundColor: '#FF5500',
             color: '#FFFFFF',
             '&:hover': {
-              backgroundColor: '#059669',
+              backgroundColor: '#E04B00',
             },
           },
         },
@@ -145,32 +158,32 @@ export const getGymTheme = (mode: 'dark' | 'light' = 'dark'): Theme => {
           root: {
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 600,
-            borderRadius: 6,
+            borderRadius: 2,
           },
         },
       },
       MuiLinearProgress: {
         styleOverrides: {
           root: {
-            height: 8,
-            borderRadius: 4,
+            height: 6,
+            borderRadius: 2,
             backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E5E7EB',
           },
           bar: {
-            borderRadius: 4,
-            backgroundColor: '#10B981',
+            borderRadius: 2,
+            backgroundColor: '#FF5500',
           },
         },
       },
       MuiTabs: {
         styleOverrides: {
           root: {
-            minHeight: 40,
+            minHeight: 38,
           },
           indicator: {
-            backgroundColor: '#10B981',
+            backgroundColor: '#FF5500',
             height: 2,
-            borderRadius: 1,
+            borderRadius: 0,
           },
         },
       },
@@ -181,26 +194,26 @@ export const getGymTheme = (mode: 'dark' | 'light' = 'dark'): Theme => {
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 600,
             fontSize: '0.8rem',
-            letterSpacing: '0.02em',
+            letterSpacing: '0.03em',
             padding: '6px 14px',
-            textTransform: 'none',
+            textTransform: 'uppercase',
           },
         },
       },
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
-            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : '#FFFFFF',
+            borderRadius: 4,
+            backgroundColor: isDark ? '#181D26' : '#FFFFFF',
             '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: isDark ? 'rgba(255, 255, 255, 0.25)' : '#9CA3AF',
+              borderColor: isDark ? 'rgba(255, 255, 255, 0.22)' : '#9CA3AF',
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#10B981',
+              borderColor: '#FF5500',
             },
           },
           notchedOutline: {
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : '#E5E7EB',
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#E5E7EB',
           },
         },
       },

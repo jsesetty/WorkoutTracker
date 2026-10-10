@@ -21,7 +21,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ workouts }) => {
             alignItems: 'center',
             justifyContent: 'center',
             p: 1,
-            borderRadius: '8px',
+            borderRadius: '4px',
             backgroundColor: (theme) =>
               theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
             color: 'primary.main',
@@ -34,7 +34,8 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ workouts }) => {
             variant="h6"
             sx={{
               fontWeight: 700,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
+              letterSpacing: '-0.02em',
             }}
           >
             WORKOUT SESSION LOGS & HISTORY
@@ -51,7 +52,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ workouts }) => {
           sx={{
             p: 4,
             textAlign: 'center',
-            borderRadius: '10px',
+            borderRadius: '4px',
             border: '1px dashed',
             borderColor: 'divider',
           }}
@@ -68,9 +69,9 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ workouts }) => {
           {completedWorkouts.map((w) => (
             <SpecListItem key={w.id}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <CheckCircleIcon sx={{ color: 'primary.main', fontSize: '1.3rem' }} />
+                <CheckCircleIcon sx={{ color: '#059669', fontSize: '1.3rem' }} />
                 <Box>
-                  <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
+                  <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '0.95rem', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
                     {w.title}
                   </Typography>
                   <Typography

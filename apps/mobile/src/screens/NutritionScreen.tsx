@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   },
   hudCard: {
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.lg,
+    borderRadius: theme.borderRadius.sm,
     padding: theme.spacing.lg,
     borderWidth: 1,
     borderColor: theme.colors.border,
@@ -331,23 +331,23 @@ const styles = StyleSheet.create({
   track: {
     height: 6,
     backgroundColor: theme.colors.surfaceElevated,
-    borderRadius: 3,
+    borderRadius: theme.borderRadius.xs,
     overflow: 'hidden',
   },
   fill: {
     height: '100%',
-    borderRadius: 3,
+    borderRadius: theme.borderRadius.xs,
   },
   addCard: {
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.sm,
     padding: theme.spacing.md,
     borderWidth: 1,
     borderColor: theme.colors.border,
     marginBottom: theme.spacing.lg,
   },
   cardSectionLabel: {
-    color: theme.colors.secondary,
+    color: theme.colors.primary,
     fontSize: 11,
     fontWeight: '800',
     letterSpacing: 1.2,
@@ -362,14 +362,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.surfaceElevated,
     paddingVertical: 6,
-    borderRadius: theme.borderRadius.sm,
+    borderRadius: theme.borderRadius.xs,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: theme.colors.border,
   },
   typeChipActive: {
-    backgroundColor: theme.colors.secondary,
-    borderColor: theme.colors.secondary,
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
   },
   typeChipText: {
     color: theme.colors.textSecondary,
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   typeChipTextActive: {
-    color: '#0A0D14',
+    color: '#FFFFFF',
     fontWeight: '800',
   },
   input: {
@@ -420,13 +420,13 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.borderLight,
   },
   addBtn: {
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: theme.colors.primary,
     borderRadius: theme.borderRadius.sm,
     paddingVertical: 12,
     alignItems: 'center',
   },
   addBtnText: {
-    color: '#0A0D14',
+    color: '#FFFFFF',
     fontWeight: '900',
     letterSpacing: 1,
     fontSize: 13,
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
   },
   mealCard: {
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.sm,
     padding: theme.spacing.md,
     borderWidth: 1,
     borderColor: theme.colors.border,
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   mealCalories: {
-    color: theme.colors.secondary,
+    color: theme.colors.primary,
     fontSize: 14,
     fontWeight: '800',
   },
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.surfaceElevated,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: 4,
+    borderRadius: theme.borderRadius.xs,
   },
   typeBadgeText: {
     color: theme.colors.textSecondary,

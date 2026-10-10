@@ -307,7 +307,7 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
           sx={{
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 700,
-            borderRadius: '8px',
+            borderRadius: '4px',
           }}
         >
           Food Quality Intel
@@ -349,18 +349,18 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                     gap: 1,
                     px: 1.5,
                     py: 0.5,
-                    borderRadius: '20px',
-                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    borderRadius: '2px',
+                    backgroundColor: 'rgba(5, 150, 105, 0.14)',
+                    border: '1px solid rgba(5, 150, 105, 0.3)',
                   }}
                 >
-                  <FitnessCenterIcon sx={{ fontSize: '1rem', color: '#10B981' }} />
+                  <FitnessCenterIcon sx={{ fontSize: '1rem', color: '#059669' }} />
                   <Typography
                     sx={{
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontSize: '0.75rem',
                       fontWeight: 700,
-                      color: '#10B981',
+                      color: '#059669',
                     }}
                   >
                     +{workoutBurnedCalories} kcal from completed sets
@@ -384,7 +384,12 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                 </Typography>
                 <Typography
                   variant="h5"
-                  sx={{ fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", color: 'text.primary' }}
+                  sx={{
+                    fontWeight: 800,
+                    fontFamily: 'var(--font-telemetry)',
+                    fontVariantNumeric: 'tabular-nums',
+                    color: 'text.primary',
+                  }}
                 >
                   {goals.calorieTarget}
                 </Typography>
@@ -407,7 +412,12 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                 </Typography>
                 <Typography
                   variant="h5"
-                  sx={{ fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", color: 'text.primary' }}
+                  sx={{
+                    fontWeight: 800,
+                    fontFamily: 'var(--font-telemetry)',
+                    fontVariantNumeric: 'tabular-nums',
+                    color: 'text.primary',
+                  }}
                 >
                   − {totalConsumed.calories}
                 </Typography>
@@ -432,8 +442,9 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                   variant="h5"
                   sx={{
                     fontWeight: 800,
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    color: workoutBurnedCalories > 0 ? '#10B981' : 'text.primary',
+                    fontFamily: 'var(--font-telemetry)',
+                    fontVariantNumeric: 'tabular-nums',
+                    color: workoutBurnedCalories > 0 ? '#059669' : 'text.primary',
                   }}
                 >
                   + {workoutBurnedCalories}
@@ -449,7 +460,7 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: '0.72rem',
                     fontWeight: 700,
-                    color: '#10B981',
+                    color: '#059669',
                     textTransform: 'uppercase',
                   }}
                 >
@@ -459,13 +470,14 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                   variant="h4"
                   sx={{
                     fontWeight: 800,
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    color: remainingCalories >= 0 ? '#10B981' : '#EF4444',
+                    fontFamily: 'var(--font-telemetry)',
+                    fontVariantNumeric: 'tabular-nums',
+                    color: remainingCalories >= 0 ? '#059669' : '#EF4444',
                   }}
                 >
                   {remainingCalories}
                 </Typography>
-                <Typography variant="caption" sx={{ color: '#10B981', fontWeight: 600 }}>
+                <Typography variant="caption" sx={{ color: '#059669', fontWeight: 600 }}>
                   kcal left
                 </Typography>
               </CaloriePod>
@@ -477,19 +489,19 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                 label="Protein (Muscle Synthesis)"
                 current={totalConsumed.protein}
                 target={goals.proteinTarget}
-                color="#10B981"
+                color="#FF5500"
               />
               <MacroProgressBar
                 label="Carbohydrates (Glycogen)"
                 current={totalConsumed.carbs}
                 target={goals.carbsTarget}
-                color="#06B6D4"
+                color="#00D8F6"
               />
               <MacroProgressBar
                 label="Fats (Hormonal Balance)"
                 current={totalConsumed.fat}
                 target={goals.fatTarget}
-                color="#F59E0B"
+                color="#EAB308"
               />
             </Box>
           </CalorieHudCard>
@@ -568,7 +580,7 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                         fontFamily: "'Space Grotesk', sans-serif",
                         fontWeight: 700,
                         fontSize: '0.75rem',
-                        borderRadius: '6px',
+                        borderRadius: '2px',
                       }}
                     >
                       Log Food
@@ -615,7 +627,8 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                             <Typography
                               sx={{
-                                fontFamily: "'Space Grotesk', sans-serif",
+                                fontFamily: 'var(--font-telemetry)',
+                                fontVariantNumeric: 'tabular-nums',
                                 fontSize: '0.95rem',
                                 fontWeight: 800,
                                 color: 'text.primary',
@@ -657,8 +670,10 @@ export const NutritionPage: React.FC<NutritionPageProps> = ({
         fullWidth
         PaperProps={{
           sx: {
-            borderRadius: '12px',
-            backgroundColor: 'background.paper',
+            borderRadius: '4px',
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
+            border: (theme) => `1px solid ${theme.palette.divider}`,
           },
         }}
       >

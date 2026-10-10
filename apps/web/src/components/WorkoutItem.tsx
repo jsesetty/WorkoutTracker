@@ -41,9 +41,9 @@ const getIntensityDetails = (intensity?: IntensityLevel) => {
     case 'high':
       return { label: 'MAX EFFORT', color: '#EF4444' };
     case 'low':
-      return { label: 'WARMUP', color: '#0284C7' };
+      return { label: 'WARMUP', color: '#00D8F6' };
     default:
-      return { label: 'MODERATE', color: '#D97706' };
+      return { label: 'MODERATE', color: '#EAB308' };
   }
 };
 
@@ -333,9 +333,9 @@ export const WorkoutItem: React.FC<WorkoutItemProps> = ({
               <Chip
                 label="CONQUERED"
                 size="small"
-                color="primary"
+                color="success"
                 variant="outlined"
-                sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }}
+                sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, borderRadius: '2px' }}
               />
             )}
           </Box>
@@ -480,11 +480,13 @@ export const WorkoutItem: React.FC<WorkoutItemProps> = ({
                   onClick={() => handleToggleSet(set.id)}
                   aria-label={`Log set ${set.setNumber}`}
                 >
-                  {set.completed ? (
-                    <CheckIcon sx={{ fontSize: '1rem' }} />
-                  ) : (
-                    set.setNumber
-                  )}
+                  <CheckIcon
+                    sx={{
+                      fontSize: '1rem',
+                      color: set.completed ? '#FFFFFF' : 'text.secondary',
+                      opacity: set.completed ? 1 : 0.4,
+                    }}
+                  />
                 </SetLogCheckBtn>
               </Tooltip>
             </Box>

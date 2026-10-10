@@ -33,14 +33,19 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
         aria-label="Workout Session Filters"
         sx={{
           backgroundColor: 'background.paper',
-          borderRadius: '8px',
+          borderRadius: '4px',
           p: 0.25,
           border: (theme) => `1px solid ${theme.palette.divider}`,
+          width: { xs: '100%', sm: 'auto' },
+          '& .MuiTabs-flexContainer': {
+            width: '100%',
+          },
         }}
       >
         <Tab
           value="all"
           id="filter-all-tab"
+          sx={{ flex: { xs: 1, sm: 'initial' }, minWidth: 0, px: 1 }}
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
               <span>ALL</span>
@@ -56,6 +61,7 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
         <Tab
           value="active"
           id="filter-active-tab"
+          sx={{ flex: { xs: 1, sm: 'initial' }, minWidth: 0, px: 1 }}
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
               <span>PLANNED</span>
@@ -71,6 +77,7 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
         <Tab
           value="completed"
           id="filter-completed-tab"
+          sx={{ flex: { xs: 1, sm: 'initial' }, minWidth: 0, px: 1 }}
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
               <span>FINISHED</span>
@@ -85,7 +92,14 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
       </Tabs>
 
       {/* Actions Group */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, alignSelf: { xs: 'flex-end', sm: 'center' } }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+          width: { xs: '100%', sm: 'auto' },
+        }}
+      >
         {onOpenAIModal && (
           <Button
             id="open-ai-modal-btn"
@@ -96,9 +110,11 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
             onClick={onOpenAIModal}
             sx={{
               fontSize: '0.75rem',
-              borderRadius: '8px',
+              borderRadius: '4px',
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
+              flex: { xs: 1, sm: 'none' },
+              whiteSpace: 'nowrap',
             }}
           >
             ⚡ AI QUICK LOG
@@ -115,10 +131,12 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
           onClick={onClearCompleted}
           sx={{
             fontSize: '0.75rem',
-            borderRadius: '8px',
+            borderRadius: '4px',
             fontFamily: "'Space Grotesk', sans-serif",
             borderColor: 'divider',
             color: 'text.secondary',
+            flex: { xs: 1, sm: 'none' },
+            whiteSpace: 'nowrap',
             '&:hover': {
               borderColor: 'error.main',
               color: 'error.main',

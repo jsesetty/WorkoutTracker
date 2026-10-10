@@ -240,16 +240,17 @@ export const FoodScannerPage: React.FC = () => {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               letterSpacing: '-0.02em',
               color: 'text.primary',
+              fontSize: { xs: '1.35rem', sm: '1.75rem', md: '2.1rem' },
             }}
           >
             Food Quality & Ingredient Intel
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5, fontSize: { xs: '0.78rem', sm: '0.875rem' } }}>
             Yuka 0–100 Health Scoring, Chemical Additives Audit, NOVA Processing Levels, and Clean Swaps
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', gap: 1, width: { xs: '100%', sm: 'auto' } }}>
           <Button
             variant="outlined"
             color="primary"
@@ -257,9 +258,12 @@ export const FoodScannerPage: React.FC = () => {
             onClick={() => setBarcodeScannerOpen(true)}
             data-testid="open-barcode-scanner-btn"
             sx={{
+              flex: { xs: 1, sm: 'initial' },
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
-              borderRadius: '8px',
+              borderRadius: '4px',
+              fontSize: { xs: '0.75rem', sm: '0.85rem' },
+              whiteSpace: 'nowrap',
             }}
           >
             SCAN BARCODE
@@ -270,9 +274,12 @@ export const FoodScannerPage: React.FC = () => {
             startIcon={<AddIcon />}
             onClick={() => setNewFoodDialogOpen(true)}
             sx={{
+              flex: { xs: 1, sm: 'initial' },
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
-              borderRadius: '8px',
+              borderRadius: '4px',
+              fontSize: { xs: '0.75rem', sm: '0.85rem' },
+              whiteSpace: 'nowrap',
             }}
           >
             Add Food Item
@@ -296,34 +303,44 @@ export const FoodScannerPage: React.FC = () => {
           }}
         />
 
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1,
+            overflowX: 'auto',
+            flexWrap: { xs: 'nowrap', sm: 'wrap' },
+            pb: { xs: 0.5, sm: 0 },
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+          }}
+        >
           <Chip
             label="All Foods"
             clickable
             color={activeFilter === 'ALL' ? 'primary' : 'default'}
             onClick={() => setActiveFilter('ALL')}
-            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, flexShrink: 0 }}
           />
           <Chip
             label="Excellent (75–100)"
             clickable
             color={activeFilter === 'EXCELLENT' ? 'primary' : 'default'}
             onClick={() => setActiveFilter('EXCELLENT')}
-            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, flexShrink: 0 }}
           />
           <Chip
             label="Warnings / Mediocre (<50)"
             clickable
             color={activeFilter === 'WARNINGS' ? 'primary' : 'default'}
             onClick={() => setActiveFilter('WARNINGS')}
-            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, flexShrink: 0 }}
           />
           <Chip
             label="100% Organic"
             clickable
             color={activeFilter === 'ORGANIC' ? 'primary' : 'default'}
             onClick={() => setActiveFilter('ORGANIC')}
-            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, flexShrink: 0 }}
           />
         </Box>
       </Box>
@@ -420,7 +437,7 @@ export const FoodScannerPage: React.FC = () => {
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontWeight: 700,
                       fontSize: '0.75rem',
-                      borderRadius: '6px',
+                      borderRadius: '2px',
                     }}
                   >
                     Log to Diary
@@ -441,7 +458,8 @@ export const FoodScannerPage: React.FC = () => {
               >
                 <Typography
                   sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: 'var(--font-telemetry)',
+                    fontVariantNumeric: 'tabular-nums',
                     fontSize: '0.82rem',
                     fontWeight: 700,
                     color: 'text.primary',
@@ -457,10 +475,10 @@ export const FoodScannerPage: React.FC = () => {
                     color: 'text.secondary',
                   }}
                 >
-                  Protein: <strong>{food.protein}g</strong> • Carbs: <strong>{food.carbs}g</strong> • Fat: <strong>{food.fat}g</strong>
+                  Protein: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.protein}g</Box> • Carbs: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.carbs}g</Box> • Fat: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.fat}g</Box>
                 </Typography>
 
-                <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{ ml: { xs: 0, sm: 'auto' }, display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Typography
                     sx={{
                       fontFamily: "'Space Grotesk', sans-serif",
@@ -490,7 +508,7 @@ export const FoodScannerPage: React.FC = () => {
                 </Typography>
 
                 {food.additives.length === 0 ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, color: '#10B981' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, color: '#059669' }}>
                     <CheckCircleOutlineIcon sx={{ fontSize: '1rem' }} />
                     <Typography
                       sx={{
@@ -512,7 +530,7 @@ export const FoodScannerPage: React.FC = () => {
                           alignItems: 'center',
                           gap: 0.75,
                           p: '4px 8px',
-                          borderRadius: '6px',
+                          borderRadius: '2px',
                           border: (theme) => `1px solid ${theme.palette.divider}`,
                         }}
                       >
@@ -539,7 +557,7 @@ export const FoodScannerPage: React.FC = () => {
               {food.cleanAlternativeName && (
                 <CleanSwapCard>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <WarningAmberIcon sx={{ color: '#F59E0B', fontSize: '1.2rem' }} />
+                    <WarningAmberIcon sx={{ color: '#EAB308', fontSize: '1.2rem' }} />
                     <Box>
                       <Typography
                         sx={{
@@ -547,7 +565,7 @@ export const FoodScannerPage: React.FC = () => {
                           fontSize: '0.72rem',
                           fontWeight: 700,
                           textTransform: 'uppercase',
-                          color: '#10B981',
+                          color: '#059669',
                         }}
                       >
                         Recommended Clean Swap
@@ -599,8 +617,10 @@ export const FoodScannerPage: React.FC = () => {
         fullWidth
         PaperProps={{
           sx: {
-            borderRadius: '12px',
-            backgroundColor: 'background.paper',
+            borderRadius: '4px',
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
+            border: (theme) => `1px solid ${theme.palette.divider}`,
           },
         }}
       >
