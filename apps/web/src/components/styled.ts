@@ -752,3 +752,30 @@ export const ScannerReticleBox = styled(Box)({
   zIndex: 5,
 });
 
+export const UserAvatarButton = styled(Button)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  padding: '3px 10px',
+  borderRadius: '20px',
+  border: `1px solid ${theme.palette.divider}`,
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+  color: theme.palette.text.primary,
+  textTransform: 'none',
+  fontFamily: "'Space Grotesk', sans-serif",
+  fontSize: '0.8rem',
+  fontWeight: 600,
+  '&:hover': {
+    borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.06)',
+  },
+}));
+
+export const AuthContainerBox = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  paddingTop: theme.spacing(1),
+}));
+
+

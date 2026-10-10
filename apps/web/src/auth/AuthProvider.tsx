@@ -11,7 +11,32 @@ export interface AuthContextValue {
   readonly error: AuthError | null;
   readonly signInWithEmail: (email: string, pass: string) => Promise<{ error: AuthError | null }>;
   readonly signUpWithEmail: (email: string, pass: string) => Promise<{ error: AuthError | null }>;
+  readonly demoLogin: (email?: string) => Promise<void>;
   readonly signOut: () => Promise<{ error: AuthError | null }>;
+}
+
+const DEMO_SESSION_KEY = 'ironpulse_demo_session';
+
+function createMockUser(email: string): User {
+  return {
+    id: 'demo-athlete-' + Math.random().toString(36).substring(2, 9),
+    email,
+    app_metadata: { provider: 'demo' },
+    user_metadata: { name: email.split('@')[0] },
+    aud: 'authenticated',
+    created_at: new Date().toISOString(),
+  };
+}
+
+function createMockSession(user: User): Session {
+  return {
+    access_token: 'demo-access-token-' + Date.now(),
+    refresh_token: 'demo-refresh-token-' + Date.now(),
+    expires_in: 3600,
+    expires_at: Math.floor(Date.now() / 1000) + 3600,
+    token_type: 'bearer',
+    user,
+  };
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -24,6 +49,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
+      // Check if a demo session was persisted
+      try {
+        const saved = localStorage.getItem(DEMO_SESSION_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed?.user && parsed?.session) {
+            setUser(parsed.user);
+            setSession(parsed.session);
+          }
+        }
+      } catch {
+        // Ignore corrupt demo session
+      }
       setIsLoading(false);
       return;
     }
@@ -62,7 +100,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signInWithEmail = async (email: string, pass: string) => {
+    setError(null);
     if (!isSupabaseConfigured) {
+      const mockUser = createMockUser(email);
+      const mockSession = createMockSession(mockUser);
+      setUser(mockUser);
+      setSession(mockSession);
+      try {
+        localStorage.setItem(DEMO_SESSION_KEY, JSON.stringify({ user: mockUser, session: mockSession }));
+      } catch {
+        // Ignore storage errors
+      }
+      queryClient.invalidateQueries();
       return { error: null };
     }
     const { error: signInErr } = await supabase.auth.signInWithPassword({
@@ -74,7 +123,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signUpWithEmail = async (email: string, pass: string) => {
+    setError(null);
     if (!isSupabaseConfigured) {
+      const mockUser = createMockUser(email);
+      const mockSession = createMockSession(mockUser);
+      setUser(mockUser);
+      setSession(mockSession);
+      try {
+        localStorage.setItem(DEMO_SESSION_KEY, JSON.stringify({ user: mockUser, session: mockSession }));
+      } catch {
+        // Ignore storage errors
+      }
+      queryClient.invalidateQueries();
       return { error: null };
     }
     const { error: signUpErr } = await supabase.auth.signUp({
@@ -85,8 +145,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error: signUpErr };
   };
 
+  const demoLogin = async (email = 'demo.athlete@ironpulse.fit') => {
+    setError(null);
+    const mockUser = createMockUser(email);
+    const mockSession = createMockSession(mockUser);
+    setUser(mockUser);
+    setSession(mockSession);
+    try {
+      localStorage.setItem(DEMO_SESSION_KEY, JSON.stringify({ user: mockUser, session: mockSession }));
+    } catch {
+      // Ignore
+    }
+    queryClient.invalidateQueries();
+  };
+
   const signOut = async () => {
     queryClient.clear();
+    setError(null);
+    try {
+      localStorage.removeItem(DEMO_SESSION_KEY);
+    } catch {
+      // Ignore
+    }
     if (!isSupabaseConfigured) {
       setUser(null);
       setSession(null);
@@ -108,6 +188,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       error,
       signInWithEmail,
       signUpWithEmail,
+      demoLogin,
       signOut,
     }),
     [user, session, isLoading, error]

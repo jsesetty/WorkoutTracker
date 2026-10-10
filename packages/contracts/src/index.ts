@@ -220,3 +220,32 @@ export const BarcodeLookupResponseSchema = z.object({
   error: z.string().optional(),
 });
 export type BarcodeLookupResponse = z.infer<typeof BarcodeLookupResponseSchema>;
+
+// ============================================================================
+// CHECKPOINT 5: Authentication & Session Contracts
+// ============================================================================
+
+export const UserRoleEnum = z.enum(['ATHLETE', 'COACH', 'ADMIN']);
+export type UserRole = z.infer<typeof UserRoleEnum>;
+
+export const AuthCredentialsSchema = z.object({
+  email: z.string().email('Invalid email address format'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+export type AuthCredentials = z.infer<typeof AuthCredentialsSchema>;
+
+export const AuthUserSchema = z.object({
+  id: z.string(),
+  email: z.string().email(),
+  role: UserRoleEnum.default('ATHLETE'),
+  createdAt: z.string().optional(),
+});
+export type AuthUserDTO = z.infer<typeof AuthUserSchema>;
+
+export const AuthSessionStateSchema = z.object({
+  isAuthenticated: z.boolean(),
+  user: AuthUserSchema.nullable(),
+  provider: z.enum(['supabase', 'demo', 'guest']),
+});
+export type AuthSessionState = z.infer<typeof AuthSessionStateSchema>;
+
