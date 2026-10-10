@@ -65,6 +65,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
   const isDark = mode === 'dark';
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useAuth();
@@ -99,19 +100,19 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
   };
 
   return (
-    <Box component="header">
+    <Box component="header" sx={{ width: '100%', maxWidth: '100%' }}>
       <HeaderBar>
         {/* Brand Section */}
         <BrandGroup>
           <BrandLogoContainer onClick={() => navigate('/')}>
-            <DumbbellLogo size={34} />
+            <DumbbellLogo size={isMobile ? 26 : 34} />
           </BrandLogoContainer>
           <Box>
             <BrandTitle variant="h5">IRONPULSE</BrandTitle>
             <Typography
               variant="caption"
               sx={{
-                display: 'block',
+                display: { xs: 'none', sm: 'block' },
                 fontWeight: 500,
                 letterSpacing: '0.04em',
                 color: 'text.secondary',
@@ -124,7 +125,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
         </BrandGroup>
 
         {/* Date Badge, Theme Toggle & Auth Controls */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 1 }, flexShrink: 0 }}>
           <SyncStatusBadge />
 
           <Chip
@@ -148,6 +149,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
               sx={{
                 border: '1px solid',
                 borderColor: 'divider',
+                p: { xs: 0.5, sm: 0.75 },
                 color: 'text.secondary',
                 '&:hover': {
                   color: 'primary.main',
@@ -264,16 +266,22 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
               variant="outlined"
               color="primary"
               size="small"
-              startIcon={<LoginIcon />}
+              startIcon={<LoginIcon sx={{ fontSize: '0.95rem' }} />}
               onClick={() => setAuthModalOpen(true)}
               data-testid="header-signin-btn"
               sx={{
                 fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)",
                 fontWeight: 700,
-                fontSize: '0.75rem',
+                fontSize: { xs: '0.7rem', sm: '0.75rem' },
                 borderRadius: '4px',
                 py: 0.5,
-                px: 1.25,
+                px: { xs: 0.75, sm: 1.25 },
+                minWidth: 'auto',
+                whiteSpace: 'nowrap',
+                '& .MuiButton-startIcon': {
+                  mr: { xs: 0.5, sm: 0.75 },
+                  ml: 0,
+                },
               }}
             >
               SIGN IN
@@ -284,7 +292,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
 
       {/* Route Navigation Bar (Visible on Mobile/Tablet viewports below lg breakpoint) */}
       {!isDesktop && (
-        <NavLinksGroup sx={{ mt: 1, px: 0.25 }}>
+        <NavLinksGroup sx={{ mt: 1, px: 0.25, width: '100%', maxWidth: '100%' }}>
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (

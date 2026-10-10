@@ -240,16 +240,17 @@ export const FoodScannerPage: React.FC = () => {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               letterSpacing: '-0.02em',
               color: 'text.primary',
+              fontSize: { xs: '1.35rem', sm: '1.75rem', md: '2.1rem' },
             }}
           >
             Food Quality & Ingredient Intel
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5, fontSize: { xs: '0.78rem', sm: '0.875rem' } }}>
             Yuka 0–100 Health Scoring, Chemical Additives Audit, NOVA Processing Levels, and Clean Swaps
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', gap: 1, width: { xs: '100%', sm: 'auto' } }}>
           <Button
             variant="outlined"
             color="primary"
@@ -257,9 +258,12 @@ export const FoodScannerPage: React.FC = () => {
             onClick={() => setBarcodeScannerOpen(true)}
             data-testid="open-barcode-scanner-btn"
             sx={{
+              flex: { xs: 1, sm: 'initial' },
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
               borderRadius: '4px',
+              fontSize: { xs: '0.75rem', sm: '0.85rem' },
+              whiteSpace: 'nowrap',
             }}
           >
             SCAN BARCODE
@@ -270,9 +274,12 @@ export const FoodScannerPage: React.FC = () => {
             startIcon={<AddIcon />}
             onClick={() => setNewFoodDialogOpen(true)}
             sx={{
+              flex: { xs: 1, sm: 'initial' },
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
               borderRadius: '4px',
+              fontSize: { xs: '0.75rem', sm: '0.85rem' },
+              whiteSpace: 'nowrap',
             }}
           >
             Add Food Item
@@ -296,34 +303,44 @@ export const FoodScannerPage: React.FC = () => {
           }}
         />
 
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1,
+            overflowX: 'auto',
+            flexWrap: { xs: 'nowrap', sm: 'wrap' },
+            pb: { xs: 0.5, sm: 0 },
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+          }}
+        >
           <Chip
             label="All Foods"
             clickable
             color={activeFilter === 'ALL' ? 'primary' : 'default'}
             onClick={() => setActiveFilter('ALL')}
-            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, flexShrink: 0 }}
           />
           <Chip
             label="Excellent (75–100)"
             clickable
             color={activeFilter === 'EXCELLENT' ? 'primary' : 'default'}
             onClick={() => setActiveFilter('EXCELLENT')}
-            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, flexShrink: 0 }}
           />
           <Chip
             label="Warnings / Mediocre (<50)"
             clickable
             color={activeFilter === 'WARNINGS' ? 'primary' : 'default'}
             onClick={() => setActiveFilter('WARNINGS')}
-            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, flexShrink: 0 }}
           />
           <Chip
             label="100% Organic"
             clickable
             color={activeFilter === 'ORGANIC' ? 'primary' : 'default'}
             onClick={() => setActiveFilter('ORGANIC')}
-            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+            sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, flexShrink: 0 }}
           />
         </Box>
       </Box>
@@ -461,7 +478,7 @@ export const FoodScannerPage: React.FC = () => {
                   Protein: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.protein}g</Box> • Carbs: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.carbs}g</Box> • Fat: <Box component="span" sx={{ fontFamily: 'var(--font-telemetry)', fontVariantNumeric: 'tabular-nums', fontWeight: 700 }}>{food.fat}g</Box>
                 </Typography>
 
-                <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{ ml: { xs: 0, sm: 'auto' }, display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Typography
                     sx={{
                       fontFamily: "'Space Grotesk', sans-serif",

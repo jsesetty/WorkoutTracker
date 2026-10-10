@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Paper, Grid, LinearProgress } from '@mui/material';
+import { Box, Typography, Paper, LinearProgress } from '@mui/material';
 import InsightsIcon from '@mui/icons-material/Insights';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -58,58 +58,52 @@ export const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ workouts }) => {
       </Box>
 
       {/* KPI Cards */}
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
-          <StatCard accentColor="#059669">
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
-              <CheckCircleOutlineIcon sx={{ color: '#059669', fontSize: '1.3rem' }} />
-              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
-                COMPLETION RATE
-              </Typography>
-            </Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
-              {completionRate}%
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' }, gap: 1.5 }}>
+        <StatCard accentColor="#059669">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
+            <CheckCircleOutlineIcon sx={{ color: '#059669', fontSize: '1.3rem' }} />
+            <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
+              COMPLETION RATE
             </Typography>
-            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
-              {completed} of {total} movements conquered
-            </Typography>
-          </StatCard>
-        </Grid>
+          </Box>
+          <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
+            {completionRate}%
+          </Typography>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
+            {completed} of {total} movements conquered
+          </Typography>
+        </StatCard>
 
-        <Grid item xs={12} sm={4}>
-          <StatCard accentColor="#FF5500">
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
-              <FitnessCenterIcon sx={{ color: '#FF5500', fontSize: '1.2rem' }} />
-              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
-                TOTAL VOLUME
-              </Typography>
-            </Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
-              {workouts.reduce((acc, w) => acc + (w.sets || 3), 0)}
+        <StatCard accentColor="#FF5500">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
+            <FitnessCenterIcon sx={{ color: '#FF5500', fontSize: '1.2rem' }} />
+            <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
+              TOTAL VOLUME
             </Typography>
-            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
-              Total working sets logged
-            </Typography>
-          </StatCard>
-        </Grid>
+          </Box>
+          <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
+            {workouts.reduce((acc, w) => acc + (w.sets || 3), 0)}
+          </Typography>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
+            Total working sets logged
+          </Typography>
+        </StatCard>
 
-        <Grid item xs={12} sm={4}>
-          <StatCard accentColor="#00D8F6">
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
-              <WhatshotIcon sx={{ color: '#00D8F6', fontSize: '1.2rem' }} />
-              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
-                HIGH EFFORT
-              </Typography>
-            </Box>
-            <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
-              {workouts.filter((w) => w.intensity === 'high').length}
+        <StatCard accentColor="#00D8F6">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75 }}>
+            <WhatshotIcon sx={{ color: '#00D8F6', fontSize: '1.2rem' }} />
+            <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
+              HIGH EFFORT
             </Typography>
-            <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
-              Max effort working movements
-            </Typography>
-          </StatCard>
-        </Grid>
-      </Grid>
+          </Box>
+          <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary', fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)", fontVariantNumeric: 'tabular-nums' }}>
+            {workouts.filter((w) => w.intensity === 'high').length}
+          </Typography>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontFamily: "var(--font-display, 'Space Grotesk', sans-serif)" }}>
+            Max effort working movements
+          </Typography>
+        </StatCard>
+      </Box>
 
       {/* Muscle Group Split Distribution */}
       <Paper sx={{ p: 2.5, borderRadius: '4px', mt: 1 }}>

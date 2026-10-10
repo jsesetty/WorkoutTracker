@@ -5,11 +5,15 @@ export const AppShell = styled(Container)(({ theme }) => ({
   paddingTop: theme.spacing(3),
   paddingBottom: theme.spacing(6),
   minHeight: '100vh',
+  width: '100%',
+  maxWidth: '100%',
+  overflowX: 'hidden',
+  boxSizing: 'border-box',
   backgroundColor: theme.palette.background.default,
   transition: 'background-color 0.12s ease-out',
   [theme.breakpoints.down('sm')]: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(1.5),
+    paddingBottom: theme.spacing(3),
   },
 }));
 
@@ -29,15 +33,22 @@ export const HeaderBar = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   boxShadow: 'none',
   gap: theme.spacing(1),
+  width: '100%',
+  maxWidth: '100%',
+  boxSizing: 'border-box',
+  overflow: 'hidden',
   [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(1, 1.25),
+    padding: theme.spacing(0.75, 1),
+    gap: theme.spacing(0.5),
   },
 }));
 
 export const BrandGroup = styled(Box)({
   display: 'flex',
   alignItems: 'center',
-  gap: '12px',
+  gap: '8px',
+  minWidth: 0,
+  flexShrink: 0,
 });
 
 export const BrandLogoContainer = styled(Box)({
@@ -45,6 +56,7 @@ export const BrandLogoContainer = styled(Box)({
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
+  flexShrink: 0,
 });
 
 export const BrandTitle = styled(Typography)(({ theme }) => ({
@@ -54,8 +66,9 @@ export const BrandTitle = styled(Typography)(({ theme }) => ({
   fontFamily: "var(--font-brand, 'Syne', sans-serif)",
   color: theme.palette.text.primary,
   textTransform: 'uppercase',
+  lineHeight: 1.1,
   [theme.breakpoints.down('sm')]: {
-    fontSize: '1.2rem',
+    fontSize: '1.15rem',
   },
 }));
 
