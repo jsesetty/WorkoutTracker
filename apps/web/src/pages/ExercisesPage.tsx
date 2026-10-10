@@ -112,7 +112,7 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
             alignItems: 'center',
             justifyContent: 'center',
             p: 1,
-            borderRadius: '8px',
+            borderRadius: '4px',
             backgroundColor: (theme) =>
               theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
             color: 'primary.main',
@@ -172,9 +172,12 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
                     fontSize: '0.65rem',
                     fontWeight: 700,
                     borderRadius: '2px',
-                    backgroundColor: 'rgba(0, 216, 246, 0.12)',
-                    color: '#00D8F6',
-                    border: '1px solid rgba(0, 216, 246, 0.35)',
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark' ? 'rgba(0, 216, 246, 0.12)' : 'rgba(2, 132, 199, 0.08)',
+                    color: (theme) =>
+                      theme.palette.mode === 'dark' ? '#00D8F6' : '#0284C7',
+                    border: (theme) =>
+                      theme.palette.mode === 'dark' ? '1px solid rgba(0, 216, 246, 0.35)' : '1px solid rgba(2, 132, 199, 0.25)',
                   }}
                 />
                 <Chip
@@ -187,7 +190,10 @@ export const ExercisesPage: React.FC<ExercisesPageProps> = ({
                     borderRadius: '2px',
                     fontFamily: "var(--font-telemetry, 'Geist Mono', monospace)",
                     fontVariantNumeric: 'tabular-nums',
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+                    color: 'text.secondary',
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
                   }}
                 />
               </Box>

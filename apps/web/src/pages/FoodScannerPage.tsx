@@ -601,8 +601,9 @@ export const FoodScannerPage: React.FC = () => {
         PaperProps={{
           sx: {
             borderRadius: '4px',
-            backgroundColor: '#12151B',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
+            border: (theme) => `1px solid ${theme.palette.divider}`,
           },
         }}
       >

@@ -75,8 +75,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
           flexDirection: 'column',
           gap: 2.75,
           boxShadow: 'none',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          backgroundColor: '#12151B',
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          backgroundColor: 'background.paper',
         }}
       >
         {/* Weight Units */}
@@ -183,8 +183,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ mode, onToggleTheme 
           flexDirection: 'column',
           gap: 2,
           boxShadow: 'none',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          backgroundColor: '#12151B',
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          backgroundColor: 'background.paper',
         }}
         data-testid="settings-account-card"
       >

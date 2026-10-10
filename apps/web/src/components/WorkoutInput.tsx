@@ -356,7 +356,7 @@ export const WorkoutInput: React.FC<WorkoutInputProps> = ({ onAddWorkout, onAddT
               whiteSpace: 'nowrap',
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
-              borderRadius: '8px',
+              borderRadius: '4px',
               letterSpacing: '0.03em',
               ml: { xs: 0, sm: 'auto' },
               width: { xs: '100%', sm: 'auto' },

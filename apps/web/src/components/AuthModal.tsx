@@ -149,9 +149,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         sx: {
           borderRadius: '4px',
           backgroundImage: 'none',
-          backgroundColor: '#12151B',
-          border: '1px solid rgba(255, 255, 255, 0.16)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)',
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          boxShadow: (theme) =>
+            theme.palette.mode === 'dark'
+              ? '0 4px 20px rgba(0, 0, 0, 0.6)'
+              : '0 4px 20px rgba(0, 0, 0, 0.15)',
         },
       }}
       data-testid="auth-modal"
@@ -194,8 +198,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           sx={{
             display: 'flex',
             borderRadius: '2px',
-            backgroundColor: '#181D26',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'dark' ? '#181D26' : 'rgba(0, 0, 0, 0.04)',
+            border: (theme) => `1px solid ${theme.palette.divider}`,
             p: 0.5,
           }}
         >

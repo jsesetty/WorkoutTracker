@@ -202,9 +202,13 @@ export const Header: React.FC<HeaderProps> = ({ mode, onToggleTheme, onShowNotif
                     mt: 1,
                     minWidth: 200,
                     borderRadius: '4px',
-                    backgroundColor: '#181D26',
-                    border: '1px solid rgba(255, 255, 255, 0.16)',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark' ? '#181D26' : theme.palette.background.paper,
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    boxShadow: (theme) =>
+                      theme.palette.mode === 'dark'
+                        ? '0 4px 16px rgba(0,0,0,0.6)'
+                        : '0 4px 16px rgba(0,0,0,0.1)',
                   },
                 }}
               >

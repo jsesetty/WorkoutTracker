@@ -269,9 +269,13 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
         sx: {
           borderRadius: '4px',
           backgroundImage: 'none',
-          backgroundColor: '#12151B',
-          border: '1px solid rgba(255, 255, 255, 0.16)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)',
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          boxShadow: (theme) =>
+            theme.palette.mode === 'dark'
+              ? '0 4px 20px rgba(0, 0, 0, 0.6)'
+              : '0 4px 20px rgba(0, 0, 0, 0.15)',
         },
       }}
       data-testid="barcode-scanner-modal"

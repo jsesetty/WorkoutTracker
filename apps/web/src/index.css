@@ -26,8 +26,6 @@ body {
   padding: 0;
   min-height: 100vh;
   font-family: var(--font-body);
-  background-color: #090B0E;
-  color: #F0F3F7;
   overflow-x: hidden;
 }
 
@@ -38,7 +36,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #090B0E;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {

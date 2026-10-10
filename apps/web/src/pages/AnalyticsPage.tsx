@@ -33,7 +33,7 @@ export const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ workouts }) => {
             alignItems: 'center',
             justifyContent: 'center',
             p: 1,
-            borderRadius: '8px',
+            borderRadius: '4px',
             backgroundColor: (theme) =>
               theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
             color: 'primary.main',

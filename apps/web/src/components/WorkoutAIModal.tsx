@@ -145,8 +145,11 @@ export const WorkoutAIModal: React.FC<WorkoutAIModalProps> = ({
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: '16px',
+          borderRadius: '4px',
           backgroundImage: 'none',
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? '#12151B' : theme.palette.background.paper,
+          border: (theme) => `1px solid ${theme.palette.divider}`,
         },
       }}
     >
@@ -201,7 +204,7 @@ export const WorkoutAIModal: React.FC<WorkoutAIModalProps> = ({
                   key={`${ex.rawInputString}-${idx}`}
                   sx={{
                     p: 1.5,
-                    borderRadius: '10px',
+                    borderRadius: '4px',
                     border: '1px solid',
                     borderColor: isHighConfidence ? 'divider' : 'warning.main',
                     backgroundColor: (theme) =>

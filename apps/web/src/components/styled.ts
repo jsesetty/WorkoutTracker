@@ -5,7 +5,8 @@ export const AppShell = styled(Container)(({ theme }) => ({
   paddingTop: theme.spacing(3),
   paddingBottom: theme.spacing(6),
   minHeight: '100vh',
-  backgroundColor: '#090B0E',
+  backgroundColor: theme.palette.background.default,
+  transition: 'background-color 0.12s ease-out',
   [theme.breakpoints.down('sm')]: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(4),
@@ -146,18 +147,18 @@ export const WorkoutCard = styled(Paper, {
   position: 'relative',
   border: `1px solid ${theme.palette.divider}`,
   borderLeft: `3px solid ${borderColor}`,
-  opacity: completed ? 0.8 : 1,
+  opacity: completed ? 0.85 : 1,
   backgroundColor: completed
     ? theme.palette.mode === 'dark'
-      ? 'rgba(5, 150, 105, 0.06)'
-      : 'rgba(5, 150, 105, 0.04)'
+      ? '#111A17'
+      : '#F4FBF7'
     : theme.palette.mode === 'dark'
       ? '#12151B'
       : theme.palette.background.paper,
   boxShadow: 'none',
-  transition: 'border-color 0.1s ease-out',
+  transition: 'border-color 0.1s ease-out, background-color 0.1s ease-out',
   '&:hover': {
-    borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.22)' : '#CBD5E1',
+    borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.22)' : '#94A3B8',
     borderLeftColor: borderColor,
   },
 }));
@@ -185,7 +186,7 @@ export const SetsTableContainer = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'dark'
       ? '#181D26'
-      : 'rgba(0, 0, 0, 0.015)',
+      : '#F8FAFC',
   border: `1px solid ${theme.palette.divider}`,
   padding: theme.spacing(1.25),
 }));
@@ -225,7 +226,7 @@ export const SetLogRow = styled(Box, {
     backgroundColor:
       theme.palette.mode === 'dark'
         ? 'rgba(255, 255, 255, 0.03)'
-        : 'rgba(0, 0, 0, 0.02)',
+        : 'rgba(0, 0, 0, 0.03)',
   },
   [theme.breakpoints.down('sm')]: {
     gridTemplateColumns: '40px 1fr 115px 42px',
@@ -250,7 +251,7 @@ export const RepStepperBox = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'dark'
       ? 'rgba(255, 255, 255, 0.03)'
-      : 'rgba(0, 0, 0, 0.02)',
+      : '#FFFFFF',
 }));
 
 export const RepCountNumber = styled(Typography)(({ theme }) => ({
@@ -273,7 +274,7 @@ export const WeightControlBox = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'dark'
       ? 'rgba(255, 255, 255, 0.03)'
-      : 'rgba(0, 0, 0, 0.02)',
+      : '#FFFFFF',
   maxWidth: '160px',
   [theme.breakpoints.down('sm')]: {
     maxWidth: '125px',

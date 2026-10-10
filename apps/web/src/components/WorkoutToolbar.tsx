@@ -33,7 +33,7 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
         aria-label="Workout Session Filters"
         sx={{
           backgroundColor: 'background.paper',
-          borderRadius: '8px',
+          borderRadius: '4px',
           p: 0.25,
           border: (theme) => `1px solid ${theme.palette.divider}`,
         }}
@@ -96,7 +96,7 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
             onClick={onOpenAIModal}
             sx={{
               fontSize: '0.75rem',
-              borderRadius: '8px',
+              borderRadius: '4px',
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
             }}
@@ -115,7 +115,7 @@ export const WorkoutToolbar: React.FC<WorkoutToolbarProps> = ({
           onClick={onClearCompleted}
           sx={{
             fontSize: '0.75rem',
-            borderRadius: '8px',
+            borderRadius: '4px',
             fontFamily: "'Space Grotesk', sans-serif",
             borderColor: 'divider',
             color: 'text.secondary',
